@@ -1,7 +1,7 @@
 const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
 const project = new AwsCdkConstructLibrary({
-  authorName: 'Ari Palo',
-  authorOrganization: 'Alma Media',
+  authorName: 'Alma Media',
+  authorOrganization: true,
   authorAddress: 'opensource@almamedia.dev',
   cdkVersion: '1.95.2',
   defaultReleaseBranch: 'main',

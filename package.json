@@ -29,9 +29,9 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Ari Palo",
+    "name": "Alma Media",
     "email": "opensource@almamedia.dev",
-    "organization": "Alma Media"
+    "organization": true
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.95.2",
