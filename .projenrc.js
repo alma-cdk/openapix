@@ -1,6 +1,7 @@
 const { AwsCdkConstructLibrary } = require('projen');
 const project = new AwsCdkConstructLibrary({
-  author: 'Alma Media',
+  authorName: 'Ari Palo',
+  authorOrganization: 'Alma Media',
   authorAddress: 'opensource@almamedia.dev',
   cdkVersion: '1.95.2',
   defaultReleaseBranch: 'main',
@@ -30,6 +31,7 @@ const project = new AwsCdkConstructLibrary({
   gitignore: ['.DS_Store', 'TODO.compiled.yaml'],
 
   licensed: false, // TODO change after opensourced
+
 
   // packageName: undefined,          /* The "name" in package.json. */
   // release: undefined,              /* Add release management to this project. */
