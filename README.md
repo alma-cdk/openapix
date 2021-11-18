@@ -4,9 +4,13 @@
 
 **Work-in-Progress**
 
-Do not use this: Things may break at any given time. This project may be destroyed at any given time.
+Do not use this: Things may break at any given time & this project may be destroyed at any given time.
 
-<br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+```sh
+npm i -D @almamedia-open-source/cdk-openapix
+```
 
 ```ts
 const fn = new lambda.Function(this, "fn", {
