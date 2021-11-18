@@ -1,4 +1,4 @@
-const { AwsCdkConstructLibrary } = require('projen');
+const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
 const project = new AwsCdkConstructLibrary({
   authorName: 'Ari Palo',
   authorOrganization: 'Alma Media',
@@ -32,6 +32,7 @@ const project = new AwsCdkConstructLibrary({
 
   licensed: false, // TODO change after opensourced
 
+  npmAccess: NpmAccess.PUBLIC,
 
   // packageName: undefined,          /* The "name" in package.json. */
   // release: undefined,              /* Add release management to this project. */

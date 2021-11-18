@@ -1,5 +1,7 @@
 # CDK OpenApiX
 
+![experimental](https://img.shields.io/badge/stability-experimental-yellow "Stability: Experimental")
+
 **Work-in-Progress**
 
 Do not use this: Things may break at any given time. This project may be destroyed at any given time.
