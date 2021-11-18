@@ -30,7 +30,7 @@
   },
   "author": {
     "name": "Alma Media",
-    "email": "opensource@almamedia.fi",
+    "email": "opensource@almamedia.dev",
     "organization": false
   },
   "devDependencies": {

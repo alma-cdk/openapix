@@ -1,7 +1,7 @@
 const { AwsCdkConstructLibrary } = require('projen');
 const project = new AwsCdkConstructLibrary({
   author: 'Alma Media',
-  authorAddress: 'opensource@almamedia.fi',
+  authorAddress: 'opensource@almamedia.dev',
   cdkVersion: '1.95.2',
   defaultReleaseBranch: 'main',
   name: '@almamedia-open-source/cdk-openapix',
