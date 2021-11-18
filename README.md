@@ -56,7 +56,7 @@ const apiDefinition = new OpenApiXDefinition(this, {
               'application/json': JSON.stringify({
                 "TableName": table.tableName,
                 "Key": {
-                  "email": {
+                  "item": {
                     "S": "$input.params('item')"
                   }
                 }
