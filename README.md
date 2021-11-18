@@ -34,7 +34,7 @@ table.grantReadData(role);
 
 const apiDefinition = new OpenApiXDefinition(this, {
   upload: false, // by default add as inline Body, set to true to use as BodyS3Location
-  schemaPath: './schema.yaml',
+  source: './schema.yaml',
   integrations: {
 
     // Mock Integration
