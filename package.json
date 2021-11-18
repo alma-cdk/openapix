@@ -1,8 +1,8 @@
 {
-  "name": "@almamedia-open-source/cdk-open-api-x",
+  "name": "@almamedia-open-source/cdk-openapix",
   "repository": {
     "type": "git",
-    "url": "https://github.com/almamedia-open-source/cdk-open-api-x.git"
+    "url": "https://github.com/almamedia-open-source/cdk-openapix.git"
   },
   "scripts": {
     "build": "npx projen build",

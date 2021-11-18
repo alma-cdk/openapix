@@ -4,8 +4,8 @@ const project = new AwsCdkConstructLibrary({
   authorAddress: 'opensource@almamedia.fi',
   cdkVersion: '1.95.2',
   defaultReleaseBranch: 'main',
-  name: '@almamedia-open-source/cdk-open-api-x',
-  repositoryUrl: 'https://github.com/almamedia-open-source/cdk-open-api-x.git',
+  name: '@almamedia-open-source/cdk-openapix',
+  repositoryUrl: 'https://github.com/almamedia-open-source/cdk-openapix.git',
 
   cdkDependencies: [
     '@aws-cdk/core',

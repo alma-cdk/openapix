@@ -2,31 +2,31 @@
 
 ## Constructs <a name="Constructs"></a>
 
-### OpenApiX <a name="openapi.OpenApiX"></a>
+### OpenApiX <a name="@almamedia-open-source/cdk-openapix.OpenApiX"></a>
 
-#### Initializers <a name="openapi.OpenApiX.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiX.Initializer"></a>
 
 ```typescript
-import { OpenApiX } from 'openapi'
+import { OpenApiX } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiX(scope: Construct, id: string, props: OpenApiXProps)
 ```
 
-##### `scope`<sup>Required</sup> <a name="openapi.OpenApiX.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiX.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
 ---
 
-##### `id`<sup>Required</sup> <a name="openapi.OpenApiX.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiX.parameter.id"></a>
 
 - *Type:* `string`
 
 ---
 
-##### `props`<sup>Required</sup> <a name="openapi.OpenApiX.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiX.parameter.props"></a>
 
-- *Type:* [`openapi.OpenApiXProps`](#openapi.OpenApiXProps)
+- *Type:* [`@almamedia-open-source/cdk-openapix.OpenApiXProps`](#@almamedia-open-source/cdk-openapix.OpenApiXProps)
 
 ---
 
@@ -34,7 +34,7 @@ new OpenApiX(scope: Construct, id: string, props: OpenApiXProps)
 
 #### Properties <a name="Properties"></a>
 
-##### `api`<sup>Required</sup> <a name="openapi.OpenApiX.property.api"></a>
+##### `api`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiX.property.api"></a>
 
 ```typescript
 public readonly api: IRestApi;
@@ -47,27 +47,27 @@ public readonly api: IRestApi;
 
 ## Structs <a name="Structs"></a>
 
-### OpenApiXDefinitionProps <a name="openapi.OpenApiXDefinitionProps"></a>
+### OpenApiXDefinitionProps <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps"></a>
 
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
-import { OpenApiXDefinitionProps } from 'openapi'
+import { OpenApiXDefinitionProps } from '@almamedia-open-source/cdk-openapix'
 
 const openApiXDefinitionProps: OpenApiXDefinitionProps = { ... }
 ```
 
-##### `source`<sup>Required</sup> <a name="openapi.OpenApiXDefinitionProps.property.source"></a>
+##### `source`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.source"></a>
 
 ```typescript
 public readonly source: string | OpenApiXSource;
 ```
 
-- *Type:* `string` | [`openapi.OpenApiXSource`](#openapi.OpenApiXSource)
+- *Type:* `string` | [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource)
 
 ---
 
-##### `injectPaths`<sup>Optional</sup> <a name="openapi.OpenApiXDefinitionProps.property.injectPaths"></a>
+##### `injectPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.injectPaths"></a>
 
 ```typescript
 public readonly injectPaths: {[ key: string ]: any};
@@ -77,17 +77,17 @@ public readonly injectPaths: {[ key: string ]: any};
 
 ---
 
-##### `integrations`<sup>Optional</sup> <a name="openapi.OpenApiXDefinitionProps.property.integrations"></a>
+##### `integrations`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.integrations"></a>
 
 ```typescript
 public readonly integrations: {[ key: string ]: {[ key: string ]: OpenApiXIntegration}};
 ```
 
-- *Type:* {[ key: string ]: {[ key: string ]: [`openapi.OpenApiXIntegration`](#openapi.OpenApiXIntegration)}}
+- *Type:* {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}}
 
 ---
 
-##### `rejectPaths`<sup>Optional</sup> <a name="openapi.OpenApiXDefinitionProps.property.rejectPaths"></a>
+##### `rejectPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.rejectPaths"></a>
 
 ```typescript
 public readonly rejectPaths: string[];
@@ -97,7 +97,7 @@ public readonly rejectPaths: string[];
 
 ---
 
-##### `upload`<sup>Optional</sup> <a name="openapi.OpenApiXDefinitionProps.property.upload"></a>
+##### `upload`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.upload"></a>
 
 ```typescript
 public readonly upload: boolean;
@@ -107,27 +107,27 @@ public readonly upload: boolean;
 
 ---
 
-### OpenApiXProps <a name="openapi.OpenApiXProps"></a>
+### OpenApiXProps <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps"></a>
 
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
-import { OpenApiXProps } from 'openapi'
+import { OpenApiXProps } from '@almamedia-open-source/cdk-openapix'
 
 const openApiXProps: OpenApiXProps = { ... }
 ```
 
-##### `source`<sup>Required</sup> <a name="openapi.OpenApiXProps.property.source"></a>
+##### `source`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.source"></a>
 
 ```typescript
 public readonly source: string | OpenApiXSource;
 ```
 
-- *Type:* `string` | [`openapi.OpenApiXSource`](#openapi.OpenApiXSource)
+- *Type:* `string` | [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource)
 
 ---
 
-##### `injectPaths`<sup>Optional</sup> <a name="openapi.OpenApiXProps.property.injectPaths"></a>
+##### `injectPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.injectPaths"></a>
 
 ```typescript
 public readonly injectPaths: {[ key: string ]: any};
@@ -137,17 +137,17 @@ public readonly injectPaths: {[ key: string ]: any};
 
 ---
 
-##### `integrations`<sup>Optional</sup> <a name="openapi.OpenApiXProps.property.integrations"></a>
+##### `integrations`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.integrations"></a>
 
 ```typescript
 public readonly integrations: {[ key: string ]: {[ key: string ]: OpenApiXIntegration}};
 ```
 
-- *Type:* {[ key: string ]: {[ key: string ]: [`openapi.OpenApiXIntegration`](#openapi.OpenApiXIntegration)}}
+- *Type:* {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}}
 
 ---
 
-##### `rejectPaths`<sup>Optional</sup> <a name="openapi.OpenApiXProps.property.rejectPaths"></a>
+##### `rejectPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.rejectPaths"></a>
 
 ```typescript
 public readonly rejectPaths: string[];
@@ -157,7 +157,7 @@ public readonly rejectPaths: string[];
 
 ---
 
-##### `upload`<sup>Optional</sup> <a name="openapi.OpenApiXProps.property.upload"></a>
+##### `upload`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.upload"></a>
 
 ```typescript
 public readonly upload: boolean;
@@ -167,7 +167,7 @@ public readonly upload: boolean;
 
 ---
 
-##### `restApiProps`<sup>Required</sup> <a name="openapi.OpenApiXProps.property.restApiProps"></a>
+##### `restApiProps`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.restApiProps"></a>
 
 ```typescript
 public readonly restApiProps: RestApiBaseProps;
@@ -177,17 +177,17 @@ public readonly restApiProps: RestApiBaseProps;
 
 ---
 
-### OpenApiXSourceDefinition <a name="openapi.OpenApiXSourceDefinition"></a>
+### OpenApiXSourceDefinition <a name="@almamedia-open-source/cdk-openapix.OpenApiXSourceDefinition"></a>
 
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
-import { OpenApiXSourceDefinition } from 'openapi'
+import { OpenApiXSourceDefinition } from '@almamedia-open-source/cdk-openapix'
 
 const openApiXSourceDefinition: OpenApiXSourceDefinition = { ... }
 ```
 
-##### `paths`<sup>Optional</sup> <a name="openapi.OpenApiXSourceDefinition.property.paths"></a>
+##### `paths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXSourceDefinition.property.paths"></a>
 
 ```typescript
 public readonly paths: {[ key: string ]: {[ key: string ]: any}};
@@ -197,17 +197,17 @@ public readonly paths: {[ key: string ]: {[ key: string ]: any}};
 
 ---
 
-### XAmazonIntegration <a name="openapi.XAmazonIntegration"></a>
+### XAmazonIntegration <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration"></a>
 
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
-import { XAmazonIntegration } from 'openapi'
+import { XAmazonIntegration } from '@almamedia-open-source/cdk-openapix'
 
 const xAmazonIntegration: XAmazonIntegration = { ... }
 ```
 
-##### `httpMethod`<sup>Required</sup> <a name="openapi.XAmazonIntegration.property.httpMethod"></a>
+##### `httpMethod`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.httpMethod"></a>
 
 ```typescript
 public readonly httpMethod: string;
@@ -217,7 +217,7 @@ public readonly httpMethod: string;
 
 ---
 
-##### `type`<sup>Required</sup> <a name="openapi.XAmazonIntegration.property.type"></a>
+##### `type`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.type"></a>
 
 ```typescript
 public readonly type: IntegrationType;
@@ -227,7 +227,7 @@ public readonly type: IntegrationType;
 
 ---
 
-##### `uri`<sup>Required</sup> <a name="openapi.XAmazonIntegration.property.uri"></a>
+##### `uri`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.uri"></a>
 
 ```typescript
 public readonly uri: string;
@@ -237,7 +237,7 @@ public readonly uri: string;
 
 ---
 
-##### `cacheKeyParameters`<sup>Optional</sup> <a name="openapi.XAmazonIntegration.property.cacheKeyParameters"></a>
+##### `cacheKeyParameters`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.cacheKeyParameters"></a>
 
 ```typescript
 public readonly cacheKeyParameters: any[];
@@ -247,7 +247,7 @@ public readonly cacheKeyParameters: any[];
 
 ---
 
-##### `cacheNamespace`<sup>Optional</sup> <a name="openapi.XAmazonIntegration.property.cacheNamespace"></a>
+##### `cacheNamespace`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.cacheNamespace"></a>
 
 ```typescript
 public readonly cacheNamespace: string;
@@ -257,7 +257,7 @@ public readonly cacheNamespace: string;
 
 ---
 
-##### `credentials`<sup>Optional</sup> <a name="openapi.XAmazonIntegration.property.credentials"></a>
+##### `credentials`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.credentials"></a>
 
 ```typescript
 public readonly credentials: string;
@@ -267,7 +267,7 @@ public readonly credentials: string;
 
 ---
 
-##### `requestParameters`<sup>Optional</sup> <a name="openapi.XAmazonIntegration.property.requestParameters"></a>
+##### `requestParameters`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.requestParameters"></a>
 
 ```typescript
 public readonly requestParameters: {[ key: string ]: string};
@@ -277,7 +277,7 @@ public readonly requestParameters: {[ key: string ]: string};
 
 ---
 
-##### `requestTemplates`<sup>Optional</sup> <a name="openapi.XAmazonIntegration.property.requestTemplates"></a>
+##### `requestTemplates`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.requestTemplates"></a>
 
 ```typescript
 public readonly requestTemplates: {[ key: string ]: string};
@@ -287,27 +287,27 @@ public readonly requestTemplates: {[ key: string ]: string};
 
 ---
 
-##### `responses`<sup>Optional</sup> <a name="openapi.XAmazonIntegration.property.responses"></a>
+##### `responses`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.responses"></a>
 
 ```typescript
 public readonly responses: {[ key: string ]: XAmazonIntegrationResponse};
 ```
 
-- *Type:* {[ key: string ]: [`openapi.XAmazonIntegrationResponse`](#openapi.XAmazonIntegrationResponse)}
+- *Type:* {[ key: string ]: [`@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse`](#@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse)}
 
 ---
 
-### XAmazonIntegrationResponse <a name="openapi.XAmazonIntegrationResponse"></a>
+### XAmazonIntegrationResponse <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse"></a>
 
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
-import { XAmazonIntegrationResponse } from 'openapi'
+import { XAmazonIntegrationResponse } from '@almamedia-open-source/cdk-openapix'
 
 const xAmazonIntegrationResponse: XAmazonIntegrationResponse = { ... }
 ```
 
-##### `statusCode`<sup>Required</sup> <a name="openapi.XAmazonIntegrationResponse.property.statusCode"></a>
+##### `statusCode`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse.property.statusCode"></a>
 
 ```typescript
 public readonly statusCode: string;
@@ -317,7 +317,7 @@ public readonly statusCode: string;
 
 ---
 
-##### `responseParameters`<sup>Optional</sup> <a name="openapi.XAmazonIntegrationResponse.property.responseParameters"></a>
+##### `responseParameters`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse.property.responseParameters"></a>
 
 ```typescript
 public readonly responseParameters: {[ key: string ]: string};
@@ -327,7 +327,7 @@ public readonly responseParameters: {[ key: string ]: string};
 
 ---
 
-##### `responseTemplates`<sup>Optional</sup> <a name="openapi.XAmazonIntegrationResponse.property.responseTemplates"></a>
+##### `responseTemplates`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse.property.responseTemplates"></a>
 
 ```typescript
 public readonly responseTemplates: {[ key: string ]: string};
@@ -339,37 +339,37 @@ public readonly responseTemplates: {[ key: string ]: string};
 
 ## Classes <a name="Classes"></a>
 
-### OpenApiXDefinition <a name="openapi.OpenApiXDefinition"></a>
+### OpenApiXDefinition <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition"></a>
 
-#### Initializers <a name="openapi.OpenApiXDefinition.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.Initializer"></a>
 
 ```typescript
-import { OpenApiXDefinition } from 'openapi'
+import { OpenApiXDefinition } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXDefinition(scope: Construct, props: OpenApiXDefinitionProps)
 ```
 
-##### `scope`<sup>Required</sup> <a name="openapi.OpenApiXDefinition.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
 ---
 
-##### `props`<sup>Required</sup> <a name="openapi.OpenApiXDefinition.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.parameter.props"></a>
 
-- *Type:* [`openapi.OpenApiXDefinitionProps`](#openapi.OpenApiXDefinitionProps)
+- *Type:* [`@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps`](#@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps)
 
 ---
 
 #### Methods <a name="Methods"></a>
 
-##### `bind` <a name="openapi.OpenApiXDefinition.bind"></a>
+##### `bind` <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.bind"></a>
 
 ```typescript
 public bind(_scope: Construct)
 ```
 
-###### `_scope`<sup>Required</sup> <a name="openapi.OpenApiXDefinition.parameter._scope"></a>
+###### `_scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.parameter._scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
@@ -378,29 +378,29 @@ public bind(_scope: Construct)
 
 
 
-### OpenApiXHttp <a name="openapi.OpenApiXHttp"></a>
+### OpenApiXHttp <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp"></a>
 
-#### Initializers <a name="openapi.OpenApiXHttp.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp.Initializer"></a>
 
 ```typescript
-import { OpenApiXHttp } from 'openapi'
+import { OpenApiXHttp } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXHttp(scope: Construct, url: string, props?: HttpIntegrationProps)
 ```
 
-##### `scope`<sup>Required</sup> <a name="openapi.OpenApiXHttp.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
 ---
 
-##### `url`<sup>Required</sup> <a name="openapi.OpenApiXHttp.parameter.url"></a>
+##### `url`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp.parameter.url"></a>
 
 - *Type:* `string`
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="openapi.OpenApiXHttp.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp.parameter.props"></a>
 
 - *Type:* [`@aws-cdk/aws-apigateway.HttpIntegrationProps`](#@aws-cdk/aws-apigateway.HttpIntegrationProps)
 
@@ -410,12 +410,12 @@ new OpenApiXHttp(scope: Construct, url: string, props?: HttpIntegrationProps)
 
 
 
-### OpenApiXIntegration <a name="openapi.OpenApiXIntegration"></a>
+### OpenApiXIntegration <a name="@almamedia-open-source/cdk-openapix.OpenApiXIntegration"></a>
 
-#### Initializers <a name="openapi.OpenApiXIntegration.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXIntegration.Initializer"></a>
 
 ```typescript
-import { OpenApiXIntegration } from 'openapi'
+import { OpenApiXIntegration } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXIntegration()
 ```
@@ -424,40 +424,40 @@ new OpenApiXIntegration()
 
 #### Properties <a name="Properties"></a>
 
-##### `xAmazonIntegration`<sup>Required</sup> <a name="openapi.OpenApiXIntegration.property.xAmazonIntegration"></a>
+##### `xAmazonIntegration`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXIntegration.property.xAmazonIntegration"></a>
 
 ```typescript
 public readonly xAmazonIntegration: XAmazonIntegration;
 ```
 
-- *Type:* [`openapi.XAmazonIntegration`](#openapi.XAmazonIntegration)
+- *Type:* [`@almamedia-open-source/cdk-openapix.XAmazonIntegration`](#@almamedia-open-source/cdk-openapix.XAmazonIntegration)
 
 ---
 
 
-### OpenApiXLambda <a name="openapi.OpenApiXLambda"></a>
+### OpenApiXLambda <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda"></a>
 
-#### Initializers <a name="openapi.OpenApiXLambda.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.Initializer"></a>
 
 ```typescript
-import { OpenApiXLambda } from 'openapi'
+import { OpenApiXLambda } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXLambda(scope: Construct, fn: IFunction, props?: LambdaIntegrationOptions)
 ```
 
-##### `scope`<sup>Required</sup> <a name="openapi.OpenApiXLambda.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
 ---
 
-##### `fn`<sup>Required</sup> <a name="openapi.OpenApiXLambda.parameter.fn"></a>
+##### `fn`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.parameter.fn"></a>
 
 - *Type:* [`@aws-cdk/aws-lambda.IFunction`](#@aws-cdk/aws-lambda.IFunction)
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="openapi.OpenApiXLambda.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.parameter.props"></a>
 
 - *Type:* [`@aws-cdk/aws-apigateway.LambdaIntegrationOptions`](#@aws-cdk/aws-apigateway.LambdaIntegrationOptions)
 
@@ -467,23 +467,23 @@ new OpenApiXLambda(scope: Construct, fn: IFunction, props?: LambdaIntegrationOpt
 
 
 
-### OpenApiXMock <a name="openapi.OpenApiXMock"></a>
+### OpenApiXMock <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock"></a>
 
-#### Initializers <a name="openapi.OpenApiXMock.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock.Initializer"></a>
 
 ```typescript
-import { OpenApiXMock } from 'openapi'
+import { OpenApiXMock } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXMock(scope: Construct, props?: IntegrationProps)
 ```
 
-##### `scope`<sup>Required</sup> <a name="openapi.OpenApiXMock.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="openapi.OpenApiXMock.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock.parameter.props"></a>
 
 - *Type:* [`@aws-cdk/aws-apigateway.IntegrationProps`](#@aws-cdk/aws-apigateway.IntegrationProps)
 
@@ -493,23 +493,23 @@ new OpenApiXMock(scope: Construct, props?: IntegrationProps)
 
 
 
-### OpenApiXService <a name="openapi.OpenApiXService"></a>
+### OpenApiXService <a name="@almamedia-open-source/cdk-openapix.OpenApiXService"></a>
 
-#### Initializers <a name="openapi.OpenApiXService.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXService.Initializer"></a>
 
 ```typescript
-import { OpenApiXService } from 'openapi'
+import { OpenApiXService } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXService(scope: Construct, props: AwsIntegrationProps)
 ```
 
-##### `scope`<sup>Required</sup> <a name="openapi.OpenApiXService.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXService.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
 ---
 
-##### `props`<sup>Required</sup> <a name="openapi.OpenApiXService.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXService.parameter.props"></a>
 
 - *Type:* [`@aws-cdk/aws-apigateway.AwsIntegrationProps`](#@aws-cdk/aws-apigateway.AwsIntegrationProps)
 
@@ -519,17 +519,17 @@ new OpenApiXService(scope: Construct, props: AwsIntegrationProps)
 
 
 
-### OpenApiXSource <a name="openapi.OpenApiXSource"></a>
+### OpenApiXSource <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource"></a>
 
-#### Initializers <a name="openapi.OpenApiXSource.Initializer"></a>
+#### Initializers <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.Initializer"></a>
 
 ```typescript
-import { OpenApiXSource } from 'openapi'
+import { OpenApiXSource } from '@almamedia-open-source/cdk-openapix'
 
 new OpenApiXSource(definition: any)
 ```
 
-##### `definition`<sup>Required</sup> <a name="openapi.OpenApiXSource.parameter.definition"></a>
+##### `definition`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.parameter.definition"></a>
 
 - *Type:* `any`
 
@@ -537,7 +537,7 @@ new OpenApiXSource(definition: any)
 
 #### Methods <a name="Methods"></a>
 
-##### `toYaml` <a name="openapi.OpenApiXSource.toYaml"></a>
+##### `toYaml` <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.toYaml"></a>
 
 ```typescript
 public toYaml()
@@ -545,29 +545,29 @@ public toYaml()
 
 #### Static Functions <a name="Static Functions"></a>
 
-##### `fromAsset` <a name="openapi.OpenApiXSource.fromAsset"></a>
+##### `fromAsset` <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.fromAsset"></a>
 
 ```typescript
-import { OpenApiXSource } from 'openapi'
+import { OpenApiXSource } from '@almamedia-open-source/cdk-openapix'
 
 OpenApiXSource.fromAsset(path: string)
 ```
 
-###### `path`<sup>Required</sup> <a name="openapi.OpenApiXSource.parameter.path"></a>
+###### `path`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.parameter.path"></a>
 
 - *Type:* `string`
 
 ---
 
-##### `fromInline` <a name="openapi.OpenApiXSource.fromInline"></a>
+##### `fromInline` <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.fromInline"></a>
 
 ```typescript
-import { OpenApiXSource } from 'openapi'
+import { OpenApiXSource } from '@almamedia-open-source/cdk-openapix'
 
 OpenApiXSource.fromInline(schema: string)
 ```
 
-###### `schema`<sup>Required</sup> <a name="openapi.OpenApiXSource.parameter.schema"></a>
+###### `schema`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.parameter.schema"></a>
 
 - *Type:* `string`
 
@@ -575,13 +575,13 @@ OpenApiXSource.fromInline(schema: string)
 
 #### Properties <a name="Properties"></a>
 
-##### `definition`<sup>Required</sup> <a name="openapi.OpenApiXSource.property.definition"></a>
+##### `definition`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXSource.property.definition"></a>
 
 ```typescript
 public readonly definition: OpenApiXSourceDefinition;
 ```
 
-- *Type:* [`openapi.OpenApiXSourceDefinition`](#openapi.OpenApiXSourceDefinition)
+- *Type:* [`@almamedia-open-source/cdk-openapix.OpenApiXSourceDefinition`](#@almamedia-open-source/cdk-openapix.OpenApiXSourceDefinition)
 
 ---
 
