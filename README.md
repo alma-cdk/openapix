@@ -19,10 +19,12 @@ const fn = new lambda.Function(this, "fn", {
   code: lambda.Code.fromInline('export function handler() { return { statusCode: 200, body: JSON.stringify("hello")} }'),
 });
 
+const pkName = 'item';
+
 const table = new dynamodb.Table(this, 'table', {
   partitionKey: {
     type: dynamodb.AttributeType.STRING,
-    name: 'item',
+    name: pkName,
   }
 });
 
@@ -56,7 +58,7 @@ const apiDefinition = new OpenApiXDefinition(this, {
               'application/json': JSON.stringify({
                 "TableName": table.tableName,
                 "Key": {
-                  "item": {
+                  [pkName]: {
                     "S": "$input.params('item')"
                   }
                 }
