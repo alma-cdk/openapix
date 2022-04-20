@@ -1,4 +1,4 @@
-import * as apigateway from '@aws-cdk/aws-apigateway';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 
 export type XAmazonIntegrationType =

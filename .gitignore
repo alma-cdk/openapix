@@ -2,9 +2,11 @@
 !/.gitattributes
 !/.projen/tasks.json
 !/.projen/deps.json
+!/.projen/files.json
 !/.github/workflows/pull-request-lint.yml
 !/.github/workflows/stale.yml
 !/package.json
+!/LICENSE
 !/.npmignore
 logs
 *.log
@@ -30,7 +32,6 @@ jspm_packages/
 .yarn-integrity
 .cache
 .DS_Store
-TODO.compiled.yaml
 !/.projenrc.js
 /test-reports/
 junit.xml
@@ -38,6 +39,7 @@ junit.xml
 !/.github/workflows/build.yml
 /dist/changelog.md
 /dist/version.txt
+!/.github/workflows/release.yml
 !/.mergify.yml
 !/.github/pull_request_template.md
 !/test/
@@ -49,5 +51,5 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
-!/.github/workflows/release.yml
+!/.nvmrc
 !/.github/workflows/upgrade-main.yml

@@ -1,4 +1,4 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { OpenApiXDefinition, OpenApiXSource } from '../src';
 
 test('Basic usage', () => {
@@ -11,5 +11,6 @@ test('Basic usage', () => {
   });
 
   const def = 'definition';
-  expect(apiDefinition[def]).toMatch('openapi: 3.0.1');
+
+  expect(apiDefinition[def]).toEqual({ openapi: '3.0.1' } );
 });

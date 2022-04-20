@@ -1,40 +1,34 @@
-const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
-const project = new AwsCdkConstructLibrary({
+const { awscdk, TextFile, javascript } = require('projen');
+
+const nodejsVersion = '14.17.6';
+
+const project = new awscdk.AwsCdkConstructLibrary({
   authorName: 'Alma Media',
   authorOrganization: true,
   authorAddress: 'opensource@almamedia.dev',
-  cdkVersion: '1.95.2',
   defaultReleaseBranch: 'main',
   name: '@almamedia-open-source/cdk-openapix',
   repositoryUrl: 'https://github.com/almamedia-open-source/cdk-openapix.git',
+  keywords: ['cdk', 'aws-cdk', 'awscdk', 'aws'],
 
-  cdkDependencies: [
-    '@aws-cdk/core',
-    '@aws-cdk/aws-apigateway',
-    '@aws-cdk/aws-s3-assets',
-    '@aws-cdk/aws-lambda',
-  ], /* Which AWS CDK modules (those that start with "@aws-cdk/") does this library require when consumed? */
-  // cdkTestDependencies: undefined,  /* AWS CDK modules required for testing. */
-  // deps: [],                        /* Runtime dependencies of this module. */
-  // description: undefined,          /* The description is just a string that helps people understand the purpose of the package. */
-  devDeps: [
-    '@types/js-yaml',
-    '@types/lodash',
-  ],
+  // Publish configuration
+  defaultReleaseBranch: 'main',
+  npmAccess: javascript.NpmAccess.PUBLIC,
 
-  bundledDeps: [
-    'js-yaml',
-    'lodash',
+  // Dependencies
+  minNodeVersion: nodejsVersion,
+  cdkVersion: '2.1.0',
+  constructsVersion: '10.0.0',
+  peerDeps: ['constructs', 'aws-cdk-lib'],
+  devDeps: ['constructs', 'aws-cdk-lib', '@types/lodash', '@types/js-yaml'],
+  bundledDeps: ['change-case', 'lodash', 'js-yaml', 'omit-deep-lodash'],
 
-  ],
-
-  gitignore: ['.DS_Store', 'TODO.compiled.yaml'],
-
-  licensed: false, // TODO change after opensourced
-
-  npmAccess: NpmAccess.PUBLIC,
-
-  // packageName: undefined,          /* The "name" in package.json. */
-  // release: undefined,              /* Add release management to this project. */
+  // Gitignore
+  gitignore: ['.DS_Store'],
 });
+
+new TextFile(project, '.nvmrc', {
+  lines: [nodejsVersion],
+});
+
 project.synth();

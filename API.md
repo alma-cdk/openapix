@@ -14,7 +14,7 @@ new OpenApiX(scope: Construct, id: string, props: OpenApiXProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`scope`](#almamediaopensourcecdkopenapixopenapixparameterscope)<span title="Required">*</span> | [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct) | *No description.* |
+| [`scope`](#almamediaopensourcecdkopenapixopenapixparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
 | [`id`](#almamediaopensourcecdkopenapixopenapixparameterid)<span title="Required">*</span> | `string` | *No description.* |
 | [`props`](#almamediaopensourcecdkopenapixopenapixparameterprops)<span title="Required">*</span> | [`@almamedia-open-source/cdk-openapix.OpenApiXProps`](#@almamedia-open-source/cdk-openapix.OpenApiXProps) | *No description.* |
 
@@ -22,7 +22,7 @@ new OpenApiX(scope: Construct, id: string, props: OpenApiXProps)
 
 ##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiX.parameter.scope" id="almamediaopensourcecdkopenapixopenapixparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
@@ -38,13 +38,32 @@ new OpenApiX(scope: Construct, id: string, props: OpenApiXProps)
 
 ---
 
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`grantLambdaInvokes`](#almamediaopensourcecdkopenapixopenapixgrantlambdainvokes) | *No description.* |
+
+---
+
+##### `grantLambdaInvokes` <a name="@almamedia-open-source/cdk-openapix.OpenApiX.grantLambdaInvokes" id="almamediaopensourcecdkopenapixopenapixgrantlambdainvokes"></a>
+
+```typescript
+public grantLambdaInvokes(pathIntegrations?: {[ key: string ]: {[ key: string ]: OpenApiXIntegration}})
+```
+
+###### `pathIntegrations`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiX.parameter.pathIntegrations" id="almamediaopensourcecdkopenapixopenapixparameterpathintegrations"></a>
+
+- *Type:* {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}}
+
+---
 
 
 #### Properties <a name="Properties" id="properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`api`](#almamediaopensourcecdkopenapixopenapixpropertyapi)<span title="Required">*</span> | [`@aws-cdk/aws-apigateway.IRestApi`](#@aws-cdk/aws-apigateway.IRestApi) | *No description.* |
+| [`api`](#almamediaopensourcecdkopenapixopenapixpropertyapi)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IRestApi`](#aws-cdk-lib.aws_apigateway.IRestApi) | *No description.* |
 
 ---
 
@@ -54,7 +73,7 @@ new OpenApiX(scope: Construct, id: string, props: OpenApiXProps)
 public readonly api: IRestApi;
 ```
 
-- *Type:* [`@aws-cdk/aws-apigateway.IRestApi`](#@aws-cdk/aws-apigateway.IRestApi)
+- *Type:* [`aws-cdk-lib.aws_apigateway.IRestApi`](#aws-cdk-lib.aws_apigateway.IRestApi)
 
 ---
 
@@ -78,6 +97,7 @@ const openApiXDefinitionProps: OpenApiXDefinitionProps = { ... }
 | [`source`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertysource)<span title="Required">*</span> | `string` \| [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource) | *No description.* |
 | [`injectPaths`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyinjectpaths) | {[ key: string ]: `any`} | *No description.* |
 | [`integrations`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyintegrations) | {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}} | *No description.* |
+| [`rejectDeepPaths`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyrejectdeeppaths) | `string`[] | *No description.* |
 | [`rejectPaths`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyrejectpaths) | `string`[] | *No description.* |
 | [`upload`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyupload) | `boolean` | *No description.* |
 
@@ -110,6 +130,16 @@ public readonly integrations: {[ key: string ]: {[ key: string ]: OpenApiXIntegr
 ```
 
 - *Type:* {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}}
+
+---
+
+##### `rejectDeepPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.rejectDeepPaths" id="almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyrejectdeeppaths"></a>
+
+```typescript
+public readonly rejectDeepPaths: string[];
+```
+
+- *Type:* `string`[]
 
 ---
 
@@ -150,9 +180,10 @@ const openApiXProps: OpenApiXProps = { ... }
 | [`source`](#almamediaopensourcecdkopenapixopenapixpropspropertysource)<span title="Required">*</span> | `string` \| [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource) | *No description.* |
 | [`injectPaths`](#almamediaopensourcecdkopenapixopenapixpropspropertyinjectpaths) | {[ key: string ]: `any`} | *No description.* |
 | [`integrations`](#almamediaopensourcecdkopenapixopenapixpropspropertyintegrations) | {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}} | *No description.* |
+| [`rejectDeepPaths`](#almamediaopensourcecdkopenapixopenapixpropspropertyrejectdeeppaths) | `string`[] | *No description.* |
 | [`rejectPaths`](#almamediaopensourcecdkopenapixopenapixpropspropertyrejectpaths) | `string`[] | *No description.* |
 | [`upload`](#almamediaopensourcecdkopenapixopenapixpropspropertyupload) | `boolean` | *No description.* |
-| [`restApiProps`](#almamediaopensourcecdkopenapixopenapixpropspropertyrestapiprops)<span title="Required">*</span> | [`@aws-cdk/aws-apigateway.RestApiBaseProps`](#@aws-cdk/aws-apigateway.RestApiBaseProps) | *No description.* |
+| [`restApiProps`](#almamediaopensourcecdkopenapixopenapixpropspropertyrestapiprops)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.RestApiBaseProps`](#aws-cdk-lib.aws_apigateway.RestApiBaseProps) | *No description.* |
 
 ---
 
@@ -186,6 +217,16 @@ public readonly integrations: {[ key: string ]: {[ key: string ]: OpenApiXIntegr
 
 ---
 
+##### `rejectDeepPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.rejectDeepPaths" id="almamediaopensourcecdkopenapixopenapixpropspropertyrejectdeeppaths"></a>
+
+```typescript
+public readonly rejectDeepPaths: string[];
+```
+
+- *Type:* `string`[]
+
+---
+
 ##### `rejectPaths`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.rejectPaths" id="almamediaopensourcecdkopenapixopenapixpropspropertyrejectpaths"></a>
 
 ```typescript
@@ -212,7 +253,7 @@ public readonly upload: boolean;
 public readonly restApiProps: RestApiBaseProps;
 ```
 
-- *Type:* [`@aws-cdk/aws-apigateway.RestApiBaseProps`](#@aws-cdk/aws-apigateway.RestApiBaseProps)
+- *Type:* [`aws-cdk-lib.aws_apigateway.RestApiBaseProps`](#aws-cdk-lib.aws_apigateway.RestApiBaseProps)
 
 ---
 
@@ -259,7 +300,7 @@ const xAmazonIntegration: XAmazonIntegration = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`httpMethod`](#almamediaopensourcecdkopenapixxamazonintegrationpropertyhttpmethod)<span title="Required">*</span> | `string` | *No description.* |
-| [`type`](#almamediaopensourcecdkopenapixxamazonintegrationpropertytype)<span title="Required">*</span> | [`@aws-cdk/aws-apigateway.IntegrationType`](#@aws-cdk/aws-apigateway.IntegrationType) | *No description.* |
+| [`type`](#almamediaopensourcecdkopenapixxamazonintegrationpropertytype)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType) | *No description.* |
 | [`uri`](#almamediaopensourcecdkopenapixxamazonintegrationpropertyuri)<span title="Required">*</span> | `string` | *No description.* |
 | [`cacheKeyParameters`](#almamediaopensourcecdkopenapixxamazonintegrationpropertycachekeyparameters) | `any`[] | *No description.* |
 | [`cacheNamespace`](#almamediaopensourcecdkopenapixxamazonintegrationpropertycachenamespace) | `string` | *No description.* |
@@ -286,7 +327,7 @@ public readonly httpMethod: string;
 public readonly type: IntegrationType;
 ```
 
-- *Type:* [`@aws-cdk/aws-apigateway.IntegrationType`](#@aws-cdk/aws-apigateway.IntegrationType)
+- *Type:* [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType)
 
 ---
 
@@ -424,14 +465,14 @@ new OpenApiXDefinition(scope: Construct, props: OpenApiXDefinitionProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`scope`](#almamediaopensourcecdkopenapixopenapixdefinitionparameterscope)<span title="Required">*</span> | [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct) | *No description.* |
+| [`scope`](#almamediaopensourcecdkopenapixopenapixdefinitionparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
 | [`props`](#almamediaopensourcecdkopenapixopenapixdefinitionparameterprops)<span title="Required">*</span> | [`@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps`](#@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps) | *No description.* |
 
 ---
 
 ##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.parameter.scope" id="almamediaopensourcecdkopenapixopenapixdefinitionparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
@@ -457,7 +498,7 @@ public bind(_scope: Construct)
 
 ###### `_scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinition.parameter._scope" id="almamediaopensourcecdkopenapixopenapixdefinitionparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
@@ -476,15 +517,15 @@ new OpenApiXHttp(scope: Construct, url: string, props?: HttpIntegrationProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`scope`](#almamediaopensourcecdkopenapixopenapixhttpparameterscope)<span title="Required">*</span> | [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct) | *No description.* |
+| [`scope`](#almamediaopensourcecdkopenapixopenapixhttpparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
 | [`url`](#almamediaopensourcecdkopenapixopenapixhttpparameterurl)<span title="Required">*</span> | `string` | *No description.* |
-| [`props`](#almamediaopensourcecdkopenapixopenapixhttpparameterprops) | [`@aws-cdk/aws-apigateway.HttpIntegrationProps`](#@aws-cdk/aws-apigateway.HttpIntegrationProps) | *No description.* |
+| [`props`](#almamediaopensourcecdkopenapixopenapixhttpparameterprops) | [`aws-cdk-lib.aws_apigateway.HttpIntegrationProps`](#aws-cdk-lib.aws_apigateway.HttpIntegrationProps) | *No description.* |
 
 ---
 
 ##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp.parameter.scope" id="almamediaopensourcecdkopenapixopenapixhttpparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
@@ -496,7 +537,7 @@ new OpenApiXHttp(scope: Construct, url: string, props?: HttpIntegrationProps)
 
 ##### `props`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXHttp.parameter.props" id="almamediaopensourcecdkopenapixopenapixhttpparameterprops"></a>
 
-- *Type:* [`@aws-cdk/aws-apigateway.HttpIntegrationProps`](#@aws-cdk/aws-apigateway.HttpIntegrationProps)
+- *Type:* [`aws-cdk-lib.aws_apigateway.HttpIntegrationProps`](#aws-cdk-lib.aws_apigateway.HttpIntegrationProps)
 
 ---
 
@@ -552,32 +593,49 @@ new OpenApiXLambda(scope: Construct, fn: IFunction, props?: LambdaIntegrationOpt
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`scope`](#almamediaopensourcecdkopenapixopenapixlambdaparameterscope)<span title="Required">*</span> | [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct) | *No description.* |
-| [`fn`](#almamediaopensourcecdkopenapixopenapixlambdaparameterfn)<span title="Required">*</span> | [`@aws-cdk/aws-lambda.IFunction`](#@aws-cdk/aws-lambda.IFunction) | *No description.* |
-| [`props`](#almamediaopensourcecdkopenapixopenapixlambdaparameterprops) | [`@aws-cdk/aws-apigateway.LambdaIntegrationOptions`](#@aws-cdk/aws-apigateway.LambdaIntegrationOptions) | *No description.* |
+| [`scope`](#almamediaopensourcecdkopenapixopenapixlambdaparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
+| [`fn`](#almamediaopensourcecdkopenapixopenapixlambdaparameterfn)<span title="Required">*</span> | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
+| [`props`](#almamediaopensourcecdkopenapixopenapixlambdaparameterprops) | [`aws-cdk-lib.aws_apigateway.LambdaIntegrationOptions`](#aws-cdk-lib.aws_apigateway.LambdaIntegrationOptions) | *No description.* |
 
 ---
 
 ##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.parameter.scope" id="almamediaopensourcecdkopenapixopenapixlambdaparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
 ##### `fn`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.parameter.fn" id="almamediaopensourcecdkopenapixopenapixlambdaparameterfn"></a>
 
-- *Type:* [`@aws-cdk/aws-lambda.IFunction`](#@aws-cdk/aws-lambda.IFunction)
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
 
 ---
 
 ##### `props`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.parameter.props" id="almamediaopensourcecdkopenapixopenapixlambdaparameterprops"></a>
 
-- *Type:* [`@aws-cdk/aws-apigateway.LambdaIntegrationOptions`](#@aws-cdk/aws-apigateway.LambdaIntegrationOptions)
+- *Type:* [`aws-cdk-lib.aws_apigateway.LambdaIntegrationOptions`](#aws-cdk-lib.aws_apigateway.LambdaIntegrationOptions)
 
 ---
 
 
 
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`fn`](#almamediaopensourcecdkopenapixopenapixlambdapropertyfn)<span title="Required">*</span> | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
+
+---
+
+##### `fn`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXLambda.property.fn" id="almamediaopensourcecdkopenapixopenapixlambdapropertyfn"></a>
+
+```typescript
+public readonly fn: IFunction;
+```
+
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
+
+---
 
 
 ### OpenApiXMock <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock" id="almamediaopensourcecdkopenapixopenapixmock"></a>
@@ -592,20 +650,20 @@ new OpenApiXMock(scope: Construct, props?: IntegrationProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`scope`](#almamediaopensourcecdkopenapixopenapixmockparameterscope)<span title="Required">*</span> | [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct) | *No description.* |
-| [`props`](#almamediaopensourcecdkopenapixopenapixmockparameterprops) | [`@aws-cdk/aws-apigateway.IntegrationProps`](#@aws-cdk/aws-apigateway.IntegrationProps) | *No description.* |
+| [`scope`](#almamediaopensourcecdkopenapixopenapixmockparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
+| [`props`](#almamediaopensourcecdkopenapixopenapixmockparameterprops) | [`aws-cdk-lib.aws_apigateway.IntegrationProps`](#aws-cdk-lib.aws_apigateway.IntegrationProps) | *No description.* |
 
 ---
 
 ##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock.parameter.scope" id="almamediaopensourcecdkopenapixopenapixmockparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
 ##### `props`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXMock.parameter.props" id="almamediaopensourcecdkopenapixopenapixmockparameterprops"></a>
 
-- *Type:* [`@aws-cdk/aws-apigateway.IntegrationProps`](#@aws-cdk/aws-apigateway.IntegrationProps)
+- *Type:* [`aws-cdk-lib.aws_apigateway.IntegrationProps`](#aws-cdk-lib.aws_apigateway.IntegrationProps)
 
 ---
 
@@ -625,20 +683,20 @@ new OpenApiXService(scope: Construct, props: AwsIntegrationProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`scope`](#almamediaopensourcecdkopenapixopenapixserviceparameterscope)<span title="Required">*</span> | [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct) | *No description.* |
-| [`props`](#almamediaopensourcecdkopenapixopenapixserviceparameterprops)<span title="Required">*</span> | [`@aws-cdk/aws-apigateway.AwsIntegrationProps`](#@aws-cdk/aws-apigateway.AwsIntegrationProps) | *No description.* |
+| [`scope`](#almamediaopensourcecdkopenapixopenapixserviceparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
+| [`props`](#almamediaopensourcecdkopenapixopenapixserviceparameterprops)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.AwsIntegrationProps`](#aws-cdk-lib.aws_apigateway.AwsIntegrationProps) | *No description.* |
 
 ---
 
 ##### `scope`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXService.parameter.scope" id="almamediaopensourcecdkopenapixopenapixserviceparameterscope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
 ##### `props`<sup>Required</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXService.parameter.props" id="almamediaopensourcecdkopenapixopenapixserviceparameterprops"></a>
 
-- *Type:* [`@aws-cdk/aws-apigateway.AwsIntegrationProps`](#@aws-cdk/aws-apigateway.AwsIntegrationProps)
+- *Type:* [`aws-cdk-lib.aws_apigateway.AwsIntegrationProps`](#aws-cdk-lib.aws_apigateway.AwsIntegrationProps)
 
 ---
 

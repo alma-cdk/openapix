@@ -1,10 +1,12 @@
 import * as fs from 'fs';
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as assets from '@aws-cdk/aws-s3-assets';
-import * as cdk from '@aws-cdk/core';
-import { omit, set, get } from 'lodash';
-import { OpenApiXIntegration } from './integrations/base';
+import * as cdk from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as assets from 'aws-cdk-lib/aws-s3-assets';
+import { Construct } from 'constructs';
+import { omit, set, get } from 'lodash';import { OpenApiXIntegration } from './integrations/base';
 import { OpenApiXSource } from './source';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const omitDeep = require('omit-deep-lodash');
 
 
 type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
@@ -18,21 +20,22 @@ export interface OpenApiXDefinitionProps {
   readonly integrations?: OpenApiPathIntegrations;
   readonly injectPaths?: Record<string, any>;
   readonly rejectPaths?: string[];
+  readonly rejectDeepPaths?: string[];
 }
 
 export class OpenApiXDefinition extends apigateway.ApiDefinition {
   private definition?: any;
   private s3Location?: apigateway.ApiDefinitionS3Location;
   private upload: boolean;
-  private scope: cdk.Construct;
+  private scope: Construct;
 
 
-  constructor(scope: cdk.Construct, props: OpenApiXDefinitionProps) {
+  constructor(scope: Construct, props: OpenApiXDefinitionProps) {
     super();
 
     this.scope = scope;
 
-    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [] } = props;
+    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [], rejectDeepPaths = [] } = props;
 
     this.upload = upload;
 
@@ -44,43 +47,37 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
       schemaSource = source;
     }
 
+    const sourceDefinition = schemaSource.definition;
 
     Object.keys(integrations).map(path => {
-
-      this.ensurePath(schemaSource.definition, path);
+      this.ensurePath(sourceDefinition, path);
       const integrationsForPath = integrations[path];
-
       Object.keys(integrationsForPath).map(m => {
-
         const method = m.toLowerCase();
-
-        this.ensureMethod(schemaSource.definition, path, method);
-        this.ensureNoIntegration(schemaSource.definition, path, method);
+        this.ensureMethod(sourceDefinition, path, method);
+        this.ensureNoIntegration(sourceDefinition, path, method);
 
         const integration = integrationsForPath[method.toUpperCase() as Method]!;
 
         //schemaJson.paths![path][method]['x-amazon-apigateway-integration'] = integration.xAmazonIntegration;
-        set(schemaSource.definition, `paths[${path}][${method}]['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
-
+        set(sourceDefinition, `paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
       });
-
-
     });
 
     //Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
-    this.injectPaths(schemaSource.definition, injectPaths);
+    this.injectPaths(sourceDefinition, injectPaths);
 
     //rejectPaths.forEach(path => omit(schemaJson, path));
-    this.rejectPaths(schemaSource.definition, rejectPaths);
+    this.rejectPaths(sourceDefinition, rejectPaths);
 
+    //rejectDeepPaths.forEach(path => omitDeep(schemaJson, path));
+    this.rejectDeepPaths(sourceDefinition, rejectDeepPaths);
 
-    const newSchema = schemaSource.toYaml();
-
-
-    const newSchemaPath = 'TODO.compiled.yaml';
-    fs.writeFileSync(newSchemaPath, newSchema, 'utf-8');
+    const newSchema = sourceDefinition;
 
     if (this.upload) {
+      const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';
+      fs.writeFileSync(newSchemaPath, JSON.stringify(newSchema), 'utf-8');
       const asset = new assets.Asset(scope, 'DefinitionAsset', {
         path: newSchemaPath,
       });
@@ -92,10 +89,9 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
     } else {
       this.definition = newSchema;
     }
-
   }
 
-  bind(_scope: cdk.Construct): apigateway.ApiDefinitionConfig {
+  bind(_scope: Construct): apigateway.ApiDefinitionConfig {
 
     if (this.upload) {
       return {
@@ -136,7 +132,10 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
   }
 
   private rejectPaths(schemaJson: any, rejectPaths: string[] = []): void {
-    rejectPaths.forEach(path => omit(schemaJson, path));
+    schemaJson = omit(schemaJson, rejectPaths);
   }
 
+  private rejectDeepPaths(schemaJson: any, rejectDeepPaths: string[] = []): void {
+    schemaJson = omitDeep(schemaJson, ...rejectDeepPaths);
+  }
 }
