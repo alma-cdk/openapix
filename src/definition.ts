@@ -47,33 +47,34 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
       schemaSource = source;
     }
 
-    const sourceDefinition = schemaSource.definition;
+    // TODO: should be reworked, too much mutating and confusing stuff
+    const sourceDefinition = schemaSource;
 
     Object.keys(integrations).map(path => {
-      this.ensurePath(sourceDefinition, path);
+      this.ensurePath(sourceDefinition.definition, path);
       const integrationsForPath = integrations[path];
       Object.keys(integrationsForPath).map(m => {
         const method = m.toLowerCase();
-        this.ensureMethod(sourceDefinition, path, method);
-        this.ensureNoIntegration(sourceDefinition, path, method);
+        this.ensureMethod(sourceDefinition.definition, path, method);
+        this.ensureNoIntegration(sourceDefinition.definition, path, method);
 
         const integration = integrationsForPath[method.toUpperCase() as Method]!;
 
         //schemaJson.paths![path][method]['x-amazon-apigateway-integration'] = integration.xAmazonIntegration;
-        set(sourceDefinition, `paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
+        set(sourceDefinition.definition, `paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
       });
     });
 
     //Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
-    this.injectPaths(sourceDefinition, injectPaths);
+    sourceDefinition.definition = this.injectPaths(sourceDefinition.definition, injectPaths);
 
     //rejectPaths.forEach(path => omit(schemaJson, path));
-    this.rejectPaths(sourceDefinition, rejectPaths);
+    sourceDefinition.definition = this.rejectPaths(sourceDefinition.definition, rejectPaths);
 
     //rejectDeepPaths.forEach(path => omitDeep(schemaJson, path));
-    this.rejectDeepPaths(sourceDefinition, rejectDeepPaths);
+    sourceDefinition.definition = this.rejectDeepPaths(sourceDefinition.definition, rejectDeepPaths);
 
-    const newSchema = sourceDefinition;
+    const newSchema = sourceDefinition.definition;
 
     if (this.upload) {
       const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';
@@ -127,15 +128,16 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
     }
   }
 
-  private injectPaths(schemaJson: any, injectPaths: Record<string, any> = {}): void {
+  private injectPaths(schemaJson: any, injectPaths: Record<string, any> = {}) {
     Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
+    return schemaJson;
   }
 
-  private rejectPaths(schemaJson: any, rejectPaths: string[] = []): void {
-    schemaJson = omit(schemaJson, rejectPaths);
+  private rejectPaths(schemaJson: any, rejectPaths: string[] = []) {
+    return omit(schemaJson, rejectPaths);
   }
 
-  private rejectDeepPaths(schemaJson: any, rejectDeepPaths: string[] = []): void {
-    schemaJson = omitDeep(schemaJson, ...rejectDeepPaths);
+  private rejectDeepPaths(schemaJson: any, rejectDeepPaths: string[] = []) {
+    return omitDeep(schemaJson, ...rejectDeepPaths);
   }
 }
