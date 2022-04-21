@@ -22,6 +22,7 @@ export class OpenApiX extends Construct {
 
     const api = new apigateway.SpecRestApi(this, 'SpecRestApi', {
       apiDefinition,
+      endpointTypes: [apigateway.EndpointType.REGIONAL],
       ...restApiProps,
     });
 

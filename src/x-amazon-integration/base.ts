@@ -21,6 +21,7 @@ export interface XAmazonIntegration {
   readonly cacheNamespace?: string;
   readonly cacheKeyParameters?: any[];
   readonly responses?: Record<string, XAmazonIntegrationResponse>;
+  readonly passthroughBehavior?: apigateway.PassthroughBehavior;
 }
 
 export interface XAmazonIntegrationResponse {
@@ -40,6 +41,7 @@ export function mapIntegrationOptionsToXAmazonIntegration(props: apigateway.Inte
     requestTemplates: props.options?.requestTemplates,
     requestParameters: props.options?.requestParameters,
     cacheNamespace: props.options?.cacheNamespace,
+    passthroughBehavior: props.options?.passthroughBehavior,
     responses: (function() {
       const responses: Record<string, XAmazonIntegrationResponse> = {};
       props.options?.integrationResponses?.forEach(resp => {

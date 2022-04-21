@@ -95,6 +95,7 @@ const openApiXDefinitionProps: OpenApiXDefinitionProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`source`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertysource)<span title="Required">*</span> | `string` \| [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource) | *No description.* |
+| [`customAuthorizer`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertycustomauthorizer) | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
 | [`injectPaths`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyinjectpaths) | {[ key: string ]: `any`} | *No description.* |
 | [`integrations`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyintegrations) | {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}} | *No description.* |
 | [`rejectDeepPaths`](#almamediaopensourcecdkopenapixopenapixdefinitionpropspropertyrejectdeeppaths) | `string`[] | *No description.* |
@@ -110,6 +111,16 @@ public readonly source: string | OpenApiXSource;
 ```
 
 - *Type:* `string` | [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource)
+
+---
+
+##### `customAuthorizer`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXDefinitionProps.property.customAuthorizer" id="almamediaopensourcecdkopenapixopenapixdefinitionpropspropertycustomauthorizer"></a>
+
+```typescript
+public readonly customAuthorizer: IFunction;
+```
+
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
 
 ---
 
@@ -178,6 +189,7 @@ const openApiXProps: OpenApiXProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`source`](#almamediaopensourcecdkopenapixopenapixpropspropertysource)<span title="Required">*</span> | `string` \| [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource) | *No description.* |
+| [`customAuthorizer`](#almamediaopensourcecdkopenapixopenapixpropspropertycustomauthorizer) | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
 | [`injectPaths`](#almamediaopensourcecdkopenapixopenapixpropspropertyinjectpaths) | {[ key: string ]: `any`} | *No description.* |
 | [`integrations`](#almamediaopensourcecdkopenapixopenapixpropspropertyintegrations) | {[ key: string ]: {[ key: string ]: [`@almamedia-open-source/cdk-openapix.OpenApiXIntegration`](#@almamedia-open-source/cdk-openapix.OpenApiXIntegration)}} | *No description.* |
 | [`rejectDeepPaths`](#almamediaopensourcecdkopenapixopenapixpropspropertyrejectdeeppaths) | `string`[] | *No description.* |
@@ -194,6 +206,16 @@ public readonly source: string | OpenApiXSource;
 ```
 
 - *Type:* `string` | [`@almamedia-open-source/cdk-openapix.OpenApiXSource`](#@almamedia-open-source/cdk-openapix.OpenApiXSource)
+
+---
+
+##### `customAuthorizer`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.OpenApiXProps.property.customAuthorizer" id="almamediaopensourcecdkopenapixopenapixpropspropertycustomauthorizer"></a>
+
+```typescript
+public readonly customAuthorizer: IFunction;
+```
+
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
 
 ---
 
@@ -305,6 +327,7 @@ const xAmazonIntegration: XAmazonIntegration = { ... }
 | [`cacheKeyParameters`](#almamediaopensourcecdkopenapixxamazonintegrationpropertycachekeyparameters) | `any`[] | *No description.* |
 | [`cacheNamespace`](#almamediaopensourcecdkopenapixxamazonintegrationpropertycachenamespace) | `string` | *No description.* |
 | [`credentials`](#almamediaopensourcecdkopenapixxamazonintegrationpropertycredentials) | `string` | *No description.* |
+| [`passthroughBehavior`](#almamediaopensourcecdkopenapixxamazonintegrationpropertypassthroughbehavior) | [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior) | *No description.* |
 | [`requestParameters`](#almamediaopensourcecdkopenapixxamazonintegrationpropertyrequestparameters) | {[ key: string ]: `string`} | *No description.* |
 | [`requestTemplates`](#almamediaopensourcecdkopenapixxamazonintegrationpropertyrequesttemplates) | {[ key: string ]: `string`} | *No description.* |
 | [`responses`](#almamediaopensourcecdkopenapixxamazonintegrationpropertyresponses) | {[ key: string ]: [`@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse`](#@almamedia-open-source/cdk-openapix.XAmazonIntegrationResponse)} | *No description.* |
@@ -368,6 +391,16 @@ public readonly credentials: string;
 ```
 
 - *Type:* `string`
+
+---
+
+##### `passthroughBehavior`<sup>Optional</sup> <a name="@almamedia-open-source/cdk-openapix.XAmazonIntegration.property.passthroughBehavior" id="almamediaopensourcecdkopenapixxamazonintegrationpropertypassthroughbehavior"></a>
+
+```typescript
+public readonly passthroughBehavior: PassthroughBehavior;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior)
 
 ---
 

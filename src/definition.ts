@@ -1,10 +1,12 @@
 import * as fs from 'fs';
 import * as cdk from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
 import { omit, set, get } from 'lodash';import { OpenApiXIntegration } from './integrations/base';
 import { OpenApiXSource } from './source';
+import { resolveLambdaIntegrationUri } from './x-amazon-integration/lambda';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -21,6 +23,7 @@ export interface OpenApiXDefinitionProps {
   readonly injectPaths?: Record<string, any>;
   readonly rejectPaths?: string[];
   readonly rejectDeepPaths?: string[];
+  readonly customAuthorizer?: lambda.IFunction;
 }
 
 export class OpenApiXDefinition extends apigateway.ApiDefinition {
@@ -35,7 +38,7 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
 
     this.scope = scope;
 
-    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [], rejectDeepPaths = [] } = props;
+    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [], rejectDeepPaths = [], customAuthorizer } = props;
 
     this.upload = upload;
 
@@ -47,8 +50,27 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
       schemaSource = source;
     }
 
-    // TODO: should be reworked, too much mutating and confusing stuff
+    // TODO: this all should be reworked, too much mutating and confusing stuff
     const sourceDefinition = schemaSource;
+
+    // hard coded custom authorizer, should be refactored
+    if (customAuthorizer) {
+      const authorizerUri = resolveLambdaIntegrationUri(scope, customAuthorizer);
+
+      set(sourceDefinition.definition, 'components.securitySchemes.customAuthorizer', {
+        'type': 'apiKey', // Required and the value must be "apiKey" for an API Gateway API.
+        'name': 'Authorization', // The name of the header containing the authorization token.
+        'in': 'header', // Required and the value must be "header" for an API Gateway API.
+        'x-amazon-apigateway-authorizer': {
+          identitySource: 'method.request.header.Authorization',
+          authorizerUri,
+          authorizerResultTtlInSeconds: 300,
+          type: 'request',
+          enableSimpleResponses: false,
+        },
+        'x-amazon-apigateway-authtype': 'Custom authorizer',
+      });
+    }
 
     Object.keys(integrations).map(path => {
       this.ensurePath(sourceDefinition.definition, path);
@@ -62,6 +84,10 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
 
         //schemaJson.paths![path][method]['x-amazon-apigateway-integration'] = integration.xAmazonIntegration;
         set(sourceDefinition.definition, `paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
+
+        if (customAuthorizer) {
+          set(sourceDefinition.definition, `paths['${path}']['${method}']['security']`, [{ customAuthorizer: [] }]);
+        }
       });
     });
 
