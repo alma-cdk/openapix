@@ -61,6 +61,7 @@
     ```ts
     import {
       OpenApiXDefinition, // Responsible for the creation of SpecRestApi
+      Method,             // HTTP API Method Enums
       OpenApiXMock,       // Mock Integration
       OpenApiXLambda,     // Lambda Integration
       OpenApiXHttp,       // HTTP Integration
@@ -73,31 +74,38 @@
       integrations: {
 
         // Mock Integration
-        '/mock': { 'GET': new OpenApiXMock(this) },
+        '/mock': {
+          Method.GET: new OpenApiXMock(this),
+        },
 
         // AWS Lambda Proxy integration
-        '/message': { 'GET': new OpenApiXLambda(this, fn) },
+        '/message': {
+          Method.POST: new OpenApiXLambda(this, fn),
+        },
 
         // HTTP Proxy integration
-        '/ext': { 'GET': new OpenApiXHttp(this, "https://example.com") },
+        '/ext': {
+          Method.ANY: new OpenApiXHttp(this, "https://example.com"),
+        },
 
         // Direct integration to AWS Service
-        '/item': { 'GET': new OpenApiXService(this, {
-              service: 'dynamodb',
-              action: 'GetItem',
-              options: {
-                credentialsRole: role,
-                requestTemplates: {
-                  'application/json': JSON.stringify({
-                    "TableName": table.tableName,
-                    "Key": {
-                      [pkName]: {
-                        "S": "$input.params('item')"
-                      }
+        '/item': {
+          Method.GET: new OpenApiXService(this, {
+            service: 'dynamodb',
+            action: 'GetItem',
+            options: {
+              credentialsRole: role,
+              requestTemplates: {
+                'application/json': JSON.stringify({
+                  "TableName": table.tableName,
+                  "Key": {
+                    [pkName]: {
+                      "S": "$input.params('item')"
                     }
-                  }),
-                },
+                  }
+                }),
               },
+            },
           }),
         },
 

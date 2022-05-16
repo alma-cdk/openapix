@@ -7,3 +7,4 @@ export { OpenApiXHttp } from './integrations/http';
 export { OpenApiXMock } from './integrations/mock';
 export { OpenApiXSource, OpenApiXSourceDefinition } from './source';
 export { XAmazonIntegration, XAmazonIntegrationResponse } from './x-amazon-integration/base';
+export { Method } from './methods/methods';
