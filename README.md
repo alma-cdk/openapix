@@ -13,12 +13,20 @@
 
   <div align="left">
 
-  Generate AWS Api Gateway REST APIs via [OpenAPI](https://www.openapis.org/) (a.k.a. Swagger) Schema Definitions by consuming "clean" OpenAPI schemas and inject `x-amazon-apigateway-` extensions with type-safety.
+  Generate AWS Api Gateway REST APIs via [OpenAPI](https://www.openapis.org/) (a.k.a. Swagger) Schema Definitions by consuming "clean" OpenAPI schemas and inject `x-amazon-apigateway-` extensions _with type-safety_.
 
   </div>
   <br/>
 </div>
 
+
+<br/>
+
+<div align="center">
+
+![diagram](assets/diagram.svg)
+
+</div>
 
 <br/>
 
