@@ -1,11 +1,11 @@
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as cdk from '@aws-cdk/core';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { Construct } from 'constructs';
 import { generateAwsServiceXMockIntegration } from '../x-amazon-integration/mock';
 import { OpenApiXIntegration } from './base';
 
 
 export class OpenApiXMock extends OpenApiXIntegration {
-  constructor(scope: cdk.Construct, props?: apigateway.IntegrationProps) {
+  constructor(scope: Construct, props?: apigateway.IntegrationProps) {
     super();
     this.xAmazonIntegration = generateAwsServiceXMockIntegration(scope, props);
   }

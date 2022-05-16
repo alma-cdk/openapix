@@ -6,7 +6,6 @@ export interface OpenApiXSourceDefinition {
 }
 
 export class OpenApiXSource {
-
   public static fromInline(schema: string): OpenApiXSource {
     const schemaJson = <OpenApiXSourceDefinition>yaml.load(schema);
     return new OpenApiXSource(schemaJson);
@@ -26,5 +25,4 @@ export class OpenApiXSource {
   public toYaml(): string {
     return yaml.dump(this.definition);
   }
-
 }

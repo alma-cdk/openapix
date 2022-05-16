@@ -1,10 +1,11 @@
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { Construct } from 'constructs';
 import { mapIntegrationOptionsToXAmazonIntegration, XAmazonIntegration } from './base';
 
 
-export function resolveLambdaIntegrationUri(scope: cdk.Construct, fn: lambda.IFunction): string {
+export function resolveLambdaIntegrationUri(scope: Construct, fn: lambda.IFunction): string {
   const region = cdk.Stack.of(scope).region;
   const arn = fn.functionArn;
   const uri = `arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn}/invocations`;
@@ -12,7 +13,7 @@ export function resolveLambdaIntegrationUri(scope: cdk.Construct, fn: lambda.IFu
 }
 
 export function generateLambdaXAmazonIntegration(
-  scope: cdk.Construct,
+  scope: Construct,
   fn: lambda.IFunction,
   integOptions?: apigateway.LambdaIntegrationOptions,
 ): XAmazonIntegration {

@@ -1,9 +1,10 @@
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { Construct } from 'constructs';
 import { mapIntegrationOptionsToXAmazonIntegration, XAmazonIntegration } from './base';
 
 
-export function generateServiceXAmazonIntegration(scope: cdk.Construct, integ: apigateway.AwsIntegrationProps): XAmazonIntegration {
+export function generateServiceXAmazonIntegration(scope: Construct, integ: apigateway.AwsIntegrationProps): XAmazonIntegration {
   const region = integ.region || cdk.Stack.of(scope).region;
 
   return mapIntegrationOptionsToXAmazonIntegration({

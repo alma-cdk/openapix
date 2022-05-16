@@ -1,10 +1,14 @@
 import * as fs from 'fs';
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as assets from '@aws-cdk/aws-s3-assets';
-import * as cdk from '@aws-cdk/core';
-import { omit, set, get } from 'lodash';
-import { OpenApiXIntegration } from './integrations/base';
+import * as cdk from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as assets from 'aws-cdk-lib/aws-s3-assets';
+import { Construct } from 'constructs';
+import { omit, set, get } from 'lodash';import { OpenApiXIntegration } from './integrations/base';
 import { OpenApiXSource } from './source';
+import { resolveLambdaIntegrationUri } from './x-amazon-integration/lambda';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const omitDeep = require('omit-deep-lodash');
 
 
 type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
@@ -18,21 +22,23 @@ export interface OpenApiXDefinitionProps {
   readonly integrations?: OpenApiPathIntegrations;
   readonly injectPaths?: Record<string, any>;
   readonly rejectPaths?: string[];
+  readonly rejectDeepPaths?: string[];
+  readonly customAuthorizer?: lambda.IFunction;
 }
 
 export class OpenApiXDefinition extends apigateway.ApiDefinition {
   private definition?: any;
   private s3Location?: apigateway.ApiDefinitionS3Location;
   private upload: boolean;
-  private scope: cdk.Construct;
+  private scope: Construct;
 
 
-  constructor(scope: cdk.Construct, props: OpenApiXDefinitionProps) {
+  constructor(scope: Construct, props: OpenApiXDefinitionProps) {
     super();
 
     this.scope = scope;
 
-    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [] } = props;
+    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [], rejectDeepPaths = [], customAuthorizer } = props;
 
     this.upload = upload;
 
@@ -44,43 +50,61 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
       schemaSource = source;
     }
 
+    // TODO: this all should be reworked, too much mutating and confusing stuff
+    const sourceDefinition = schemaSource;
+
+    // hard coded custom authorizer, should be refactored
+    if (customAuthorizer) {
+      const authorizerUri = resolveLambdaIntegrationUri(scope, customAuthorizer);
+
+      set(sourceDefinition.definition, 'components.securitySchemes.customAuthorizer', {
+        'type': 'apiKey', // Required and the value must be "apiKey" for an API Gateway API.
+        'name': 'Authorization', // The name of the header containing the authorization token.
+        'in': 'header', // Required and the value must be "header" for an API Gateway API.
+        'x-amazon-apigateway-authorizer': {
+          identitySource: 'method.request.header.Authorization',
+          authorizerUri,
+          authorizerResultTtlInSeconds: 300,
+          type: 'request',
+          enableSimpleResponses: false,
+        },
+        'x-amazon-apigateway-authtype': 'Custom authorizer',
+      });
+    }
 
     Object.keys(integrations).map(path => {
-
-      this.ensurePath(schemaSource.definition, path);
+      this.ensurePath(sourceDefinition.definition, path);
       const integrationsForPath = integrations[path];
-
       Object.keys(integrationsForPath).map(m => {
-
         const method = m.toLowerCase();
-
-        this.ensureMethod(schemaSource.definition, path, method);
-        this.ensureNoIntegration(schemaSource.definition, path, method);
+        this.ensureMethod(sourceDefinition.definition, path, method);
+        this.ensureNoIntegration(sourceDefinition.definition, path, method);
 
         const integration = integrationsForPath[method.toUpperCase() as Method]!;
 
         //schemaJson.paths![path][method]['x-amazon-apigateway-integration'] = integration.xAmazonIntegration;
-        set(schemaSource.definition, `paths[${path}][${method}]['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
+        set(sourceDefinition.definition, `paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
 
+        if (customAuthorizer) {
+          set(sourceDefinition.definition, `paths['${path}']['${method}']['security']`, [{ customAuthorizer: [] }]);
+        }
       });
-
-
     });
 
     //Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
-    this.injectPaths(schemaSource.definition, injectPaths);
+    sourceDefinition.definition = this.injectPaths(sourceDefinition.definition, injectPaths);
 
     //rejectPaths.forEach(path => omit(schemaJson, path));
-    this.rejectPaths(schemaSource.definition, rejectPaths);
+    sourceDefinition.definition = this.rejectPaths(sourceDefinition.definition, rejectPaths);
 
+    //rejectDeepPaths.forEach(path => omitDeep(schemaJson, path));
+    sourceDefinition.definition = this.rejectDeepPaths(sourceDefinition.definition, rejectDeepPaths);
 
-    const newSchema = schemaSource.toYaml();
-
-
-    const newSchemaPath = 'TODO.compiled.yaml';
-    fs.writeFileSync(newSchemaPath, newSchema, 'utf-8');
+    const newSchema = sourceDefinition.definition;
 
     if (this.upload) {
+      const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';
+      fs.writeFileSync(newSchemaPath, JSON.stringify(newSchema), 'utf-8');
       const asset = new assets.Asset(scope, 'DefinitionAsset', {
         path: newSchemaPath,
       });
@@ -92,10 +116,9 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
     } else {
       this.definition = newSchema;
     }
-
   }
 
-  bind(_scope: cdk.Construct): apigateway.ApiDefinitionConfig {
+  bind(_scope: Construct): apigateway.ApiDefinitionConfig {
 
     if (this.upload) {
       return {
@@ -131,12 +154,16 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
     }
   }
 
-  private injectPaths(schemaJson: any, injectPaths: Record<string, any> = {}): void {
+  private injectPaths(schemaJson: any, injectPaths: Record<string, any> = {}) {
     Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
+    return schemaJson;
   }
 
-  private rejectPaths(schemaJson: any, rejectPaths: string[] = []): void {
-    rejectPaths.forEach(path => omit(schemaJson, path));
+  private rejectPaths(schemaJson: any, rejectPaths: string[] = []) {
+    return omit(schemaJson, rejectPaths);
   }
 
+  private rejectDeepPaths(schemaJson: any, rejectDeepPaths: string[] = []) {
+    return omitDeep(schemaJson, ...rejectDeepPaths);
+  }
 }
