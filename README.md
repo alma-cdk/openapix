@@ -69,7 +69,7 @@
     ```ts
     import {
       OpenApiXDefinition, // Responsible for the creation of SpecRestApi
-      Method,             // HTTP API Method Enums
+      Method,             // HTTP API Method Enums (optional)
       OpenApiXMock,       // Mock Integration
       OpenApiXLambda,     // Lambda Integration
       OpenApiXHttp,       // HTTP Integration
