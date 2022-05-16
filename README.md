@@ -1,16 +1,37 @@
-# CDK OpenApiX
+<div align="center">
+	<br/>
+	<br/>
+  <h1>
+	<img height="140" src="assets/alma-cdk-openapix.svg" alt="Alma CDK OpenApiX" />
+  <br/>
+  <br/>
+  </h1>
+
+  ```sh
+  npm i -D @alma-cdk/openapix
+  ```
+
+  <div align="left">
+
+  Generate AWS Api Gateway REST APIs via [OpenAPI](https://www.openapis.org/) (a.k.a. Swagger) Schema Definitions by consuming "clean" OpenAPI schemas and inject `x-amazon-apigateway-` extensions with type-safety.
+
+  </div>
+  <br/>
+</div>
+
+
+<br/>
+
+## Work in Progress
 
 ![experimental](https://img.shields.io/badge/stability-experimental-yellow "Stability: Experimental")
 
-🚧 **Work-in-Progress**
+🚧 &nbsp;**Do not use for production critial stuff! This construct is still very much work in progress and breaking changes may occur.** 🚧
 
-🚨 Do not use this: Things may break at any given time & this project may be destroyed at any given time!
 
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/>
 
-```sh
-npm i -D @almamedia-open-source/cdk-openapix
-```
+## Getting Started
 
 ```ts
 const fn = new lambda.Function(this, "fn", {
