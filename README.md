@@ -124,9 +124,14 @@
 
       // TODO add validators...
     })
+    ```
 
+3. Finally, let's assign the definition into `SpecRestApi`:
+    ```ts
+    import { SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 
-    new apigateway.SpecRestApi(this, 'api', {
+    new SpecRestApi(this, 'api', {
       apiDefinition,
+      // optionally configure the API as you wish...
     });
     ```
