@@ -2,23 +2,23 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { omit } from 'lodash';
-import { OpenApiXDefinition, OpenApiXDefinitionProps } from './definition';
-import { OpenApiXIntegration } from './integrations/base';
-import { OpenApiXLambda } from './integrations/lambda';
+import { OpenApiDefinition, OpenApiDefinitionProps } from './definition';
+import { Integration } from './integrations/base';
+import { LambdaIntegration } from './integrations/lambda';
 
-export interface OpenApiXProps extends OpenApiXDefinitionProps {
+export interface OpenApiProps extends OpenApiDefinitionProps {
   readonly restApiProps: apigateway.RestApiBaseProps;
 }
 
-export class OpenApiX extends Construct {
+export class OpenApi extends Construct {
   public readonly api: apigateway.IRestApi;
 
-  constructor(scope: Construct, id: string, props: OpenApiXProps) {
+  constructor(scope: Construct, id: string, props: OpenApiProps) {
     super(scope, id);
 
     const { restApiProps } = props;
 
-    const apiDefinition = new OpenApiXDefinition(this, omit(props, 'restApiProps'));
+    const apiDefinition = new OpenApiDefinition(this, omit(props, 'restApiProps'));
 
     const api = new apigateway.SpecRestApi(this, 'SpecRestApi', {
       apiDefinition,
@@ -31,7 +31,7 @@ export class OpenApiX extends Construct {
     this.grantLambdaInvokes(props.integrations);
   }
 
-  grantLambdaInvokes(pathIntegrations: OpenApiXDefinitionProps['integrations']) {
+  grantLambdaInvokes(pathIntegrations: OpenApiDefinitionProps['integrations']) {
     if (!pathIntegrations) return;
 
     const apiGatewayInstance = new iam.ServicePrincipal(
@@ -51,8 +51,8 @@ export class OpenApiX extends Construct {
       const methodIntegrations = pathIntegrations[path];
       Object.keys(methodIntegrations).forEach(method => {
         const methodIntegration = methodIntegrations[method];
-        const isLambdaIntegration = (integration: OpenApiXLambda | OpenApiXIntegration):integration is OpenApiXLambda => {
-          return !!(integration as OpenApiXLambda).fn;
+        const isLambdaIntegration = (integration: LambdaIntegration | Integration):integration is LambdaIntegration => {
+          return !!(integration as LambdaIntegration).fn;
         };
 
         if (isLambdaIntegration(methodIntegration)) {

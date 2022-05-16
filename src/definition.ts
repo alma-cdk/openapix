@@ -4,21 +4,21 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
-import { omit, set, get } from 'lodash';import { OpenApiXIntegration } from './integrations/base';
-import { OpenApiXSource } from './source';
+import { omit, set, get } from 'lodash';import { Integration } from './integrations/base';
+import { Source } from './source';
 import { resolveLambdaIntegrationUri } from './x-amazon-integration/lambda';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
 
 type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
-type OpenApiMethodIntegrations = Record<string, OpenApiXIntegration> // TODO add validation for method
+type OpenApiMethodIntegrations = Record<string, Integration> // TODO add validation for method
 type OpenApiPathIntegrations = Record<string, OpenApiMethodIntegrations>
 
 
-export interface OpenApiXDefinitionProps {
+export interface OpenApiDefinitionProps {
   readonly upload?: boolean;
-  readonly source: string | OpenApiXSource;
+  readonly source: string | Source;
   readonly integrations?: OpenApiPathIntegrations;
   readonly injectPaths?: Record<string, any>;
   readonly rejectPaths?: string[];
@@ -26,14 +26,14 @@ export interface OpenApiXDefinitionProps {
   readonly customAuthorizer?: lambda.IFunction;
 }
 
-export class OpenApiXDefinition extends apigateway.ApiDefinition {
+export class OpenApiDefinition extends apigateway.ApiDefinition {
   private definition?: any;
   private s3Location?: apigateway.ApiDefinitionS3Location;
   private upload: boolean;
   private scope: Construct;
 
 
-  constructor(scope: Construct, props: OpenApiXDefinitionProps) {
+  constructor(scope: Construct, props: OpenApiDefinitionProps) {
     super();
 
     this.scope = scope;
@@ -42,10 +42,10 @@ export class OpenApiXDefinition extends apigateway.ApiDefinition {
 
     this.upload = upload;
 
-    let schemaSource: OpenApiXSource;
+    let schemaSource: Source;
 
     if (typeof source === 'string') {
-      schemaSource = OpenApiXSource.fromAsset(source);
+      schemaSource = Source.fromAsset(source);
     } else {
       schemaSource = source;
     }

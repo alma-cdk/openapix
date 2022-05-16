@@ -67,38 +67,31 @@
 
 2. Next, let's inject the integrations into an existing OpenAPI schema:
     ```ts
-    import {
-      OpenApiXDefinition, // Responsible for the creation of SpecRestApi
-      Method,             // HTTP API Method Enums (optional)
-      OpenApiXMock,       // Mock Integration
-      OpenApiXLambda,     // Lambda Integration
-      OpenApiXHttp,       // HTTP Integration
-      OpenApiXService,    // AWS Service Integration (for example DynamoDB)
-    } from '@alma-cdk/openapix';
+    import * as openapix from '@alma-cdk/openapix';
 
-    const apiDefinition = new OpenApiXDefinition(this, {
+    const apiDefinition = new openapix.OpenApiDefinition(this, {
       upload: false, // by default add as inline Body, set to true to use as BodyS3Location
       source: './schema.yaml',
       integrations: {
 
         // Mock Integration
         '/mock': {
-          Method.GET: new OpenApiXMock(this),
+          'GET': new openapix.MockIntegration(this),
         },
 
-        // AWS Lambda Proxy integration
+        // AWS Lambda integration
         '/message': {
-          Method.POST: new OpenApiXLambda(this, fn),
+          'POST': new openapix.LambdaIntegration(this, fn),
         },
 
         // HTTP Proxy integration
         '/ext': {
-          Method.ANY: new OpenApiXHttp(this, "https://example.com"),
+          'ANY': new openapix.HttpIntegration(this, "https://example.com"),
         },
 
         // Direct integration to AWS Service
         '/item': {
-          Method.GET: new OpenApiXService(this, {
+          'GET': new openapix.AwsIntegration(this, {
             service: 'dynamodb',
             action: 'GetItem',
             options: {
