@@ -33,74 +33,84 @@
 
 ## Getting Started
 
-```ts
-const fn = new lambda.Function(this, "fn", {
-  handler: "index.handler",
-  runtime: lambda.Runtime.NODEJS_14_X,
-  code: lambda.Code.fromInline('export function handler() { return { statusCode: 200, body: JSON.stringify("hello")} }'),
-});
+1. First, let's create some integration points:
+    ```ts
+    const fn = new lambda.Function(this, "fn", {
+      handler: "index.handler",
+      runtime: lambda.Runtime.NODEJS_14_X,
+      code: lambda.Code.fromInline('export function handler() { return { statusCode: 200, body: JSON.stringify("hello")} }'),
+    });
 
-const pkName = 'item';
+    const pkName = 'item';
+    const table = new dynamodb.Table(this, 'table', {
+      partitionKey: {
+        type: dynamodb.AttributeType.STRING,
+        name: pkName,
+      }
+    });
 
-const table = new dynamodb.Table(this, 'table', {
-  partitionKey: {
-    type: dynamodb.AttributeType.STRING,
-    name: pkName,
-  }
-});
+    const role = new iam.Role(this, "role", {
+      assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+    });
 
-const role = new iam.Role(this, "role", {
-  assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-});
-
-table.grantReadData(role);
-
-const apiDefinition = new OpenApiXDefinition(this, {
-  upload: false, // by default add as inline Body, set to true to use as BodyS3Location
-  source: './schema.yaml',
-  integrations: {
-
-    // Mock Integration
-    '/mock': { 'GET': new OpenApiXMock(this) },
-
-    // AWS Lambda Proxy integration
-    '/message': { 'GET': new OpenApiXLambda(this, fn) },
-
-    // HTTP Proxy integration
-    '/ext': { 'GET': new OpenApiXHttp(this, "https://example.com") },
-
-    // Direct integration to AWS Service
-    '/item': { 'GET': new OpenApiXService(this, {
-          service: 'dynamodb',
-          action: 'GetItem',
-          options: {
-            credentialsRole: role,
-            requestTemplates: {
-              'application/json': JSON.stringify({
-                "TableName": table.tableName,
-                "Key": {
-                  [pkName]: {
-                    "S": "$input.params('item')"
-                  }
-                }
-              }),
-            },
-          },
-      }),
-    },
-
-  },
-
-  injectPaths: { "info.title": "FancyPantsAPI" },
-  rejectPaths: ['info.version'],
-
-  // TODO add validators...
-})
+    table.grantReadData(role);
+    ```
 
 
-new apigateway.SpecRestApi(this, 'api', {
-  apiDefinition,
-});
+2. Next, let's inject the integrations into an existing OpenAPI schema:
+    ```ts
+    import {
+      OpenApiXDefinition, // Responsible for the creation of SpecRestApi
+      OpenApiXMock,       // Mock Integration
+      OpenApiXLambda,     // Lambda Integration
+      OpenApiXHttp,       // HTTP Integration
+      OpenApiXService,    // AWS Service Integration (for example DynamoDB)
+    } from '@alma-cdk/openapix';
 
-// Also supports new OpenApiX()
-```
+    const apiDefinition = new OpenApiXDefinition(this, {
+      upload: false, // by default add as inline Body, set to true to use as BodyS3Location
+      source: './schema.yaml',
+      integrations: {
+
+        // Mock Integration
+        '/mock': { 'GET': new OpenApiXMock(this) },
+
+        // AWS Lambda Proxy integration
+        '/message': { 'GET': new OpenApiXLambda(this, fn) },
+
+        // HTTP Proxy integration
+        '/ext': { 'GET': new OpenApiXHttp(this, "https://example.com") },
+
+        // Direct integration to AWS Service
+        '/item': { 'GET': new OpenApiXService(this, {
+              service: 'dynamodb',
+              action: 'GetItem',
+              options: {
+                credentialsRole: role,
+                requestTemplates: {
+                  'application/json': JSON.stringify({
+                    "TableName": table.tableName,
+                    "Key": {
+                      [pkName]: {
+                        "S": "$input.params('item')"
+                      }
+                    }
+                  }),
+                },
+              },
+          }),
+        },
+
+      },
+
+      injectPaths: { "info.title": "FancyPantsAPI" },
+      rejectPaths: ['info.description'],
+
+      // TODO add validators...
+    })
+
+
+    new apigateway.SpecRestApi(this, 'api', {
+      apiDefinition,
+    });
+    ```
