@@ -1,7 +1,9 @@
 # TODO
 
 
-## Generating AWS headers
+## Generating AWS Gateway responses
 
 ???
+
+## Responses
 
