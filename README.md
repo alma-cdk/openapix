@@ -112,8 +112,8 @@
 
       },
 
-      injectPaths: { "info.title": "FancyPantsAPI" },
-      rejectPaths: ['info.description'],
+      injections: { "info.title": "FancyPantsAPI" },
+      rejections: ['info.description'],
 
       // TODO add validators...
     })

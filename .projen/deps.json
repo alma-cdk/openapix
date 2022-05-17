@@ -18,6 +18,10 @@
       "type": "build"
     },
     {
+      "name": "@types/omit-deep-lodash",
+      "type": "build"
+    },
+    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^5",
       "type": "build"

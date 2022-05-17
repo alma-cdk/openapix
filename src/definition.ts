@@ -1,14 +1,13 @@
 import * as fs from 'fs';
-import * as cdk from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
-import { omit, set, get } from 'lodash';import { Integration } from './integrations/base';
+import { Integration } from './integrations/base';
 import { Source } from './source';
-import { resolveLambdaIntegrationUri } from './x-amazon-integration/lambda';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const omitDeep = require('omit-deep-lodash');
+import { SecuritySchemes } from './security-schemes/interfaces/security-schemes';
+import { addError } from './errors/add';
+import { Authorizer } from './security-schemes/interfaces/authorizer';
 
 
 type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
@@ -20,92 +19,123 @@ export interface OpenApiDefinitionProps {
   readonly upload?: boolean;
   readonly source: string | Source;
   readonly integrations?: OpenApiPathIntegrations;
-  readonly injectPaths?: Record<string, any>;
-  readonly rejectPaths?: string[];
-  readonly rejectDeepPaths?: string[];
+  readonly injections?: Record<string, any>;
+  readonly rejections?: string[];
+  readonly rejectionsDeep?: string[];
   readonly customAuthorizer?: lambda.IFunction;
+  readonly authorizers?: SecuritySchemes;
 }
 
 export class OpenApiDefinition extends apigateway.ApiDefinition {
   private definition?: any;
   private s3Location?: apigateway.ApiDefinitionS3Location;
-  private upload: boolean;
-  private scope: Construct;
+  private readonly upload: boolean;
+  private readonly scope: Construct;
+  private readonly source: Source;
 
 
   constructor(scope: Construct, props: OpenApiDefinitionProps) {
     super();
+    const {
+      upload = false,
+      source,
+      authorizers = {},
+      integrations = {},
+      injections = {},
+      rejections = [],
+      rejectionsDeep = [],
+    } = props;
 
     this.scope = scope;
-
-    const { upload = false, source, integrations = {}, injectPaths = {}, rejectPaths = [], rejectDeepPaths = [], customAuthorizer } = props;
-
     this.upload = upload;
+    this.source = this.resolveSource(source);
 
-    let schemaSource: Source;
+    // Configurate integrations
+    this.configureAuthorizers(authorizers);
+    this.configurePaths(integrations);
 
-    if (typeof source === 'string') {
-      schemaSource = Source.fromAsset(source);
-    } else {
-      schemaSource = source;
-    }
+    // Handle injects/rejects
+    this.source.inject(injections);
+    this.source.reject(rejections);
+    this.source.rejectDeep(rejectionsDeep);
 
-    // TODO: this all should be reworked, too much mutating and confusing stuff
-    const sourceDefinition = schemaSource;
+    // Finally expose the definition for CDK/CloudFormation
+    this.exposeDefinition();
+  }
 
-    // hard coded custom authorizer, should be refactored
-    if (customAuthorizer) {
-      const authorizerUri = resolveLambdaIntegrationUri(scope, customAuthorizer);
 
-      set(sourceDefinition.definition, 'components.securitySchemes.customAuthorizer', {
-        'type': 'apiKey', // Required and the value must be "apiKey" for an API Gateway API.
-        'name': 'Authorization', // The name of the header containing the authorization token.
-        'in': 'header', // Required and the value must be "header" for an API Gateway API.
-        'x-amazon-apigateway-authorizer': {
-          identitySource: 'method.request.header.Authorization',
-          authorizerUri,
-          authorizerResultTtlInSeconds: 300,
-          type: 'request',
-          enableSimpleResponses: false,
-        },
-        'x-amazon-apigateway-authtype': 'Custom authorizer',
-      });
-    }
+  /**
+   * Configure Authorizers within OpenApi `components.securitySchemes`.
+   */
+  private configureAuthorizers(authorizers: SecuritySchemes): void {
+    Object.keys(authorizers).map(id => {
+      const config = authorizers[id];
+      const path = `components.securitySchemes.${id}`;
 
-    Object.keys(integrations).map(path => {
-      this.ensurePath(sourceDefinition.definition, path);
-      const integrationsForPath = integrations[path];
-      Object.keys(integrationsForPath).map(m => {
-        const method = m.toLowerCase();
-        this.ensureMethod(sourceDefinition.definition, path, method);
-        this.ensureNoIntegration(sourceDefinition.definition, path, method);
+      if (!this.source.has(path)) {
+        addError(this.scope, `Security Scheme ${id} not found in OpenAPI Definition`);
+        return;
+      }
 
-        const integration = integrationsForPath[method.toUpperCase() as Method]!;
-
-        //schemaJson.paths![path][method]['x-amazon-apigateway-integration'] = integration.xAmazonIntegration;
-        set(sourceDefinition.definition, `paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
-
-        if (customAuthorizer) {
-          set(sourceDefinition.definition, `paths['${path}']['${method}']['security']`, [{ customAuthorizer: [] }]);
-        }
-      });
+      const authorizer = this.source.get<Authorizer>(path);
+      authorizer['x-amazon-apigateway-authtype'] = config['x-amazon-apigateway-authtype'];
+      authorizer['x-amazon-apigateway-authorizer'] = config['x-amazon-apigateway-authorizer'];
+      this.source.set(path, authorizer);
     });
+  }
 
-    //Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
-    sourceDefinition.definition = this.injectPaths(sourceDefinition.definition, injectPaths);
+  /**
+   * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
+   */
+  private configurePaths(paths: OpenApiPathIntegrations): void {
+    Object.keys(paths).map(path => {
+      if (!this.source.has(path)) {
+        addError(this.scope, `OpenAPI schema is missing path for: ${path}`);
+        return;
+      }
 
-    //rejectPaths.forEach(path => omit(schemaJson, path));
-    sourceDefinition.definition = this.rejectPaths(sourceDefinition.definition, rejectPaths);
+      const methods = paths[path];
+      this.configurePathMethods(path, methods);
+    });
+  }
 
-    //rejectDeepPaths.forEach(path => omitDeep(schemaJson, path));
-    sourceDefinition.definition = this.rejectDeepPaths(sourceDefinition.definition, rejectDeepPaths);
+  /**
+   * Configure `x-amazon-apigateway-integration` for given method.
+   */
+  private configurePathMethods(path: string, methods: OpenApiMethodIntegrations): void {
+    Object.keys(methods).map(m => {
+      const method = m.toLowerCase();
+      this.ensureMethodExists(path, method);
+      this.ensureNoIntegrationAlready(path, method);
 
-    const newSchema = sourceDefinition.definition;
+      const integration = methods[method.toUpperCase() as Method]!;
 
+      this.source.set(`paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
+    });
+  }
+
+  /**
+   * End-User can provide the OpenAPI definition either as a path to a file or
+   * as an Asset. This method handles that and always returns Asset Source.
+   */
+  private resolveSource(source: string | Source): Source {
+    if (typeof source === 'string') {
+      return Source.fromAsset(source);
+    }
+    return source;
+  }
+
+
+  /**
+   * Set `s3Location` or `definition` to expose the generated definition
+   * for CDK/CloudFormation.
+   */
+   private exposeDefinition(): void {
+    const newSchema = this.source.definition;
     if (this.upload) {
       const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';
       fs.writeFileSync(newSchemaPath, JSON.stringify(newSchema), 'utf-8');
-      const asset = new assets.Asset(scope, 'DefinitionAsset', {
+      const asset = new assets.Asset(this.scope, 'DefinitionAsset', {
         path: newSchemaPath,
       });
 
@@ -118,52 +148,41 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
     }
   }
 
-  bind(_scope: Construct): apigateway.ApiDefinitionConfig {
-
+  /**
+   * Implement the functionality of exposing the API definition, either as S3 Asset Location or as Inline Definition.
+   * @see https://github.com/aws/aws-cdk/blob/master/packages/%40aws-cdk/aws-apigateway/lib/api-definition.ts#L134-L228
+   */
+  bind(_: Construct): apigateway.ApiDefinitionConfig {
     if (this.upload) {
       return {
         s3Location: this.s3Location,
       };
     }
-
     return {
       inlineDefinition: this.definition,
     };
   }
 
-  private ensurePath(schemaJson: any, path: string): void {
-    const value = get(schemaJson, `paths[${path}]`);
+  /**
+   * Ensures OpenAPI definition contains a given method for the path.
+   */
+  private ensureMethodExists(path: string, method: string): void {
+    const value = this.source.get(`paths[${path}][${method}]`);
 
     if (typeof value === 'undefined') {
-      cdk.Annotations.of(this.scope).addError(`OpenAPI schema is missing path for: ${path}`);
+      addError(this.scope, `OpenAPI schema is missing method ${method} for path: ${path}`);
     }
   }
 
-  private ensureMethod(schemaJson: any, path: string, method: string): void {
-    const value = get(schemaJson, `paths[${path}][${method}]`);
-
-    if (typeof value === 'undefined') {
-      cdk.Annotations.of(this.scope).addError(`OpenAPI schema is missing method ${method} for path: ${path}`);
-    }
-  }
-
-  private ensureNoIntegration(schemaJson: any, path: string, method: string): void {
-    const value = get(schemaJson, `paths[${path}][${method}]['x-amazon-apigateway-integration']`);
+  /**
+   * Ensures OpenAPI definition does not already have
+   * `x-amazon-apigateway-integration` configuration for given method for the path.
+   */
+  private ensureNoIntegrationAlready(path: string, method: string): void {
+    const value = this.source.get(`paths[${path}][${method}]['x-amazon-apigateway-integration']`);
     if (typeof value !== 'undefined') {
-      cdk.Annotations.of(this.scope).addError(`OpenAPI schema already has x-amazon-apigateway-integration configuration for method ${method} in path: ${path}`);
+      addError(this.scope, `OpenAPI schema already has x-amazon-apigateway-integration configuration for method ${method} in path: ${path}`);
     }
   }
 
-  private injectPaths(schemaJson: any, injectPaths: Record<string, any> = {}) {
-    Object.keys(injectPaths).forEach(path => set(schemaJson, path, injectPaths[path]));
-    return schemaJson;
-  }
-
-  private rejectPaths(schemaJson: any, rejectPaths: string[] = []) {
-    return omit(schemaJson, rejectPaths);
-  }
-
-  private rejectDeepPaths(schemaJson: any, rejectDeepPaths: string[] = []) {
-    return omitDeep(schemaJson, ...rejectDeepPaths);
-  }
 }
