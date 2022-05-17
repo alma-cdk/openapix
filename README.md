@@ -136,7 +136,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
     'all': {
       validateRequestBody: true,
       validateRequestParameters: true,
-      default: true, // set this as the "API level" default validator
+      default: true, // set this as the "API level" default validator (there can be only one)
     },
     'params-only' : {
       validateRequestBody: false,
