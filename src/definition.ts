@@ -8,7 +8,9 @@ import { Source } from './source';
 import { SecuritySchemes } from './security-schemes/interfaces/security-schemes';
 import { addError } from './errors/add';
 import { Authorizer } from './security-schemes/interfaces/authorizer';
-
+import { XAmazonApigatewayRequestValidator } from './security-schemes/interfaces/x-amazon-apigateway-request-validators';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const omitDeep = require('omit-deep-lodash');
 
 type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
 type OpenApiMethodIntegrations = Record<string, Integration> // TODO add validation for method
@@ -24,6 +26,11 @@ export interface OpenApiDefinitionProps {
   readonly rejectionsDeep?: string[];
   readonly customAuthorizer?: lambda.IFunction;
   readonly authorizers?: SecuritySchemes;
+  readonly validators?: Record<string, Validator>;
+}
+
+export interface Validator extends XAmazonApigatewayRequestValidator {
+  default?: boolean;
 }
 
 export class OpenApiDefinition extends apigateway.ApiDefinition {
@@ -41,6 +48,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
       source,
       authorizers = {},
       integrations = {},
+      validators = {},
       injections = {},
       rejections = [],
       rejectionsDeep = [],
@@ -50,19 +58,40 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
     this.upload = upload;
     this.source = this.resolveSource(source);
 
-    // Configurate integrations
-    this.configureAuthorizers(authorizers);
-    this.configurePaths(integrations);
-
     // Handle injects/rejects
     this.source.inject(injections);
     this.source.reject(rejections);
     this.source.rejectDeep(rejectionsDeep);
 
+    // Configurate integrations
+    this.configureValidators(validators);
+    this.configureAuthorizers(authorizers);
+    this.configurePaths(integrations);
+
     // Finally expose the definition for CDK/CloudFormation
     this.exposeDefinition();
   }
 
+
+  private configureValidators(validators: Record<string, Validator>): void {
+
+    const defaults = Object.keys(validators).filter(k => validators[k].default === true)
+
+    // Ensure only single validator configured as default
+    if (defaults.length > 1) {
+      addError(this.scope, `You may only configure one default validator`);
+      return;
+    }
+
+    // Configure the default validator if provided
+    if (defaults.length === 1) {
+      this.source.set('x-amazon-apigateway-request-validator', defaults[0])
+    }
+
+    const cleaned = <Record<string, XAmazonApigatewayRequestValidator>>omitDeep(validators, 'default')
+
+    this.source.set('x-amazon-apigateway-request-validators', cleaned);
+  }
 
   /**
    * Configure Authorizers within OpenApi `components.securitySchemes`.
@@ -110,7 +139,13 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
 
       const integration = methods[method.toUpperCase() as Method]!;
 
-      this.source.set(`paths['${path}']['${method}']['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
+      const methodPath = `paths['${path}']['${method}']`;
+
+      if (typeof integration.xAmazonApiGatewayRequestValidator === 'string') {
+        this.source.set(`${methodPath}['x-amazon-apigateway-request-validator']`, integration.xAmazonApiGatewayRequestValidator);
+      }
+
+      this.source.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
     });
   }
 

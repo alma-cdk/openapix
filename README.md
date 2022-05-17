@@ -111,11 +111,6 @@
         },
 
       },
-
-      injections: { "info.title": "FancyPantsAPI" },
-      rejections: ['info.description'],
-
-      // TODO add validators...
     })
     ```
 
@@ -128,3 +123,82 @@
       // optionally configure the API as you wish...
     });
     ```
+
+<br/>
+
+## Validators
+
+```ts
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  validators: {
+    'all': {
+      validateRequestBody: true,
+      validateRequestParameters: true,
+      default: true, // set this as the "API level" default validator
+    },
+    'params-only' : {
+      validateRequestBody: false,
+      validateRequestParameters: true,
+    },
+  },
+});
+```
+
+To configure method specific validator:
+```ts
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  validators: {
+    'all': {
+      validateRequestBody: true,
+      validateRequestParameters: true,
+      default: true, // set this as the "API level" default validator
+    },
+    'params-only' : {
+      validateRequestBody: false,
+      validateRequestParameters: true,
+    },
+  },
+
+  integrations: {
+
+    // AWS Lambda integration
+    '/message': {
+      'POST': new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
+    },
+
+  },
+})
+```
+
+<br/>
+
+## Authorizers
+
+
+<br/>
+
+## Inject/Reject
+
+You may modify the generated OpenAPI definition (which is used to define API Gateway REST API) by injecting or rejecting values from the source OpenAPI schema definition:
+```ts
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  // Add any OpenAPI v3 data.
+  // Can be useful for passing values from CDK code.
+  // See https://swagger.io/specification/
+  injections: {
+    "info.title": "FancyPantsAPI"
+  },
+
+  // Reject fields by absolute object path from generated definition
+  rejections: ['info.description'],
+
+  // Reject all matching fields from generated definition
+  rejectionsDeep: ['example', 'examples'],
+});
+```
