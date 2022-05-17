@@ -145,12 +145,10 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
   },
 
   integrations: {
-
     '/message': {
-      // Set a method-specific validator
+      // Set a method-specific validator by assigning validator into props
       'POST': new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
     },
-
   },
 })
 ```
