@@ -157,6 +157,80 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 ## Authorizers
 
+### Cognito Authorizers
+
+```ts
+const userPool: cognito.IUserPool;
+
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  authorizers: {
+    MyAuthorizer: {
+      cognitoUserPools: [userPool],
+      resultsCacheTtl: Duration.minutes(5),
+    },
+  },
+})
+```
+
+Within your OpenApi definition, configure `MyAuthorizer` with required scopes:
+```yaml
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: api description here
+  version: '0.1'
+paths:
+  /:
+    get:
+      summary: Describe the endpoint
+      responses:
+        '200':
+          description: "All good"
+      security:
+        - MyAuthorizer: ["test/read"] # add scope
+```
+
+
+### Lambda Authorizers
+
+```ts
+const authFn: lambda.IFunction;
+
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  authorizers: {
+    MyAuthorizer: {
+      fn: authFn,
+      identitySource: apigateway.IdentitySource.header('Authorization'),
+      type: 'request',
+      authType: 'custom',
+      resultsCacheTtl: Duration.minutes(5),
+    },
+  },
+})
+```
+
+Within your OpenApi definition, configure `MyAuthorizer`:
+```yaml
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: api description here
+  version: '0.1'
+paths:
+  /:
+    get:
+      summary: Describe the endpoint
+      responses:
+        '200':
+          description: "All good"
+      security:
+        - MyAuthorizer: [] # empty scope required for "request" authorizer
+```
+
 
 <br/>
 
