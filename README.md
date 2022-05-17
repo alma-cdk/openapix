@@ -255,3 +255,26 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
   rejectionsDeep: ['example', 'examples'],
 });
 ```
+
+<br/>
+
+## CORS
+
+Not yet implemented.
+
+```ts
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  integrations: {
+    '/message': {
+      'OPTIONS': new openapix.CorsIntegration(this, {
+        headers: ['Content-Type', 'X-Amz-Date', 'Authorization'],
+        origins: ['https://www.example.com'], // pass in empty array [] for *
+        methods: ['OPTIONS','POST','GET'], // pass in empty array [] for *
+      }),
+    },
+  },
+});
+```
+
