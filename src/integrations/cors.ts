@@ -16,6 +16,7 @@ export interface CorsIntegrationProps {
  *
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html
  * @see https://medium.com/@srikanth650/use-api-gateway-with-mock-integration-to-allow-cors-from-multiple-origins-bdcb431d07d3
+ * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/request-response-data-mappings.html#mapping-response-parameters
  */
 export class CorsIntegration extends Integration {
   constructor(scope: Construct, props: CorsIntegrationProps) {
