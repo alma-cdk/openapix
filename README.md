@@ -143,30 +143,11 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
       validateRequestParameters: true,
     },
   },
-});
-```
-
-To configure method specific validator:
-```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
-  source: './schema.yaml',
-
-  validators: {
-    'all': {
-      validateRequestBody: true,
-      validateRequestParameters: true,
-      default: true, // set this as the "API level" default validator
-    },
-    'params-only' : {
-      validateRequestBody: false,
-      validateRequestParameters: true,
-    },
-  },
 
   integrations: {
 
-    // AWS Lambda integration
     '/message': {
+      // Set a method-specific validator
       'POST': new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
     },
 
