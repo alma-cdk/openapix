@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
 import { Integration } from './integrations/base';
@@ -24,7 +23,6 @@ export interface OpenApiDefinitionProps {
   readonly injections?: Record<string, any>;
   readonly rejections?: string[];
   readonly rejectionsDeep?: string[];
-  readonly customAuthorizer?: lambda.IFunction;
   readonly authorizers?: SecuritySchemes;
   readonly validators?: Record<string, Validator>;
 }
