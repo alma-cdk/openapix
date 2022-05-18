@@ -8,9 +8,9 @@ const template = readFileSync(__dirname+'/cors.vtl', 'utf-8');
 
 export interface CorsIntegrationProps {
   validator?: string;
-  headers: CorsHeaders,
-  origins: CorsOrigins,
-  methods: CorsMethods,
+  headers: string,
+  origins: string,
+  methods: string,
 }
 
 /**
@@ -24,11 +24,11 @@ export class CorsIntegration extends Integration {
     super();
     this.xAmazonApiGatewayRequestValidator = props.validator;
 
-    const origins = props.origins.value;
+    const origins = props.origins;
     const tmpl = template.replace('__DOMAIN__', origins);
 
-    const methods = props.methods.value;
-    const headers = props.headers.value;
+    const methods = props.methods;
+    const headers = props.headers;
 
     this.xAmazonIntegration = generateAwsServiceXMockIntegration(scope, {
       type: apigateway.IntegrationType.MOCK,
@@ -59,23 +59,17 @@ export class CorsIntegration extends Integration {
 }
 
 
-class CorsSettingValue {
-  public static ANY: CorsSettingValue = new CorsSettingValue('*');
+abstract class CorsSettingValue {
+  public static ANY: string = '*';
 
   protected static errorMessage: string;
 
-  public static from(scope: Construct, ...values: string[]): CorsSettingValue {
+  public static from(scope: Construct, ...values: string[]): string {
     if (values.length < 1) {
       addError(scope, CorsSettingValue.errorMessage);
-      return new CorsSettingValue('');
+      return '';
     }
-    return new CorsSettingValue(values.join(','));
-  }
-
-  public readonly value: string;
-
-  protected constructor(value: string) {
-    this.value = value;
+    return values.join(',');
   }
 }
 

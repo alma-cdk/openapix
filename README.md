@@ -260,7 +260,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 ## CORS
 
-Not yet implemented.
+Using `openapix.CorsIntegration` creates a Mock integration which responds with correct response headers:
 
 ```ts
 const apiDefinition = new openapix.OpenApiDefinition(this, {
@@ -269,6 +269,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
   integrations: {
     '/foo': {
       'OPTIONS': new openapix.CorsIntegration(this, {
+        // using helper method to define explicit values:
         headers: CorsHeaders.from(this, 'Content-Type', 'X-Amz-Date', 'Authorization'),
         origins: CorsOrigins.from(this, 'https://www.example.com'),
         methods: CorsMethods.from(this, 'OPTIONS','POST','GET'),
@@ -276,6 +277,15 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
     },
     '/bar': {
       'OPTIONS': new openapix.CorsIntegration(this, {
+        // using regular string values:
+        headers: 'Content-Type,X-Amz-Date,Authorization',
+        origins: '*',
+        methods: 'OPTIONS,GET',
+      }),
+    },
+    '/baz': {
+      'OPTIONS': new openapix.CorsIntegration(this, {
+        // using helper constant for wildcard values:
         headers: CorsHeaders.ANY,
         origins: CorsOrigins.ANY,
         methods: CorsMethods.ANY,
@@ -285,3 +295,4 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 });
 ```
 
+When specifying multiple `origins` the mock integration uses [VTL magic](https://medium.com/@srikanth650/use-api-gateway-with-mock-integration-to-allow-cors-from-multiple-origins-bdcb431d07d3) to respond with the correct `Access-Control-Allow-Origin` header.
