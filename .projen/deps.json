@@ -22,6 +22,11 @@
       "type": "build"
     },
     {
+      "name": "@types/prettier",
+      "version": "v2.6.0",
+      "type": "build"
+    },
+    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^5",
       "type": "build"
