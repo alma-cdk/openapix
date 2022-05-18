@@ -4,7 +4,7 @@ import { generateAwsServiceXMockIntegration } from '../x-amazon-integration/mock
 import { Integration } from './base';
 
 export interface MockIntegrationProps extends apigateway.IntegrationProps {
-  validator?: string;
+  readonly validator?: string;
 }
 
 export class MockIntegration extends Integration {

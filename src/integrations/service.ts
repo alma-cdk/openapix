@@ -4,7 +4,7 @@ import { generateServiceXAmazonIntegration } from '../x-amazon-integration/servi
 import { Integration } from './base';
 
 export interface AwsIntegrationProps extends apigateway.AwsIntegrationProps {
-  validator?: string;
+  readonly validator?: string;
 }
 
 export class AwsIntegration extends Integration {

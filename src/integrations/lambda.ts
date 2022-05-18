@@ -5,7 +5,7 @@ import { generateLambdaXAmazonIntegration } from '../x-amazon-integration/lambda
 import { Integration } from './base';
 
 export interface LambdaIntegrationOptions extends apigateway.LambdaIntegrationOptions {
-  validator?: string;
+  readonly validator?: string;
 }
 
 export class LambdaIntegration extends Integration {

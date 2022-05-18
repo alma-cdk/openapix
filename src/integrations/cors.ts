@@ -7,10 +7,10 @@ import { addError } from '../errors/add';
 const template = readFileSync(__dirname+'/cors.vtl', 'utf-8');
 
 export interface CorsIntegrationProps {
-  validator?: string;
-  headers: string,
-  origins: string,
-  methods: string,
+  readonly validator?: string;
+  readonly headers: string,
+  readonly origins: string,
+  readonly methods: string,
 }
 
 /**

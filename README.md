@@ -303,3 +303,22 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 ```
 
 When specifying multiple `origins` the mock integration uses [VTL magic](https://medium.com/@srikanth650/use-api-gateway-with-mock-integration-to-allow-cors-from-multiple-origins-bdcb431d07d3) to respond with the correct `Access-Control-Allow-Origin` header.
+
+### Default CORS
+
+If you wish to define same CORS options to every path, you may do so by providing `defaultCors` value:
+```ts
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  defaultCors: new openapix.CorsIntegration(this, {
+    headers: CorsHeaders.ANY,
+    origins: CorsOrigins.ANY,
+    methods: CorsMethods.ANY,
+  }),
+
+  integrations: {/*...*/},
+});
+```
+
+This will apply the given `defaultCors` configuration to _every_ path as `OPTIONS` method. You may still do path specific overrides by adding an `OPTIONS` method to specific paths.

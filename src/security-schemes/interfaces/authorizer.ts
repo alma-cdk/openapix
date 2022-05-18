@@ -16,12 +16,12 @@ export interface Authorizer {
    * @example
    * 'apiKey'
    */
-  type: 'apiKey';
+  readonly type: 'apiKey';
 
   /**
    * A short description for security scheme. CommonMark syntax MAY be used for rich text representation.
    */
-  description?: string;
+   readonly description?: string;
 
   /**
    * The name of the header, query or cookie parameter to be used.
@@ -30,7 +30,7 @@ export interface Authorizer {
    * @example
    * 'Authorization'
    */
-  name?: string;
+   readonly name?: string;
 
   /**
    * The location of the API key. Valid values are "query", "header" or "cookie".
@@ -39,11 +39,11 @@ export interface Authorizer {
    * @example
    * 'header'
    */
-  in?: 'query'|'header'|'cookie';
+   readonly in?: 'query'|'header'|'cookie';
 
-  'x-amazon-apigateway-authtype'?: XAmazonApigatewayAuthType;
+   readonly 'x-amazon-apigateway-authtype'?: XAmazonApigatewayAuthType;
 
-  'x-amazon-apigateway-authorizer'?: XAmazonApigatewayAuthorizer;
+   readonly 'x-amazon-apigateway-authorizer'?: XAmazonApigatewayAuthorizer;
 }
 
 

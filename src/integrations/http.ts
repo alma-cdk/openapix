@@ -4,7 +4,7 @@ import { generateHttpXAmazonIntegration } from '../x-amazon-integration/http';
 import { Integration } from './base';
 
 export interface HttpIntegrationProps extends apigateway.HttpIntegrationProps {
-  validator?: string;
+  readonly validator?: string;
 }
 
 export class HttpIntegration extends Integration {

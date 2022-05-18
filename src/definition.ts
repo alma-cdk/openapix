@@ -8,6 +8,7 @@ import { SecuritySchemes } from './security-schemes/interfaces/security-schemes'
 import { addError } from './errors/add';
 import { Authorizer } from './security-schemes/interfaces/authorizer';
 import { XAmazonApigatewayRequestValidator } from './security-schemes/interfaces/x-amazon-apigateway-request-validators';
+import { CorsIntegration } from './integrations/cors';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -15,6 +16,9 @@ type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
 type OpenApiMethodIntegrations = Record<string, Integration> // TODO add validation for method
 type OpenApiPathIntegrations = Record<string, OpenApiMethodIntegrations>
 
+export { SecuritySchemes } from './security-schemes/interfaces/security-schemes';
+export { Authorizer } from './security-schemes/interfaces/authorizer';
+export { XAmazonApigatewayRequestValidator } from './security-schemes/interfaces/x-amazon-apigateway-request-validators';
 
 export interface OpenApiDefinitionProps {
   readonly upload?: boolean;
@@ -25,10 +29,11 @@ export interface OpenApiDefinitionProps {
   readonly rejectionsDeep?: string[];
   readonly authorizers?: SecuritySchemes;
   readonly validators?: Record<string, Validator>;
+  readonly defaultCors?: CorsIntegration;
 }
 
 export interface Validator extends XAmazonApigatewayRequestValidator {
-  default?: boolean;
+  readonly default?: boolean;
 }
 
 export class OpenApiDefinition extends apigateway.ApiDefinition {
@@ -37,6 +42,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   private readonly upload: boolean;
   private readonly scope: Construct;
   private readonly source: Source;
+  private readonly defaultCors?: CorsIntegration;
 
 
   constructor(scope: Construct, props: OpenApiDefinitionProps) {
@@ -50,11 +56,13 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
       injections = {},
       rejections = [],
       rejectionsDeep = [],
+      defaultCors,
     } = props;
 
     this.scope = scope;
     this.upload = upload;
     this.source = this.resolveSource(source);
+    this.defaultCors = defaultCors;
 
     // Handle injects/rejects
     this.source.inject(injections);
@@ -119,6 +127,10 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
       if (!this.source.has(path)) {
         addError(this.scope, `OpenAPI schema is missing path for: ${path}`);
         return;
+      }
+
+      if (typeof this.defaultCors !== 'undefined') {
+        this.source.set(`${path}.OPTIONS`, this.defaultCors);
       }
 
       const methods = paths[path];
