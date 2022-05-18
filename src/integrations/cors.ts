@@ -3,13 +3,14 @@ import { Construct } from 'constructs';
 import { generateAwsServiceXMockIntegration } from '../x-amazon-integration/mock';
 import { Integration } from './base';
 import { readFileSync } from 'fs';
+import { addError } from '../errors/add';
 const template = readFileSync(__dirname+'/cors.vtl', 'utf-8');
 
 export interface CorsIntegrationProps {
   validator?: string;
-  headers: string[],
-  origins: string[],
-  methods: string[],
+  headers: CorsHeaders,
+  origins: CorsOrigins,
+  methods: CorsMethods,
 }
 
 /**
@@ -23,11 +24,11 @@ export class CorsIntegration extends Integration {
     super();
     this.xAmazonApiGatewayRequestValidator = props.validator;
 
-    const origins = this.formatOriginsForTemplate(props.origins);
+    const origins = props.origins.value;
     const tmpl = template.replace('__DOMAIN__', origins);
 
-    const methods = this.formatMethodsValue(props.methods);
-    const headers = this.formatHeadersValue(props.headers);
+    const methods = props.methods.value;
+    const headers = props.headers.value;
 
     this.xAmazonIntegration = generateAwsServiceXMockIntegration(scope, {
       type: apigateway.IntegrationType.MOCK,
@@ -48,19 +49,45 @@ export class CorsIntegration extends Integration {
     });
   }
 
+  /*
   private formatOriginsForTemplate(origins: string[]): string {
     if (origins.length < 1) return '*';
     return origins.map(o => `"${o}"`).join(', ');
   }
+  */
 
-  private formatMethodsValue(methods: string[]): string {
-    if (methods.length < 1) return '*';
-    return methods.join(',');
-  }
-
-  private formatHeadersValue(headers: string[]): string {
-    return headers.join(',');
-  }
 }
 
 
+class CorsSettingValue {
+  public static ANY: CorsSettingValue = new CorsSettingValue('*');
+
+  protected static errorMessage: string;
+
+  public static from(scope: Construct, ...values: string[]): CorsSettingValue {
+    if (values.length < 1) {
+      addError(scope, CorsSettingValue.errorMessage);
+      return new CorsSettingValue('');
+    }
+    return new CorsSettingValue(values.join(','));
+  }
+
+  public readonly value: string;
+
+  protected constructor(value: string) {
+    this.value = value;
+  }
+}
+
+export class CorsOrigins extends CorsSettingValue {
+  protected static errorMessage: string = 'CorsOrigins.fromList() call values must contain at least 1 origin';
+}
+
+export class CorsMethods extends CorsSettingValue {
+  protected static errorMessage: string = 'CorsMethods.fromList() call values must contain at least 1 method';
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
+export class CorsHeaders extends CorsSettingValue {
+  protected static errorMessage: string = 'CorsHeaders.fromList() call values must contain at least 1 header';
+}

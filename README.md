@@ -267,11 +267,18 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
   integrations: {
-    '/message': {
+    '/foo': {
       'OPTIONS': new openapix.CorsIntegration(this, {
-        headers: ['Content-Type', 'X-Amz-Date', 'Authorization'],
-        origins: ['https://www.example.com'], // pass in empty array [] for *
-        methods: ['OPTIONS','POST','GET'], // pass in empty array [] for *
+        headers: CorsHeaders.from(this, 'Content-Type', 'X-Amz-Date', 'Authorization'),
+        origins: CorsOrigins.from(this, 'https://www.example.com'),
+        methods: CorsMethods.from(this, 'OPTIONS','POST','GET'),
+      }),
+    },
+    '/bar': {
+      'OPTIONS': new openapix.CorsIntegration(this, {
+        headers: CorsHeaders.ANY,
+        origins: CorsOrigins.ANY,
+        methods: CorsMethods.ANY,
       }),
     },
   },
