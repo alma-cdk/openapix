@@ -157,6 +157,10 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 ## Authorizers
 
+There are multiple ways to [control & manages access to API Gateway REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-to-api.html) such as [resource policies](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies.html), [IAM permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html) and [usage plans with API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) but this section focuses on [Cognito User Pools ](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) and [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).
+
+<br/>
+
 ### Cognito Authorizers
 
 In this example we're defining a Congito User Pool based authorizer.
@@ -164,17 +168,9 @@ In this example we're defining a Congito User Pool based authorizer.
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
 openapi: 3.0.0
-info:
-  title: Sample API
-  description: api description here
-  version: '0.1'
 paths:
   /:
     get:
-      summary: Describe the endpoint
-      responses:
-        '200':
-          description: "All good"
       security:
         - MyAuthorizer: ["test/read"] # add scope
 components:
@@ -210,17 +206,9 @@ In this example we're defining a custom Lambda authorizer. The authorizer functi
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
 openapi: 3.0.0
-info:
-  title: Sample API
-  description: api description here
-  version: '0.1'
 paths:
   /:
     get:
-      summary: Describe the endpoint
-      responses:
-        '200':
-          description: "All good"
       security:
         - MyAuthorizer: [] # empty scope required for "request" authorizer
 components:
