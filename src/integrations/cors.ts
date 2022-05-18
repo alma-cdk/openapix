@@ -51,13 +51,6 @@ export class CorsIntegration extends Integration {
     return tmpl;
   }
 
-  /*
-  private formatOriginsForTemplate(origins: string[]): string {
-    if (origins.length < 1) return '*';
-    return origins.map(o => `"${o}"`).join(', ');
-  }
-  */
-
 }
 
 
