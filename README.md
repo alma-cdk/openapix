@@ -210,7 +210,7 @@ paths:
   /:
     get:
       security:
-        - MyAuthorizer: [] # empty scope required for "request" authorizer
+        - MyAuthorizer: [] # note the empty array
 components:
   securitySchemes:
     MyCustomAuthorizer:
