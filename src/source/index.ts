@@ -36,7 +36,7 @@ export class Schema {
   private definition: SchemaDefinition;
 
   /** Construct a new Schema instance from OpenApi v3 JSON.  */
-  constructor(definition: any) {
+  constructor(definition: SchemaDefinition) {
     this.definition = definition;
   }
 
