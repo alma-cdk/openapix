@@ -306,12 +306,12 @@ When specifying multiple `origins` the mock integration uses [VTL magic](https:/
 
 ### Default CORS
 
-If you wish to define same CORS options to every path, you may do so by providing `defaultCors` value:
+If you wish to define same CORS options to every path, you may do so by providing a default `cors` value:
 ```ts
 const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
-  defaultCors: new openapix.CorsIntegration(this, {
+  cors: new openapix.CorsIntegration(this, {
     headers: CorsHeaders.ANY,
     origins: CorsOrigins.ANY,
     methods: CorsMethods.ANY,
@@ -321,4 +321,4 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 });
 ```
 
-This will apply the given `defaultCors` configuration to _every_ path as `OPTIONS` method. You may still do path specific overrides by adding an `OPTIONS` method to specific paths.
+This will apply the given `cors` configuration to _every_ path as `OPTIONS` method. You may still do path specific overrides by adding an `OPTIONS` method to specific paths.

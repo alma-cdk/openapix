@@ -29,7 +29,7 @@ export interface OpenApiDefinitionProps {
   readonly rejectionsDeep?: string[];
   readonly authorizers?: SecuritySchemes;
   readonly validators?: Record<string, Validator>;
-  readonly defaultCors?: CorsIntegration;
+  readonly cors?: CorsIntegration;
 }
 
 export interface Validator extends XAmazonApigatewayRequestValidator {
@@ -42,7 +42,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   private readonly upload: boolean;
   private readonly scope: Construct;
   private readonly source: Source;
-  private readonly defaultCors?: CorsIntegration;
+  private readonly cors?: CorsIntegration;
 
 
   constructor(scope: Construct, props: OpenApiDefinitionProps) {
@@ -56,13 +56,13 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
       injections = {},
       rejections = [],
       rejectionsDeep = [],
-      defaultCors,
+      cors,
     } = props;
 
     this.scope = scope;
     this.upload = upload;
     this.source = this.resolveSource(source);
-    this.defaultCors = defaultCors;
+    this.cors = cors;
 
     // Handle injects/rejects
     this.source.inject(injections);
@@ -129,8 +129,8 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
         return;
       }
 
-      if (typeof this.defaultCors !== 'undefined') {
-        this.source.set(`${path}.OPTIONS`, this.defaultCors);
+      if (typeof this.cors !== 'undefined') {
+        this.source.set(`${path}.OPTIONS`, this.cors);
       }
 
       const methods = paths[path];
