@@ -26,9 +26,6 @@ export class CorsIntegration extends Integration {
 
     const { headers, origins, methods } = props;
 
-    const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
-    const tmpl = template.replace('__DOMAIN__', originsForTmpl);
-
     this.xAmazonIntegration = generateAwsServiceXMockIntegration(scope, {
       type: apigateway.IntegrationType.MOCK,
       options: {
@@ -40,12 +37,18 @@ export class CorsIntegration extends Integration {
               'method.response.header.Access-Control-Allow-Headers': headers,
             },
             responseTemplates: {
-              'application/json': tmpl,
+              'application/json': this.defineTemplate(origins),
             },
           },
         ],
       },
     });
+  }
+
+  private defineTemplate(origins: string): string {
+    const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
+    const tmpl = template.replace('__DOMAIN__', originsForTmpl);
+    return tmpl;
   }
 
   /*
