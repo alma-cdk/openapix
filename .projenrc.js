@@ -23,9 +23,23 @@ const project = new awscdk.AwsCdkConstructLibrary({
   minNodeVersion: nodejsVersion,
   cdkVersion: '2.24.1',
   constructsVersion: '10.0.0',
-  peerDeps: ['constructs', 'aws-cdk-lib'],
-  devDeps: ['constructs', 'aws-cdk-lib', '@types/lodash', '@types/js-yaml', '@types/omit-deep-lodash'],
-  bundledDeps: ['change-case', 'lodash', 'js-yaml', 'omit-deep-lodash'],
+  peerDeps: [
+    'constructs',
+    'aws-cdk-lib',
+  ],
+  devDeps: [
+    'constructs',
+    'aws-cdk-lib',
+    '@types/lodash',
+    '@types/js-yaml',
+    '@types/omit-deep-lodash',
+  ],
+  bundledDeps: [
+    'change-case',
+    'lodash',
+    'js-yaml',
+    'omit-deep-lodash',
+  ],
 
   // Gitignore
   gitignore: [
