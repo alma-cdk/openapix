@@ -6,7 +6,7 @@ export { AwsIntegration, AwsIntegrationProps } from './integrations/service';
 export { HttpIntegration, HttpIntegrationProps } from './integrations/http';
 export { MockIntegration, MockIntegrationProps } from './integrations/mock';
 export { CorsIntegration, CorsIntegrationProps } from './integrations/cors';
-export { Schema } from './source';
+export { Schema } from './schema';
 export { XAmazonIntegration, XAmazonIntegrationResponse } from './x-amazon-integration/base';
 
 export { XAmazonApigatewayAuthorizer } from './security-schemes/interfaces/x-amazon-apigateway-authorizer';

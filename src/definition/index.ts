@@ -3,7 +3,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
 import { Integration } from '../integrations/base';
-import { Schema } from '../source';
+import { Schema } from '../schema';
 import { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
 import { addError } from '../errors/add';
 import { Authorizer } from '../security-schemes/interfaces/authorizer';
