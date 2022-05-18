@@ -99,6 +99,10 @@
       "type": "build"
     },
     {
+      "name": "openapi-typescript",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
@@ -130,6 +134,10 @@
     },
     {
       "name": "omit-deep-lodash",
+      "type": "bundled"
+    },
+    {
+      "name": "openapi-typescript",
       "type": "bundled"
     },
     {

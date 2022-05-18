@@ -1,26 +1,32 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import { get, has, set, unset } from 'lodash';
+import { OpenAPI3 } from 'openapi-typescript';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
-export interface SourceDefinition {
-  readonly paths?: Record<string, Record<string, any>>;
-}
+/**
+ * Represents an OpenApi v3 Schema which can be deserialized from YAML-file, modified
+ * and then serialized back to YAML.
+ */
+export class Schema {
 
-export class Source {
-  public static fromInline(schema: string): Source {
-    const schemaJson = <SourceDefinition>yaml.load(schema);
-    return new Source(schemaJson);
+  /** Parse OpenApi v3 schema from inline YAML content. */
+  public static fromInline(content: string): Schema {
+    const schemaJson = <OpenAPI3>yaml.load(content);
+    return new Schema(schemaJson);
   }
 
-  public static fromAsset(path: string): Source {
+  /** Parse OpenApi v3 schema by loading a YAML file from given path. */
+  public static fromAsset(path: string): Schema {
     const schema = fs.readFileSync(path, 'utf-8');
-    return Source.fromInline(schema);
+    return Schema.fromInline(schema);
   }
 
-  public definition: SourceDefinition;
+  /** Holds the actual parsed OpenApi v3 Schema Definition. */
+  private definition: OpenAPI3;
 
+  /** Construct a new Schema instance from OpenApi v3 JSON.  */
   constructor(definition: any) {
     this.definition = definition;
   }

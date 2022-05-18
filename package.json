@@ -58,6 +58,7 @@
     "jsii-pacmak": "^1.59.0",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
+    "openapi-typescript": "^5.3.0",
     "projen": "0.56.16",
     "standard-version": "^9",
     "ts-jest": "^27",
@@ -71,13 +72,15 @@
     "change-case": "^4.1.2",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "omit-deep-lodash": "^1.1.6"
+    "omit-deep-lodash": "^1.1.6",
+    "openapi-typescript": "^5.3.0"
   },
   "bundledDependencies": [
     "change-case",
     "js-yaml",
     "lodash",
-    "omit-deep-lodash"
+    "omit-deep-lodash",
+    "openapi-typescript"
   ],
   "keywords": [
     "api-gateway",

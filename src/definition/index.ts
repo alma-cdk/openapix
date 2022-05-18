@@ -3,7 +3,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
 import { Integration } from '../integrations/base';
-import { Source } from '../source';
+import { Schema } from '../source';
 import { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
 import { addError } from '../errors/add';
 import { Authorizer } from '../security-schemes/interfaces/authorizer';
@@ -22,7 +22,7 @@ export { XAmazonApigatewayRequestValidator } from '../security-schemes/interface
 
 export interface OpenApiDefinitionProps {
   readonly upload?: boolean;
-  readonly source: string | Source;
+  readonly source: string | Schema;
   readonly integrations?: OpenApiPathIntegrations;
   readonly injections?: Record<string, any>;
   readonly rejections?: string[];
@@ -41,7 +41,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   private s3Location?: apigateway.ApiDefinitionS3Location;
   private readonly upload: boolean;
   private readonly scope: Construct;
-  private readonly source: Source;
+  private readonly source: Schema;
   private readonly cors?: CorsIntegration;
 
 
@@ -163,9 +163,9 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
    * End-User can provide the OpenAPI definition either as a path to a file or
    * as an Asset. This method handles that and always returns Asset Source.
    */
-  private resolveSource(source: string | Source): Source {
+  private resolveSource(source: string | Schema): Schema {
     if (typeof source === 'string') {
-      return Source.fromAsset(source);
+      return Schema.fromAsset(source);
     }
     return source;
   }
