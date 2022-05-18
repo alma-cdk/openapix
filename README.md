@@ -159,7 +159,9 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 ### Cognito Authorizers
 
-Given the following OpenApi definition:
+In this example we're defining a Congito User Pool based authorizer.
+
+Given the following `schema.yaml` OpenApi definition:
 ```yaml
 openapi: 3.0.0
 info:
@@ -177,7 +179,7 @@ paths:
         - MyAuthorizer: ["test/read"] # add scope
 components:
   securitySchemes:
-    MyAuthorizer:
+    MyCognitoAuthorizer:
       type: apiKey
       name: Authorization
       in: header
@@ -191,7 +193,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
   authorizers: {
-    MyAuthorizer: {
+    MyCognitoAuthorizer: {
       cognitoUserPools: [userPool],
       resultsCacheTtl: Duration.minutes(5),
     },
@@ -199,12 +201,13 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 })
 ```
 
-
+<br/>
 
 ### Lambda Authorizers
 
+In this example we're defining a custom Lambda authorizer. The authorizer function code is not relevant for the example but the idea in the example is that an API caller sends some "secret code" in query parameters (`?code=example123456`) which then the authorizer function somehow evaluates.
 
-Given the following OpenApi definition:
+Given the following `schema.yaml` OpenApi definition:
 ```yaml
 openapi: 3.0.0
 info:
@@ -222,7 +225,7 @@ paths:
         - MyAuthorizer: [] # empty scope required for "request" authorizer
 components:
   securitySchemes:
-    MyAuthorizer:
+    MyCustomAuthorizer:
       type: apiKey
       name: code
       in: query
@@ -236,7 +239,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
   authorizers: {
-    MyAuthorizer: {
+    MyCustomAuthorizer: {
       fn: authFn,
       identitySource: apigateway.IdentitySource.queryString('code'),
       type: 'request',
