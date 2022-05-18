@@ -159,22 +159,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 ### Cognito Authorizers
 
-```ts
-const userPool: cognito.IUserPool;
-
-const apiDefinition = new openapix.OpenApiDefinition(this, {
-  source: './schema.yaml',
-
-  authorizers: {
-    MyAuthorizer: {
-      cognitoUserPools: [userPool],
-      resultsCacheTtl: Duration.minutes(5),
-    },
-  },
-})
-```
-
-Within your OpenApi definition, configure `MyAuthorizer` with required scopes:
+Given the following OpenApi definition:
 ```yaml
 openapi: 3.0.0
 info:
@@ -190,30 +175,36 @@ paths:
           description: "All good"
       security:
         - MyAuthorizer: ["test/read"] # add scope
+components:
+  securitySchemes:
+    MyAuthorizer:
+      type: apiKey
+      name: Authorization
+      in: header
 ```
 
-
-### Lambda Authorizers
-
+You can define the Cognito Authorizer in CDK with:
 ```ts
-const authFn: lambda.IFunction;
+const userPool: cognito.IUserPool;
 
 const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
   authorizers: {
     MyAuthorizer: {
-      fn: authFn,
-      identitySource: apigateway.IdentitySource.header('Authorization'),
-      type: 'request',
-      authType: 'custom',
+      cognitoUserPools: [userPool],
       resultsCacheTtl: Duration.minutes(5),
     },
   },
 })
 ```
 
-Within your OpenApi definition, configure `MyAuthorizer`:
+
+
+### Lambda Authorizers
+
+
+Given the following OpenApi definition:
 ```yaml
 openapi: 3.0.0
 info:
@@ -229,6 +220,31 @@ paths:
           description: "All good"
       security:
         - MyAuthorizer: [] # empty scope required for "request" authorizer
+components:
+  securitySchemes:
+    MyAuthorizer:
+      type: apiKey
+      name: code
+      in: query
+```
+
+You can define the custom Lambda Authorizer in CDK with:
+```ts
+const authFn: lambda.IFunction;
+
+const apiDefinition = new openapix.OpenApiDefinition(this, {
+  source: './schema.yaml',
+
+  authorizers: {
+    MyAuthorizer: {
+      fn: authFn,
+      identitySource: apigateway.IdentitySource.queryString('code'),
+      type: 'request',
+      authType: 'custom',
+      resultsCacheTtl: Duration.minutes(5),
+    },
+  },
+})
 ```
 
 
