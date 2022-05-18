@@ -24,11 +24,10 @@ export class CorsIntegration extends Integration {
     super();
     this.xAmazonApiGatewayRequestValidator = props.validator;
 
-    const origins = props.origins;
-    const tmpl = template.replace('__DOMAIN__', origins);
+    const { headers, origins, methods } = props;
 
-    const methods = props.methods;
-    const headers = props.headers;
+    const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
+    const tmpl = template.replace('__DOMAIN__', originsForTmpl);
 
     this.xAmazonIntegration = generateAwsServiceXMockIntegration(scope, {
       type: apigateway.IntegrationType.MOCK,
