@@ -20,7 +20,7 @@ export class CorsIntegration extends BaseIntegration {
       options: {
         integrationResponses: [
           {
-            statusCode: '200',
+            statusCode: '204',
             responseParameters: {
               'method.response.header.Access-Control-Allow-Methods': methods,
               'method.response.header.Access-Control-Allow-Headers': headers,
