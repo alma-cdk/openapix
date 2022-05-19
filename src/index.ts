@@ -9,5 +9,5 @@ export { CorsIntegration, CorsIntegrationProps } from './integrations/cors';
 export { Schema } from './schema';
 export { XAmazonIntegration, XAmazonIntegrationResponse } from './x-amazon-integration/base';
 
-export { XAmazonApigatewayAuthorizer } from './security-schemes/interfaces/x-amazon-apigateway-authorizer';
-export { XAmazonApigatewayAuthType } from './security-schemes/interfaces/x-amazon-apigateway-authtype';
+export { XAmazonApigatewayAuthorizer } from './x-amazon-apigateway/authorizer';
+export { XAmazonApigatewayAuthType } from './x-amazon-apigateway/authtype';

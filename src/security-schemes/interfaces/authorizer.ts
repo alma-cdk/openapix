@@ -1,5 +1,5 @@
-import { XAmazonApigatewayAuthorizer } from "./x-amazon-apigateway-authorizer";
-import { XAmazonApigatewayAuthType } from "./x-amazon-apigateway-authtype";
+import { XAmazonApigatewayAuthorizer } from "../../x-amazon-apigateway/authorizer";
+import { XAmazonApigatewayAuthType } from "../../x-amazon-apigateway/authtype";
 
 /**
  * Describes an authorizer defined in `securitySchemes` OpenApi 3 schema.

@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
-import { XAmazonApigatewayAuthType } from '../interfaces/x-amazon-apigateway-authtype';
-import { XAmazonApigatewayAuthorizer } from '../interfaces/x-amazon-apigateway-authorizer';
+import { XAmazonApigatewayAuthType } from '../../x-amazon-apigateway/authtype';
+import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorizer';
 import { IUserPool } from 'aws-cdk-lib/aws-cognito';
 import { Duration } from 'aws-cdk-lib';
 import { Id, XAuthorizer } from './xauthorizer';

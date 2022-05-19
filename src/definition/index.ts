@@ -7,7 +7,7 @@ import { Schema } from '../schema';
 import { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
 import { addError } from '../errors/add';
 import { Authorizer } from '../security-schemes/interfaces/authorizer';
-import { XAmazonApigatewayRequestValidator } from '../security-schemes/interfaces/x-amazon-apigateway-request-validators';
+import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
 import { CorsIntegration } from '../integrations/cors';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
@@ -18,7 +18,7 @@ type OpenApiPathIntegrations = Record<string, OpenApiMethodIntegrations>
 
 export { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
 export { Authorizer } from '../security-schemes/interfaces/authorizer';
-export { XAmazonApigatewayRequestValidator } from '../security-schemes/interfaces/x-amazon-apigateway-request-validators';
+export { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
 
 export interface OpenApiDefinitionProps {
   readonly upload?: boolean;

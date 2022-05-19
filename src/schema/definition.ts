@@ -1,4 +1,5 @@
 import { HeaderObject, LinkObject, OpenAPI3, ParameterObject, PathItemObject, ReferenceObject, RequestBody, ResponseObject, SchemaObject } from 'openapi-typescript';
+import { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
 
 
 export interface SchemaDefinition extends OpenAPI3 {
@@ -39,6 +40,7 @@ export interface SchemaDefinition extends OpenAPI3 {
     requestBodies?: Record<string, ReferenceObject | RequestBody>;
     headers?: Record<string, ReferenceObject | HeaderObject>;
     links?: Record<string, ReferenceObject | LinkObject>;
+    securitySchemes?: SecuritySchemes;
   };
 }
 
