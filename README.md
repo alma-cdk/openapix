@@ -128,6 +128,8 @@
 
 ## Validators
 
+API Gateway REST APIs can perform [request parameter and request body validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html). You can provide both default validator and integration specific validator (which will override the default for given integration).
+
 ```ts
 const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
