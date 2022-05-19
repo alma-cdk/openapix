@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { EndpointType, IRestApi, RestApi, RestApiProps, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { BasePropsWithDefaults, Method, OpenApiProps, Paths } from './api-props';
+import { BasePropsWithDefaults, OpenApiProps, Paths } from './api-props';
 import { OpenApiDefinition } from './definition';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Integration, InternalIntegrationType } from '../integration/base';
@@ -58,7 +58,7 @@ export class OpenApi extends RestApi {
       paths: props.paths || {},
       authorizers: props.authorizers || {},
       validators: props.validators || {},
-      defaultCors: props.defaultCors || null,
+      defaultCors: props.defaultCors,
       injections: props.injections || {},
       rejections: props.rejections || [],
       rejectionsDeep: props.rejectionsDeep || [],
@@ -77,7 +77,7 @@ export class OpenApi extends RestApi {
 
       // loop through methods
       Object.keys(methodIntegrations).forEach(method => {
-        const methodIntegration = methodIntegrations[method as Method];
+        const methodIntegration = methodIntegrations[method];
         if (this.isLambdaIntegration(methodIntegration)) {
           methodIntegration.grantFunctionInvoke(apiGatewayPrincipal);
         }

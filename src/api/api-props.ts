@@ -1,16 +1,9 @@
-import { Schema } from '../schema';
+//import { Schema } from '../schema';
 import { Integration } from '../integration/base';
 import { CorsIntegration } from '../integration/cors';
-import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
-import { EndpointType, RestApiProps as OriginalRestApiProps } from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
-import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
+import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
+import { RestApiProps } from 'aws-cdk-lib/aws-apigateway';
 import { AuthorizerConfig } from '../authorizers/authorizer';
-
-export type AuthType = Readonly<XAmazonApigatewayAuthType>;
-
-export type Authorizer = Readonly<XAmazonApigatewayAuthorizer>
-
 
 /** BaseProps for the `OpenApi` construct without `RestApiProps`. */
 export interface OpenApiBaseProps {
@@ -28,7 +21,9 @@ export interface OpenApiBaseProps {
    * new openapix.Schema(definition)
    *
    */
-  readonly source: string | Schema;
+   readonly source: string;
+  //readonly source: string | Schema; // TODO figure this out with JSII
+
 
   /**
    * Schema Definition location (inline vs. S3 location).
@@ -110,7 +105,7 @@ export interface OpenApiBaseProps {
    *   methods: 'OPTIONS,GET',
    * }),
    */
-  readonly defaultCors?: CorsIntegration | null;
+  readonly defaultCors?: CorsIntegration;
 
   /**
    * Inject any OpenApi v3 data to given schema definition object paths.
@@ -140,34 +135,35 @@ export interface OpenApiBaseProps {
 
 }
 
-/** Props to configure the underlying CDK `apigateway.RestApi`. */
-export interface RestApiProps extends OriginalRestApiProps {
-  /**
-   * A list of the endpoint types of the API. Use this property when creating an API.
-   *
-   * OpenApiX defaults to `[EndpointType.REGIONAL]` instead of
-   * `[EndpointType.EDGE]` which is the default in `apigateway.RestApiProps`.
-   *
-   * @default
-   * [EndpointType.REGIONAL]
-   */
-  endpointTypes?: EndpointType[],
-}
+
 
 /** Props to configure `new openapix.OpenApi`. */
 export interface OpenApiProps extends OpenApiBaseProps {
 
   /** Props to configure the underlying CDK `apigateway.RestApi`. */
-  restApiProps?: RestApiProps;
+  readonly restApiProps?: RestApiProps;
 }
-
-/** Internal interface holding baseProps with default values.  */
-export type BasePropsWithDefaults = Required<OpenApiBaseProps>;
 
 export type Paths = Record<string, Methods>
-export type Methods = Record<Method, Integration> // TODO add validation for method
-export type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
+export type Methods = Record<string, Integration>
 
-export interface Validator extends Readonly<XAmazonApigatewayRequestValidator> {
+
+export interface Validator extends XAmazonApigatewayRequestValidator {
   readonly default?: boolean;
 }
+
+/**
+ * Internal interface holding baseProps with default values.
+ */
+export interface BasePropsWithDefaults extends OpenApiBaseProps {
+   //readonly source: string | Schema;
+   readonly source: string;
+   readonly upload: boolean;
+   readonly paths: Paths;
+   readonly authorizers: Record<string, AuthorizerConfig>;
+   readonly validators: Record<string, Validator>;
+   readonly injections: Record<string, any>;
+   readonly rejections: string[];
+   readonly rejectionsDeep: string[];
+}
+

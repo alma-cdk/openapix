@@ -5,10 +5,10 @@ import { Construct } from 'constructs';
 import { Schema } from '../schema';
 import { addError } from '../errors/add';
 
-import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
+import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
 import { CorsIntegration } from '../integration/cors';
-import { BasePropsWithDefaults, Method, Methods, Paths, Validator } from './api-props';
-import { AuthorizerExtensions, AuthorizerConfig } from '../authorizers/authorizer';
+import { BasePropsWithDefaults, Methods, Paths, Validator } from './api-props';
+import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -91,9 +91,9 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
         return;
       }
 
-      const authorizer = this.source.get<AuthorizerExtensions>(path);
-      authorizer['x-amazon-apigateway-authtype'] = config['x-amazon-apigateway-authtype'];
-      authorizer['x-amazon-apigateway-authorizer'] = config['x-amazon-apigateway-authorizer'];
+      const authorizer = this.source.get<AuthorizerExtensionsMutable>(path);
+      authorizer['x-amazon-apigateway-authtype'] = config.xAmazonApigatewayAuthtype;
+      authorizer['x-amazon-apigateway-authorizer'] = config.xAmazonApigatewayAuthorizer;
       this.source.set(path, authorizer);
     });
   }
@@ -126,15 +126,15 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
       this.ensureMethodExists(path, method);
       this.ensureNoIntegrationAlready(path, method);
 
-      const integration = methods[method.toUpperCase() as Method]!;
+      const integration = methods[method.toUpperCase()]!;
       const methodPath = `paths['${path}']['${method}']`;
 
-      const validator = integration.getValidatorId();
+      const validator = integration.validator;
       if (typeof validator === 'string') {
         this.source.set(`${methodPath}['x-amazon-apigateway-request-validator']`, validator);
       }
 
-      this.source.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.getIntegration());
+      this.source.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonApigatwayIntegration);
     });
   }
 
