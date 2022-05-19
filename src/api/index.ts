@@ -2,9 +2,9 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { omit } from 'lodash';
-import { OpenApiDefinition, OpenApiDefinitionProps } from './definition';
-import { Integration } from './integrations/base';
-import { LambdaIntegration } from './integrations/lambda';
+import { OpenApiDefinition, OpenApiDefinitionProps } from '../definition';
+import { Integration } from '../integrations/base';
+import { LambdaIntegration } from '../integrations/lambda';
 
 export interface OpenApiProps extends OpenApiDefinitionProps {
   readonly restApiProps: apigateway.RestApiBaseProps;

@@ -18,6 +18,15 @@
       "type": "build"
     },
     {
+      "name": "@types/omit-deep-lodash",
+      "type": "build"
+    },
+    {
+      "name": "@types/prettier",
+      "version": "v2.6.0",
+      "type": "build"
+    },
+    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^5",
       "type": "build"
@@ -90,6 +99,10 @@
       "type": "build"
     },
     {
+      "name": "openapi-typescript",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
@@ -121,6 +134,10 @@
     },
     {
       "name": "omit-deep-lodash",
+      "type": "bundled"
+    },
+    {
+      "name": "openapi-typescript",
       "type": "bundled"
     },
     {
