@@ -72,7 +72,7 @@
     const apiDefinition = new openapix.OpenApiDefinition(this, {
       upload: false, // by default add as inline Body, set to true to use as BodyS3Location
       source: './schema.yaml',
-      integrations: {
+      paths: {
 
         // Mock Integration
         '/mock': {
@@ -146,7 +146,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
     },
   },
 
-  integrations: {
+  paths: {
     '/message': {
       // Set a method-specific validator by assigning validator into props
       'POST': new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
@@ -275,7 +275,7 @@ Using `openapix.CorsIntegration` creates a Mock integration which responds with 
 const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
-  integrations: {
+  paths: {
     '/foo': {
       'OPTIONS': new openapix.CorsIntegration(this, {
         // using helper method to define explicit values:
@@ -313,13 +313,13 @@ If you wish to define same CORS options to every path, you may do so by providin
 const apiDefinition = new openapix.OpenApiDefinition(this, {
   source: './schema.yaml',
 
-  cors: new openapix.CorsIntegration(this, {
+  defaultCors: new openapix.CorsIntegration(this, {
     headers: CorsHeaders.ANY,
     origins: CorsOrigins.ANY,
     methods: CorsMethods.ANY,
   }),
 
-  integrations: {/*...*/},
+  paths: {/*...*/},
 });
 ```
 

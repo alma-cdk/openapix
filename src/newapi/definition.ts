@@ -2,39 +2,18 @@ import * as fs from 'fs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
-import { Integration } from '../integrations/base';
 import { Schema } from '../schema';
-import { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
 import { addError } from '../errors/add';
-import { Authorizer } from '../security-schemes/interfaces/authorizer';
+
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
-import { CorsIntegration } from '../integrations/cors';
+import { CorsIntegration } from '../integration/cors';
+import { BasePropsWithDefaults, Method, Methods, Paths, Validator } from './api-props';
+import { AuthorizerExtensions, Authorizer } from '../security-schemes/authorizers/xauthorizer';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
-type Method = 'ANY'|'DELETE'|'GET'|'HEAD'|'OPTIONS'|'PATCH'|'POST'|'PUT';
-type OpenApiMethodIntegrations = Record<string, Integration> // TODO add validation for method
-type OpenApiPathIntegrations = Record<string, OpenApiMethodIntegrations>
 
-export { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
-export { Authorizer } from '../security-schemes/interfaces/authorizer';
-export { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
 
-export interface OpenApiDefinitionProps {
-  readonly upload?: boolean;
-  readonly source: string | Schema;
-  readonly integrations?: OpenApiPathIntegrations;
-  readonly injections?: Record<string, any>;
-  readonly rejections?: string[];
-  readonly rejectionsDeep?: string[];
-  readonly authorizers?: SecuritySchemes;
-  readonly validators?: Record<string, Validator>;
-  readonly cors?: CorsIntegration;
-}
-
-export interface Validator extends XAmazonApigatewayRequestValidator {
-  readonly default?: boolean;
-}
 
 export class OpenApiDefinition extends apigateway.ApiDefinition {
   private definition?: any;
@@ -42,27 +21,27 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   private readonly upload: boolean;
   private readonly scope: Construct;
   private readonly source: Schema;
-  private readonly cors?: CorsIntegration;
+  private readonly defaultCors?: CorsIntegration | null;
 
 
-  constructor(scope: Construct, props: OpenApiDefinitionProps) {
+  constructor(scope: Construct, props: BasePropsWithDefaults) {
     super();
     const {
-      upload = false,
       source,
-      authorizers = {},
-      integrations = {},
-      validators = {},
-      injections = {},
-      rejections = [],
-      rejectionsDeep = [],
-      cors,
+      upload,
+      paths,
+      authorizers,
+      validators,
+      injections,
+      rejections,
+      rejectionsDeep,
+      defaultCors,
     } = props;
 
     this.scope = scope;
     this.upload = upload;
     this.source = this.resolveSource(source);
-    this.cors = cors;
+    this.defaultCors = defaultCors;
 
     // Handle injects/rejects
     this.source.inject(injections);
@@ -72,7 +51,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
     // Configurate integrations
     this.configureValidators(validators);
     this.configureAuthorizers(authorizers);
-    this.configurePaths(integrations);
+    this.configurePaths(paths);
 
     // Finally expose the definition for CDK/CloudFormation
     this.exposeDefinition();
@@ -102,7 +81,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure Authorizers within OpenApi `components.securitySchemes`.
    */
-  private configureAuthorizers(authorizers: SecuritySchemes): void {
+  private configureAuthorizers(authorizers: Record<string, Authorizer>): void {
     Object.keys(authorizers).map(id => {
       const config = authorizers[id];
       const path = `components.securitySchemes.${id}`;
@@ -112,7 +91,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
         return;
       }
 
-      const authorizer = this.source.get<Authorizer>(path);
+      const authorizer = this.source.get<AuthorizerExtensions>(path);
       authorizer['x-amazon-apigateway-authtype'] = config['x-amazon-apigateway-authtype'];
       authorizer['x-amazon-apigateway-authorizer'] = config['x-amazon-apigateway-authorizer'];
       this.source.set(path, authorizer);
@@ -122,15 +101,15 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
    */
-  private configurePaths(paths: OpenApiPathIntegrations): void {
+  private configurePaths(paths: Paths): void {
     Object.keys(paths).map(path => {
       if (!this.source.has(path)) {
         addError(this.scope, `OpenAPI schema is missing path for: ${path}`);
         return;
       }
 
-      if (typeof this.cors !== 'undefined') {
-        this.source.set(`${path}.OPTIONS`, this.cors);
+      if (typeof this.defaultCors !== 'undefined') {
+        this.source.set(`${path}.OPTIONS`, this.defaultCors);
       }
 
       const methods = paths[path];
@@ -141,21 +120,21 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure `x-amazon-apigateway-integration` for given method.
    */
-  private configurePathMethods(path: string, methods: OpenApiMethodIntegrations): void {
+  private configurePathMethods(path: string, methods: Methods): void {
     Object.keys(methods).map(m => {
       const method = m.toLowerCase();
       this.ensureMethodExists(path, method);
       this.ensureNoIntegrationAlready(path, method);
 
       const integration = methods[method.toUpperCase() as Method]!;
-
       const methodPath = `paths['${path}']['${method}']`;
 
-      if (typeof integration.xAmazonApiGatewayRequestValidator === 'string') {
-        this.source.set(`${methodPath}['x-amazon-apigateway-request-validator']`, integration.xAmazonApiGatewayRequestValidator);
+      const validator = integration.getValidatorId();
+      if (typeof validator === 'string') {
+        this.source.set(`${methodPath}['x-amazon-apigateway-request-validator']`, validator);
       }
 
-      this.source.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonIntegration);
+      this.source.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.getIntegration());
     });
   }
 
@@ -176,9 +155,9 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
    * for CDK/CloudFormation.
    */
    private exposeDefinition(): void {
-    const newSchema = this.source.definition;
+    const newSchema = this.source.toYaml();
     if (this.upload) {
-      const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';
+      const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';// TODO?
       fs.writeFileSync(newSchemaPath, JSON.stringify(newSchema), 'utf-8');
       const asset = new assets.Asset(this.scope, 'DefinitionAsset', {
         path: newSchemaPath,

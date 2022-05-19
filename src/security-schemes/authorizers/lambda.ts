@@ -2,9 +2,9 @@ import { Construct } from 'constructs';
 import { XAmazonApigatewayAuthType } from '../../x-amazon-apigateway/authtype';
 import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorizer';
 import { Duration } from 'aws-cdk-lib';
-import { Id, XAuthorizer } from './xauthorizer';
+import { Id, Authorizer } from './xauthorizer';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-import { resolveLambdaIntegrationUri } from '../../x-amazon-integration/lambda';
+import { LambdaInvocation } from '../../lambda-invocation';
 
 export interface LambdaAuthorizerProps {
   fn: IFunction;
@@ -19,7 +19,7 @@ export interface LambdaAuthorizerProps {
   resultsCacheTtl?: Duration;
 }
 
-export class LambdaAuthorizer extends Construct implements XAuthorizer {
+export class LambdaAuthorizer extends Construct implements Authorizer {
 
   public readonly id: Id;
   readonly 'x-amazon-apigateway-authtype': XAmazonApigatewayAuthType;
@@ -33,7 +33,7 @@ export class LambdaAuthorizer extends Construct implements XAuthorizer {
     this['x-amazon-apigateway-authtype'] = authtype;
     this['x-amazon-apigateway-authorizer'] = {
       type,
-      authorizerUri: resolveLambdaIntegrationUri(scope, fn),
+      authorizerUri: new LambdaInvocation(scope, fn).uri,
       identitySource,
     }
 

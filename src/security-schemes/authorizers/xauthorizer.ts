@@ -10,9 +10,11 @@ import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorize
  */
 export type Id = string;
 
-export interface XAuthorizer {
+export interface Authorizer extends Readonly<AuthorizerExtensions> {
   readonly id: Id;
-  readonly 'x-amazon-apigateway-authtype': XAmazonApigatewayAuthType;
-  readonly 'x-amazon-apigateway-authorizer': XAmazonApigatewayAuthorizer;
 }
 
+export interface AuthorizerExtensions {
+  'x-amazon-apigateway-authtype': XAmazonApigatewayAuthType;
+  'x-amazon-apigateway-authorizer': XAmazonApigatewayAuthorizer;
+}

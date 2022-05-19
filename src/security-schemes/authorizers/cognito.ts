@@ -3,7 +3,7 @@ import { XAmazonApigatewayAuthType } from '../../x-amazon-apigateway/authtype';
 import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorizer';
 import { IUserPool } from 'aws-cdk-lib/aws-cognito';
 import { Duration } from 'aws-cdk-lib';
-import { Id, XAuthorizer } from './xauthorizer';
+import { Id, Authorizer } from './xauthorizer';
 
 export interface CognitoUserPoolsAuthorizerProps {
   cognitoUserPools: IUserPool[];
@@ -13,7 +13,7 @@ export interface CognitoUserPoolsAuthorizerProps {
 export type AuthType = Readonly<XAmazonApigatewayAuthType>;
 export type Authorizer = Readonly<XAmazonApigatewayAuthorizer>;
 
-export class CognitoUserPoolsAuthorizer extends Construct implements XAuthorizer {
+export class CognitoUserPoolsAuthorizer extends Construct implements Authorizer {
 
   public readonly id: Id;
   readonly 'x-amazon-apigateway-authtype': AuthType;
