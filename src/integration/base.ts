@@ -3,10 +3,22 @@ import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } fr
 
 /** Interface implemented by all integrations. */
 export interface IBaseIntegration {
+
+  /** Identifier to enable internal type checks. */
+  readonly type: InternalIntegrationType;
+
   /** Returns the API Gateway Open Api integration extension. */
   getIntegration(): XAmazonApigatewayIntegration;
   /** Returns the validator identifier (if any). */
   getValidatorId(): string | undefined;
+}
+
+export enum InternalIntegrationType {
+  AWS='AWS',
+  CORS='CORS',
+  HTTP='HTTP',
+  LAMBDA='LAMBDA',
+  MOCK='MOCK',
 }
 
 /** Method integration validator configuration. */
@@ -17,11 +29,13 @@ export interface ValidatorConfig {
    *
    * Should match a key from OpenApi schema `components.securitySchemas`.
    */
-  validator?: string;
+  readonly validator?: string;
 }
 
 /** Base integration config. */
-export interface IntegrationConfig extends ValidatorConfig {}
+export interface IntegrationConfig extends ValidatorConfig {
+  type: InternalIntegrationType;
+}
 
 /**
  * Essentially responsible for converting CDK `IntegrationProps` into
@@ -29,14 +43,17 @@ export interface IntegrationConfig extends ValidatorConfig {}
  * Also defines few basic methods (`getIntegration` & `getValidatorId`) used
  * by derivative classes.
  */
-export abstract class BaseIntegration implements IBaseIntegration {
+export abstract class Integration implements IBaseIntegration {
   protected readonly integration: XAmazonApigatewayIntegration;
   protected readonly validatorId?: string;
+
+  public readonly type: InternalIntegrationType;
 
   /** Construc a new integration. */
   constructor(props: IntegrationProps, config: IntegrationConfig) {
     this.integration = this.mapPropsToIntegration(props);
     this.validatorId = config.validator;
+    this.type = config.type;
   }
 
   /** Returns the API Gateway OpenApi integration extension. */

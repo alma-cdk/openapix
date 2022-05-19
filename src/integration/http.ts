@@ -1,12 +1,12 @@
 import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { BaseIntegration, IntegrationConfig, ValidatorConfig } from './base';
+import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
 
 export interface HttpIntegrationProps extends apigateway.HttpIntegrationProps, ValidatorConfig {}
 
 /** Defines a HTTP(S) integration. */
-export class HttpIntegration extends BaseIntegration {
+export class HttpIntegration extends Integration {
 
   /**
    * Defines a HTTP(S) integration.
@@ -26,6 +26,7 @@ export class HttpIntegration extends BaseIntegration {
     };
 
     const config: IntegrationConfig = {
+      type: InternalIntegrationType.HTTP,
       validator: props?.validator,
     }
 

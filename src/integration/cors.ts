@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
-import { BaseIntegration, IntegrationConfig, ValidatorConfig } from './base';
+import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 import { readFileSync } from 'fs';
 const template = readFileSync(__dirname+'/cors.vtl', 'utf-8');
 
@@ -17,7 +17,7 @@ export interface CorsIntegrationProps extends ValidatorConfig {
  * @see https://medium.com/@srikanth650/use-api-gateway-with-mock-integration-to-allow-cors-from-multiple-origins-bdcb431d07d3
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/request-response-data-mappings.html#mapping-response-parameters
  */
-export class CorsIntegration extends BaseIntegration {
+export class CorsIntegration extends Integration {
 
   /**
    * Defines `OPTIONS` integration used in Cross-Origin Resource Sharing (CORS).
@@ -54,6 +54,7 @@ export class CorsIntegration extends BaseIntegration {
     };
 
     const config: IntegrationConfig = {
+      type: InternalIntegrationType.CORS,
       validator: props?.validator,
     };
 

@@ -1,14 +1,17 @@
 import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { BaseIntegration, IntegrationConfig, ValidatorConfig } from './base';
+import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 import { LambdaInvocation } from '../lambda-invocation';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
+import { IGrantable } from 'aws-cdk-lib/aws-iam';
 
 export interface LambdaIntegrationOptions extends apigateway.LambdaIntegrationOptions, ValidatorConfig {}
 
 /** Defines an AWS Lambda integration. */
-export class LambdaIntegration extends BaseIntegration {
+export class LambdaIntegration extends Integration {
+
+  private fn: IFunction;
 
   /**
    * Defines an AWS Lambda integration.
@@ -30,10 +33,18 @@ export class LambdaIntegration extends BaseIntegration {
     };
 
     const config: IntegrationConfig = {
+      type: InternalIntegrationType.LAMBDA,
       validator: props?.validator,
     };
 
     super(integration, config);
+
+    this.fn = fn;
+  }
+
+  /** Allow Lambda invoke action to be performed by given identity. */
+  public grantFunctionInvoke(identity: IGrantable): void {
+    this.fn.grantInvoke(identity);
   }
 
   /**

@@ -3,8 +3,8 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { omit } from 'lodash';
 import { OpenApiDefinition, OpenApiDefinitionProps } from '../definition';
-import { Integration } from '../integrations/base';
-import { LambdaIntegration } from '../integrations/lambda';
+import { Integration, InternalIntegrationType } from '../integration/base';
+import { LambdaIntegration } from '../integration/lambda';
 
 export interface OpenApiProps extends OpenApiDefinitionProps {
   readonly restApiProps: apigateway.RestApiBaseProps;
@@ -47,18 +47,20 @@ export class OpenApi extends Construct {
       },
     );
 
+    // TODO should this be in the definition????!
     Object.keys(pathIntegrations).forEach(path => {
       const methodIntegrations = pathIntegrations[path];
       Object.keys(methodIntegrations).forEach(method => {
         const methodIntegration = methodIntegrations[method];
-        const isLambdaIntegration = (integration: LambdaIntegration | Integration):integration is LambdaIntegration => {
-          return !!(integration as LambdaIntegration).fn;
-        };
 
-        if (isLambdaIntegration(methodIntegration)) {
-          methodIntegration.fn.grantInvoke(apiGatewayInstance);
+        if (this.isLambdaIntegration(methodIntegration)) {
+          methodIntegration.grantFunctionInvoke(apiGatewayInstance);
         }
       });
     });
+  }
+
+  private isLambdaIntegration(integration: Integration): integration is LambdaIntegration {
+    return integration.type === InternalIntegrationType.LAMBDA;
   }
 }

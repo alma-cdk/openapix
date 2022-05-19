@@ -10,11 +10,14 @@ export interface CognitoUserPoolsAuthorizerProps {
   resultsCacheTtl?: Duration;
 }
 
+export type AuthType = Readonly<XAmazonApigatewayAuthType>;
+export type Authorizer = Readonly<XAmazonApigatewayAuthorizer>;
+
 export class CognitoUserPoolsAuthorizer extends Construct implements XAuthorizer {
 
   public readonly id: Id;
-  readonly 'x-amazon-apigateway-authtype': XAmazonApigatewayAuthType;
-  readonly 'x-amazon-apigateway-authorizer': XAmazonApigatewayAuthorizer;
+  readonly 'x-amazon-apigateway-authtype': AuthType;
+  readonly 'x-amazon-apigateway-authorizer': Authorizer;
 
   constructor(scope: Construct, id: Id, props: CognitoUserPoolsAuthorizerProps) {
     const { cognitoUserPools, resultsCacheTtl } = props;
@@ -25,10 +28,12 @@ export class CognitoUserPoolsAuthorizer extends Construct implements XAuthorizer
     this['x-amazon-apigateway-authorizer'] = {
       type: 'cognito_user_pools',
       providerARNs: cognitoUserPools.map(p => p.userPoolArn),
-    }
-
-    if (typeof resultsCacheTtl !== 'undefined') {
-      this['x-amazon-apigateway-authorizer'].authorizerResultTtlInSeconds = resultsCacheTtl.toSeconds();
+      authorizerResultTtlInSeconds: (function(): number | undefined {
+        if (typeof resultsCacheTtl !== 'undefined') {
+          return resultsCacheTtl.toSeconds()
+        }
+        return undefined
+      }())
     }
   }
 }

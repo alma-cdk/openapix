@@ -1,12 +1,12 @@
 import { Construct } from 'constructs';
 import { IntegrationProps, IntegrationType, AwsIntegrationProps as CdkAwsIntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { BaseIntegration, IntegrationConfig, ValidatorConfig } from './base';
+import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 import { Stack } from 'aws-cdk-lib';
 
 export interface AwsIntegrationProps extends CdkAwsIntegrationProps, ValidatorConfig {}
 
 /** Defines direct AWS service integration. */
-export class AwsIntegration extends BaseIntegration {
+export class AwsIntegration extends Integration {
 
   /**
    * Defines direct AWS service integration.
@@ -42,6 +42,7 @@ export class AwsIntegration extends BaseIntegration {
     };
 
     const config: IntegrationConfig = {
+      type: InternalIntegrationType.AWS,
       validator: props.validator,
     };
 
