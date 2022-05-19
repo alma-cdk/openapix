@@ -1,10 +1,9 @@
 import { Construct } from 'constructs';
-import { XAmazonApigatewayAuthType } from '../../x-amazon-apigateway/authtype';
-import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorizer';
 import { Duration } from 'aws-cdk-lib';
-import { Id, Authorizer } from './xauthorizer';
+import { Id, AuthorizerConfig } from './authorizer';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-import { LambdaInvocation } from '../../lambda-invocation';
+import { LambdaInvocation } from '../lambda-invocation';
+import { AuthType, Authorizer } from '../api/api-props';
 
 export interface LambdaAuthorizerProps {
   fn: IFunction;
@@ -19,11 +18,11 @@ export interface LambdaAuthorizerProps {
   resultsCacheTtl?: Duration;
 }
 
-export class LambdaAuthorizer extends Construct implements Authorizer {
+export class LambdaAuthorizer extends Construct implements AuthorizerConfig {
 
   public readonly id: Id;
-  readonly 'x-amazon-apigateway-authtype': XAmazonApigatewayAuthType;
-  readonly 'x-amazon-apigateway-authorizer': XAmazonApigatewayAuthorizer;
+  readonly 'x-amazon-apigateway-authtype': AuthType;
+  readonly 'x-amazon-apigateway-authorizer': Authorizer;
 
   constructor(scope: Construct, id: Id, props: LambdaAuthorizerProps) {
     const { fn, identitySource, type, authtype, resultsCacheTtl } = props;
@@ -35,10 +34,12 @@ export class LambdaAuthorizer extends Construct implements Authorizer {
       type,
       authorizerUri: new LambdaInvocation(scope, fn).uri,
       identitySource,
-    }
-
-    if (typeof resultsCacheTtl !== 'undefined') {
-      this['x-amazon-apigateway-authorizer'].authorizerResultTtlInSeconds = resultsCacheTtl.toSeconds();
+      authorizerResultTtlInSeconds: (function(): number | undefined {
+        if (typeof resultsCacheTtl !== 'undefined') {
+          return resultsCacheTtl.toSeconds();
+        }
+        return undefined;
+      }())
     }
   }
 }

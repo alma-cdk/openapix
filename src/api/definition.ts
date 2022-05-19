@@ -8,7 +8,7 @@ import { addError } from '../errors/add';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
 import { CorsIntegration } from '../integration/cors';
 import { BasePropsWithDefaults, Method, Methods, Paths, Validator } from './api-props';
-import { AuthorizerExtensions, Authorizer } from '../security-schemes/authorizers/xauthorizer';
+import { AuthorizerExtensions, AuthorizerConfig } from '../authorizers/authorizer';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -81,7 +81,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure Authorizers within OpenApi `components.securitySchemes`.
    */
-  private configureAuthorizers(authorizers: Record<string, Authorizer>): void {
+  private configureAuthorizers(authorizers: Record<string, AuthorizerConfig>): void {
     Object.keys(authorizers).map(id => {
       const config = authorizers[id];
       const path = `components.securitySchemes.${id}`;

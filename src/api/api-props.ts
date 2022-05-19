@@ -3,7 +3,14 @@ import { Integration } from '../integration/base';
 import { CorsIntegration } from '../integration/cors';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validators';
 import { EndpointType, RestApiProps as OriginalRestApiProps } from 'aws-cdk-lib/aws-apigateway';
-import { Authorizer } from '../definition';
+import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
+import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
+import { AuthorizerConfig } from '../authorizers/authorizer';
+
+export type AuthType = Readonly<XAmazonApigatewayAuthType>;
+
+export type Authorizer = Readonly<XAmazonApigatewayAuthorizer>
+
 
 /** BaseProps for the `OpenApi` construct without `RestApiProps`. */
 export interface OpenApiBaseProps {
@@ -59,7 +66,7 @@ export interface OpenApiBaseProps {
    *   },
    * }
    */
-  readonly authorizers?: Record<string, Authorizer>;
+  readonly authorizers?: Record<string, AuthorizerConfig>;
 
   /**
    * Configure availalbe request validators.

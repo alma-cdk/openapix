@@ -1,5 +1,5 @@
-import { XAmazonApigatewayAuthType } from '../../x-amazon-apigateway/authtype';
-import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorizer';
+import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
+import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
 
 /**
  * Authorizer Identifier MUST match a object key in OpenApi v3 definition
@@ -10,7 +10,7 @@ import { XAmazonApigatewayAuthorizer } from '../../x-amazon-apigateway/authorize
  */
 export type Id = string;
 
-export interface Authorizer extends Readonly<AuthorizerExtensions> {
+export interface AuthorizerConfig extends Readonly<AuthorizerExtensions> {
   readonly id: Id;
 }
 
