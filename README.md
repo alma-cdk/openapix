@@ -69,7 +69,7 @@
     ```ts
     import * as openapix from '@alma-cdk/openapix';
 
-    const apiDefinition = new openapix.OpenApiDefinition(this, {
+    new openapix.OpenApi(this, 'MyApi', {
       upload: false, // by default add as inline Body, set to true to use as BodyS3Location
       source: './schema.yaml',
       paths: {
@@ -114,16 +114,6 @@
     })
     ```
 
-3. Finally, let's assign the definition into `SpecRestApi`:
-    ```ts
-    import { SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-
-    new SpecRestApi(this, 'api', {
-      apiDefinition,
-      // optionally configure the API as you wish...
-    });
-    ```
-
 <br/>
 
 ## Validators
@@ -131,7 +121,7 @@
 API Gateway REST APIs can perform [request parameter and request body validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html). You can provide both default validator and integration specific validator (which will override the default for given integration).
 
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   validators: {
@@ -187,7 +177,7 @@ You can define the Cognito Authorizer in CDK with:
 ```ts
 const userPool: cognito.IUserPool;
 
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   authorizers: {
@@ -225,7 +215,7 @@ You can define the custom Lambda Authorizer in CDK with:
 ```ts
 const authFn: lambda.IFunction;
 
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   authorizers: {
@@ -247,7 +237,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 You may modify the generated OpenAPI definition (which is used to define API Gateway REST API) by injecting or rejecting values from the source OpenAPI schema definition:
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   // Add any OpenAPI v3 data.
@@ -272,7 +262,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 Using `openapix.CorsIntegration` creates a Mock integration which responds with correct response headers:
 
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   paths: {
@@ -310,7 +300,7 @@ When specifying multiple `origins` the mock integration uses [VTL magic](https:/
 
 If you wish to define same CORS options to every path, you may do so by providing a default `cors` value:
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   defaultCors: new openapix.CorsIntegration(this, {
