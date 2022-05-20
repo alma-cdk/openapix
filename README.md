@@ -69,29 +69,29 @@
     ```ts
     import * as openapix from '@alma-cdk/openapix';
 
-    const apiDefinition = new openapix.OpenApiDefinition(this, {
+    new openapix.OpenApi(this, 'MyApi', {
       upload: false, // by default add as inline Body, set to true to use as BodyS3Location
       source: './schema.yaml',
-      integrations: {
+      paths: {
 
         // Mock Integration
         '/mock': {
-          'GET': new openapix.MockIntegration(this),
+          get: new openapix.MockIntegration(this),
         },
 
         // AWS Lambda integration
         '/message': {
-          'POST': new openapix.LambdaIntegration(this, fn),
+          post: new openapix.LambdaIntegration(this, fn),
         },
 
         // HTTP Proxy integration
         '/ext': {
-          'ANY': new openapix.HttpIntegration(this, "https://example.com"),
+          any: new openapix.HttpIntegration(this, "https://example.com"),
         },
 
         // Direct integration to AWS Service
         '/item': {
-          'GET': new openapix.AwsIntegration(this, {
+          get: new openapix.AwsIntegration(this, {
             service: 'dynamodb',
             action: 'GetItem',
             options: {
@@ -114,16 +114,6 @@
     })
     ```
 
-3. Finally, let's assign the definition into `SpecRestApi`:
-    ```ts
-    import { SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-
-    new SpecRestApi(this, 'api', {
-      apiDefinition,
-      // optionally configure the API as you wish...
-    });
-    ```
-
 <br/>
 
 ## Validators
@@ -131,7 +121,7 @@
 API Gateway REST APIs can perform [request parameter and request body validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html). You can provide both default validator and integration specific validator (which will override the default for given integration).
 
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   validators: {
@@ -146,10 +136,10 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
     },
   },
 
-  integrations: {
+  paths: {
     '/message': {
       // Set a method-specific validator by assigning validator into props
-      'POST': new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
+      post: new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
     },
   },
 })
@@ -187,15 +177,15 @@ You can define the Cognito Authorizer in CDK with:
 ```ts
 const userPool: cognito.IUserPool;
 
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
-  authorizers: {
-    MyCognitoAuthorizer: {
+  authorizers: [
+    new openapix.CognitoUserPoolsAuthorizer(this, 'MyCognitoAuthorizer', {
       cognitoUserPools: [userPool],
       resultsCacheTtl: Duration.minutes(5),
-    },
-  },
+    })
+  ],
 })
 ```
 
@@ -225,18 +215,21 @@ You can define the custom Lambda Authorizer in CDK with:
 ```ts
 const authFn: lambda.IFunction;
 
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
-  authorizers: {
-    MyCustomAuthorizer: {
+  authorizers: [
+
+    new openapix.LambdaAuthorizer(this, 'MyCustomAuthorizer', {
       fn: authFn,
       identitySource: apigateway.IdentitySource.queryString('code'),
       type: 'request',
       authType: 'custom',
       resultsCacheTtl: Duration.minutes(5),
-    },
-  },
+    }),
+  ],
+
+
 })
 ```
 
@@ -247,7 +240,7 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 
 You may modify the generated OpenAPI definition (which is used to define API Gateway REST API) by injecting or rejecting values from the source OpenAPI schema definition:
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
   // Add any OpenAPI v3 data.
@@ -272,28 +265,28 @@ const apiDefinition = new openapix.OpenApiDefinition(this, {
 Using `openapix.CorsIntegration` creates a Mock integration which responds with correct response headers:
 
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
-  integrations: {
+  paths: {
     '/foo': {
-      'OPTIONS': new openapix.CorsIntegration(this, {
+      options: new openapix.CorsIntegration(this, {
         // using helper method to define explicit values:
         headers: CorsHeaders.from(this, 'Content-Type', 'X-Amz-Date', 'Authorization'),
         origins: CorsOrigins.from(this, 'https://www.example.com'),
-        methods: CorsMethods.from(this, 'OPTIONS','POST','GET'),
+        methods: CorsMethods.from(this, 'options','post','get'),
       }),
     },
     '/bar': {
-      'OPTIONS': new openapix.CorsIntegration(this, {
+      options: new openapix.CorsIntegration(this, {
         // using regular string values:
         headers: 'Content-Type,X-Amz-Date,Authorization',
         origins: '*',
-        methods: 'OPTIONS,GET',
+        methods: 'options,get',
       }),
     },
     '/baz': {
-      'OPTIONS': new openapix.CorsIntegration(this, {
+      options: new openapix.CorsIntegration(this, {
         // using helper constant for wildcard values:
         headers: CorsHeaders.ANY,
         origins: CorsOrigins.ANY,
@@ -310,17 +303,17 @@ When specifying multiple `origins` the mock integration uses [VTL magic](https:/
 
 If you wish to define same CORS options to every path, you may do so by providing a default `cors` value:
 ```ts
-const apiDefinition = new openapix.OpenApiDefinition(this, {
+new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
-  cors: new openapix.CorsIntegration(this, {
+  defaultCors: new openapix.CorsIntegration(this, {
     headers: CorsHeaders.ANY,
     origins: CorsOrigins.ANY,
     methods: CorsMethods.ANY,
   }),
 
-  integrations: {/*...*/},
+  paths: {/*...*/},
 });
 ```
 
-This will apply the given `cors` configuration to _every_ path as `OPTIONS` method. You may still do path specific overrides by adding an `OPTIONS` method to specific paths.
+This will apply the given `cors` configuration to _every_ path as `options` method. You may still do path specific overrides by adding an `options` method to specific paths.

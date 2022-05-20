@@ -1,5 +1,5 @@
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from "../x-amazon-apigateway/integration";
+import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from '../x-amazon-apigateway/integration';
 
 /** Interface implemented by all integrations. */
 export interface IBaseIntegration {
@@ -7,10 +7,8 @@ export interface IBaseIntegration {
   /** Identifier to enable internal type checks. */
   readonly type: InternalIntegrationType;
 
-  /** Returns the API Gateway Open Api integration extension. */
-  getIntegration(): XAmazonApigatewayIntegration;
-  /** Returns the validator identifier (if any). */
-  getValidatorId(): string | undefined;
+  readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+  readonly validator?: string;
 }
 
 export enum InternalIntegrationType {
@@ -34,7 +32,7 @@ export interface ValidatorConfig {
 
 /** Base integration config. */
 export interface IntegrationConfig extends ValidatorConfig {
-  type: InternalIntegrationType;
+  readonly type: InternalIntegrationType;
 }
 
 /**
@@ -44,26 +42,16 @@ export interface IntegrationConfig extends ValidatorConfig {
  * by derivative classes.
  */
 export abstract class Integration implements IBaseIntegration {
-  protected readonly integration: XAmazonApigatewayIntegration;
-  protected readonly validatorId?: string;
+  public readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+  public readonly validator?: string;
 
   public readonly type: InternalIntegrationType;
 
   /** Construc a new integration. */
   constructor(props: IntegrationProps, config: IntegrationConfig) {
-    this.integration = this.mapPropsToIntegration(props);
-    this.validatorId = config.validator;
+    this.xAmazonApigatwayIntegration = this.mapPropsToIntegration(props);
+    this.validator = config.validator;
     this.type = config.type;
-  }
-
-  /** Returns the API Gateway OpenApi integration extension. */
-  public getIntegration(): XAmazonApigatewayIntegration {
-      return this.integration;
-  }
-
-  /** Returns validator used by the integration (if any). */
-  public getValidatorId(): string | undefined {
-      return this.validatorId;
   }
 
   /** Convert CDK integration into API Gateway OpenApi integration extension. */

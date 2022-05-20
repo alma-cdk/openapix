@@ -1,2 +1,3 @@
 export { Schema } from './schema';
-export { SchemaDefinition } from './definition';
+export * from './props';
+export * from './definition';

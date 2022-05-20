@@ -1,27 +1,47 @@
 import * as cdk from 'aws-cdk-lib';
+import { Duration } from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { OpenApiXDefinition, OpenApiXLambda, OpenApiXSource } from '../src';
+import { get } from 'lodash';
+import * as openapix from '../src';
 
 test('Basic usage', () => {
   const stack = new cdk.Stack();
-  const apiDefinition = new OpenApiXDefinition(stack, {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
-    source: new OpenApiXSource({
+    source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
+      paths: {},
     }),
   });
 
-  const def = 'definition';
+  const actual = get(apiDefinition, 'definition');
 
-  expect(apiDefinition[def]).toEqual({ openapi: '3.0.1' } );
+
+  expect(actual).toEqual({
+    openapi: '3.0.1',
+    info: {
+      title: 'TestApi',
+      version: '0.0.0',
+    },
+    paths: {},
+  });
 });
 
 test('Inject paths', () => {
   const stack = new cdk.Stack();
-  const apiDefinition = new OpenApiXDefinition(stack, {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
-    source: new OpenApiXSource({
+    source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
       paths: {
         '/foo': {
           get: {
@@ -45,22 +65,24 @@ test('Inject paths', () => {
         },
       },
     }),
-    injectPaths: {
+    injections: {
       baz: 1,
     },
   });
 
-  const def = 'definition';
-
-  expect(apiDefinition[def].baz).toBe(1);
+  expect(get(apiDefinition, 'definition.baz')).toBe(1);
 });
 
 test('Reject deep paths', () => {
   const stack = new cdk.Stack();
-  const apiDefinition = new OpenApiXDefinition(stack, {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
-    source: new OpenApiXSource({
+    source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
       paths: {
         '/foo': {
           get: {
@@ -84,12 +106,11 @@ test('Reject deep paths', () => {
         },
       },
     }),
-    rejectDeepPaths: ['example'],
+    rejectionsDeep: ['example'],
   });
 
-  const def = 'definition';
 
-  expect(apiDefinition[def].paths['/foo'].get.responses['200'].content['application/json'].example).toBeUndefined();
+  expect(get(apiDefinition, 'definition.paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
 });
 
 test('Handles custom authorizer', () => {
@@ -109,14 +130,35 @@ test('Handles custom authorizer', () => {
               },
             }`),
   });
-  const apiDefinition = new OpenApiXDefinition(stack, {
+
+  const authorizerName = 'MyLambdaAuthorizer';
+
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
-    source: new OpenApiXSource({
+    source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
+      components: {
+        securitySchemes: {
+          [authorizerName]: {
+            type: 'apiKey',
+            name: 'code',
+            in: 'query',
+          },
+        },
+      },
       paths: {
         '/foo': {
           get: {
             operationId: 'get-foo',
+            security: [
+              {
+                [authorizerName]: [],
+              },
+            ],
             responses: {
               200: {
                 content: {
@@ -136,16 +178,27 @@ test('Handles custom authorizer', () => {
         },
       },
     }),
-    customAuthorizer: testLambda,
-    integrations: {
+
+    authorizers: [
+
+      new openapix.LambdaAuthorizer(stack, authorizerName, {
+        fn: testLambda,
+        identitySource: apigateway.IdentitySource.queryString('code'),
+        type: 'request',
+        authType: 'custom',
+        resultsCacheTtl: Duration.minutes(5),
+      }),
+    ],
+
+    paths: {
       '/foo': {
-        GET: new OpenApiXLambda(stack, testLambda),
+        GET: new openapix.LambdaIntegration(stack, testLambda),
       },
     },
   });
 
-  const def = 'definition';
+  const actual = get(apiDefinition, 'definition');
 
-  expect(apiDefinition[def].components.securitySchemes.customAuthorizer).toBeDefined();
-  expect(apiDefinition[def].paths['/foo'].get.security[0].customAuthorizer).toEqual([]);
+  expect(get(actual, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
+  expect(get(actual, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
 });

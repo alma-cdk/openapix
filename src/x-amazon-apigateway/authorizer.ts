@@ -18,7 +18,7 @@ export interface XAmazonApigatewayAuthorizer {
     * 'request'
     * 'cognito_user_pools'
     */
-  type: 'token'|'request'|'cognito_user_pools';
+  readonly type: 'token'|'request'|'cognito_user_pools';
 
   /**
    * The Uniform Resource Identifier (URI) of the authorizer Lambda function.
@@ -26,14 +26,14 @@ export interface XAmazonApigatewayAuthorizer {
    * @example
    * 'arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:account-id:function:auth_function_name/invocations'
    */
-  authorizerUri?: string;
+  readonly authorizerUri?: string;
 
   /**
    * The credentials required for invoking the authorizer, if any, in the form of an ARN of an IAM execution role.
    * @example
    * 'arn:aws:iam::123456789012:role/MyRole'
    */
-  authorizerCredentials?: string;
+  readonly authorizerCredentials?: string;
 
 
   /**
@@ -42,7 +42,7 @@ export interface XAmazonApigatewayAuthorizer {
    * @example
    * 60
    */
-  authorizerResultTtlInSeconds?: number;
+  readonly authorizerResultTtlInSeconds?: number;
 
   /**
    * A comma-separated list of mapping expressions of the request parameters as the identity source.
@@ -53,7 +53,7 @@ export interface XAmazonApigatewayAuthorizer {
    * 'method.request.header.Authorization, context.identity.sourceIp'
    * 'method.request.header.Auth, method.request.querystring.Name'
    */
-  identitySource?: string;
+  readonly identitySource?: string;
 
   /**
    * A regular expression for validating the token as the incoming identity.
@@ -61,7 +61,7 @@ export interface XAmazonApigatewayAuthorizer {
    * @example
    * '^x-[a-z]+'
    */
-  identityValidationExpression?: string;
+  readonly identityValidationExpression?: string;
 
   /**
    * List of Cognito User Pool ARNs.
@@ -70,6 +70,6 @@ export interface XAmazonApigatewayAuthorizer {
    * @example
    * ['arn:aws:cognito-idp:{region}:{account_id}:userpool/{user_pool_id}]
    */
-  providerARNs?: string[];
+  readonly providerARNs?: string[];
 
 }

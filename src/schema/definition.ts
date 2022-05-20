@@ -1,8 +1,10 @@
-import { HeaderObject, LinkObject, OpenAPI3, ParameterObject, PathItemObject, ReferenceObject, RequestBody, ResponseObject, SchemaObject } from 'openapi-typescript';
-import { SecuritySchemes } from '../security-schemes/interfaces/security-schemes';
+//import { HeaderObject, LinkObject, OpenAPI3, ParameterObject, PathItemObject, ReferenceObject, RequestBody, ResponseObject, SchemaObject } from 'openapi-typescript';
+// import { XAmazonApigatewayAuthorizer } from "../x-amazon-apigateway/authorizer";
+// import { XAmazonApigatewayAuthType } from "../x-amazon-apigateway/authtype";
 
+// export interface SchemaDefinition extends OpenAPI3 {
 
-export interface SchemaDefinition extends OpenAPI3 {
+export interface ISchemaDefinition {
   /**
    * OpenApi specification version used.
    * Only major version `3` currently supported.
@@ -21,33 +23,58 @@ export interface SchemaDefinition extends OpenAPI3 {
    *   version: "1.23.105",
    * }
    */
-  info?: InfoObject;
+  info?: IInfoObject;
 
   /**
    * API paths with their respective configurations.
    *
    * @todo PathItemObject should have index signature (to support `x-` extensions).
    */
-  paths?: Record<string, PathItemObject>;
+  paths?: IPaths;
+  //paths?: Record<string, PathItemObject>;
 
   /**
    * OpenApi component definitions.
    */
   components?: {
-    schemas?: Record<string, ReferenceObject | SchemaObject>;
-    responses?: Record<string, ReferenceObject | ResponseObject>;
-    parameters?: Record<string, ReferenceObject | ParameterObject>;
-    requestBodies?: Record<string, ReferenceObject | RequestBody>;
-    headers?: Record<string, ReferenceObject | HeaderObject>;
-    links?: Record<string, ReferenceObject | LinkObject>;
-    securitySchemes?: SecuritySchemes;
+    // TODO figure this out with JSII
+    //schemas?: Record<string, ReferenceObject | SchemaObject>;
+    //responses?: Record<string, ReferenceObject | ResponseObject>;
+    //parameters?: Record<string, ReferenceObject | ParameterObject>;
+    //requestBodies?: Record<string, ReferenceObject | RequestBody>;
+    //headers?: Record<string, ReferenceObject | HeaderObject>;
+    //links?: Record<string, ReferenceObject | LinkObject>;
+    securitySchemes?: Record<string, any>;// because JSII
+    [key: string]: any;
   };
 }
+
+/*
+paths:
+/:
+  get:
+  post:
+foo:
+  get:
+*/
+
+export interface IPaths {
+  [path: string]: IPath;
+}
+
+export interface IPath {
+  [method: string]: any;
+}
+
+export interface IMethod {
+
+}
+
 
 /**
  * OpenApi info object.
  */
-export interface InfoObject {
+export interface IInfoObject {
 
   /** The title of the API. */
   title: string;
@@ -62,14 +89,14 @@ export interface InfoObject {
   termsOfService?: string;
 
   /** The contact information for the exposed API. */
-  contact?: ContactObject;
+  contact?: IContactObject;
 
   /** The license information for the exposed API. */
-  license?: LicenseObject;
+  license?: ILicenseObject;
 }
 
 /** The contact information for the exposed API. */
-export interface ContactObject {
+export interface IContactObject {
 
   /** The identifying name of the contact person/organization. */
   name?: string;
@@ -82,7 +109,7 @@ export interface ContactObject {
 }
 
 /** The license information for the exposed API. */
-export interface LicenseObject {
+export interface ILicenseObject {
 
   /** The license name used for the API. */
   name: string;
@@ -90,3 +117,49 @@ export interface LicenseObject {
   /** A URL to the license used for the API. MUST be in the format of a URL. */
   url?: string;
 }
+
+
+// /**
+//  * Describes an authorizer defined in `securitySchemes` OpenApi 3 schema.
+//  *
+//  * @see https://swagger.io/specification/#security-scheme-object
+//  */
+// export interface ISecurityScheme {
+
+//   /**
+//    * The type of the security scheme.
+//    *
+//    * OpenAPI v3 allows "apiKey", "http", "oauth2", "openIdConnect" but apparently APIGW only allows "apiKey".
+//    *
+//    * @example
+//    * 'apiKey'
+//    */
+//    type: 'apiKey';
+
+//   /**
+//    * A short description for security scheme. CommonMark syntax MAY be used for rich text representation.
+//    */
+//    description?: string;
+
+//   /**
+//    * The name of the header, query or cookie parameter to be used.
+//    * Applicable for the authorizer of the `apiKey` type only.
+//    *
+//    * @example
+//    * 'Authorization'
+//    */
+//    name?: string;
+
+//   /**
+//    * The location of the API key. Valid values are "query", "header" or "cookie".
+//    * Applicable for the authorizer of the `apiKey` type only.
+//    *
+//    * @example
+//    * 'header'
+//    */
+//   in?: 'query'|'header'|'cookie';
+
+//   'x-amazon-apigateway-authtype'?: XAmazonApigatewayAuthType;
+
+//   'x-amazon-apigateway-authorizer'?: XAmazonApigatewayAuthorizer;
+// }

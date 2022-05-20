@@ -34,14 +34,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@types/js-yaml',
     '@types/omit-deep-lodash',
     '@types/prettier@v2.6.0',
-    'openapi-typescript',
   ],
   bundledDeps: [
     'change-case',
     'lodash',
     'js-yaml',
     'omit-deep-lodash',
-    'openapi-typescript',
   ],
 
   // Gitignore

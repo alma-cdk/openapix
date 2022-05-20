@@ -1,13 +1,13 @@
-import { Construct } from 'constructs';
-import { IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 import { readFileSync } from 'fs';
+import { IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
+import { Construct } from 'constructs';
+import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 const template = readFileSync(__dirname+'/cors.vtl', 'utf-8');
 
 export interface CorsIntegrationProps extends ValidatorConfig {
-  readonly headers: string,
-  readonly origins: string,
-  readonly methods: string,
+  readonly headers: string;
+  readonly origins: string;
+  readonly methods: string;
 }
 
 /**
@@ -18,6 +18,13 @@ export interface CorsIntegrationProps extends ValidatorConfig {
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/request-response-data-mappings.html#mapping-response-parameters
  */
 export class CorsIntegration extends Integration {
+
+  /** Build Apache Velocity (`.vtl`) template for CORS response. */
+  private static buildTemplate(origins: string): string {
+    const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
+    const tmpl = template.replace('__DOMAIN__', originsForTmpl);
+    return tmpl;
+  }
 
   /**
    * Defines `OPTIONS` integration used in Cross-Origin Resource Sharing (CORS).
@@ -59,12 +66,5 @@ export class CorsIntegration extends Integration {
     };
 
     super(integration, config);
-  }
-
-  /** Build Apache Velocity (`.vtl`) template for CORS response. */
-  private static buildTemplate(origins: string): string {
-    const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
-    const tmpl = template.replace('__DOMAIN__', originsForTmpl);
-    return tmpl;
   }
 }

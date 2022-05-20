@@ -4,7 +4,6 @@ import { addError } from '../errors/add';
 abstract class CorsSettingValue {
   public static ANY: string = '*';
 
-  protected static errorMessage: string;
 
   public static from(scope: Construct, ...values: string[]): string {
     if (values.length < 1) {
@@ -13,6 +12,8 @@ abstract class CorsSettingValue {
     }
     return values.join(',');
   }
+
+  protected static errorMessage: string;
 }
 
 export class CorsOrigins extends CorsSettingValue {
