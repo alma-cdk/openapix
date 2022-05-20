@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import { get, has, set, unset } from 'lodash';
 import { ISchemaDefinition } from './definition';
+import { SchemaProps } from './props';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -14,7 +15,7 @@ export class Schema {
 
   /** Parse OpenApi v3 schema from inline YAML content. */
   public static fromInline(content: string): Schema {
-    const schemaJson = <ISchemaDefinition>yaml.load(content);
+    const schemaJson = <SchemaProps>yaml.load(content);
     return new Schema(schemaJson);
   }
 
@@ -34,8 +35,8 @@ export class Schema {
   private definition: ISchemaDefinition;
 
   /** Construct a new Schema instance from OpenApi v3 JSON.  */
-  constructor(definition: ISchemaDefinition) {
-    this.definition = definition;
+  constructor(props: SchemaProps) {
+    this.definition = props;
   }
 
   /** Serialize to YAML string. */

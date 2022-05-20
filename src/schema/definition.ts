@@ -30,7 +30,7 @@ export interface ISchemaDefinition {
    *
    * @todo PathItemObject should have index signature (to support `x-` extensions).
    */
-  paths?: Record<string, any>;
+  paths?: IPaths;
   //paths?: Record<string, PathItemObject>;
 
   /**
@@ -48,6 +48,28 @@ export interface ISchemaDefinition {
     [key: string]: any;
   };
 }
+
+/*
+paths:
+/:
+  get:
+  post:
+foo:
+  get:
+*/
+
+export interface IPaths {
+  [path: string]: IPath;
+}
+
+export interface IPath {
+  [method: string]: any;
+}
+
+export interface IMethod {
+
+}
+
 
 /**
  * OpenApi info object.
