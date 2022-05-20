@@ -9,7 +9,7 @@ import { OpenApiDefinition } from './definition';
 
 export class OpenApi extends RestApi {
   public readonly api: IRestApi;
-  public readonly definition: ApiDefinition;
+  public readonly apiDefinition: ApiDefinition;
   private readonly baseProps: BasePropsWithDefaults;
   private readonly restApiProps?: RestApiProps;
 
@@ -37,10 +37,10 @@ export class OpenApi extends RestApi {
     this.baseProps = this.setBasePropsWithDefaults(props);
     this.restApiProps = props.restApiProps;
 
-    this.definition = new OpenApiDefinition(this, this.baseProps);
+    this.apiDefinition = new OpenApiDefinition(this, this.baseProps);
 
     const api = new SpecRestApi(this, 'SpecRestApi', {
-      apiDefinition: this.definition,
+      apiDefinition: this.apiDefinition,
       endpointTypes: [EndpointType.REGIONAL],
       ...this.restApiProps,
     });

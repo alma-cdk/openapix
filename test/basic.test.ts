@@ -7,14 +7,14 @@ import * as openapix from '../src';
 
 test('Basic usage', () => {
   const stack = new cdk.Stack();
-  const { definition } = new openapix.OpenApi(stack, 'MyApi', {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
     }),
   });
 
-  const actual = get(definition, 'definition');
+  const actual = get(apiDefinition, 'definition');
 
 
   expect(actual).toEqual({ openapi: '3.0.1' } );
@@ -22,7 +22,7 @@ test('Basic usage', () => {
 
 test('Inject paths', () => {
   const stack = new cdk.Stack();
-  const { definition } = new openapix.OpenApi(stack, 'MyApi', {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -54,12 +54,12 @@ test('Inject paths', () => {
     },
   });
 
-  expect(get(definition, 'definition.baz')).toBe(1);
+  expect(get(apiDefinition, 'definition.baz')).toBe(1);
 });
 
 test('Reject deep paths', () => {
   const stack = new cdk.Stack();
-  const { definition } = new openapix.OpenApi(stack, 'MyApi', {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -90,7 +90,7 @@ test('Reject deep paths', () => {
   });
 
 
-  expect(get(definition, 'definition.paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
+  expect(get(apiDefinition, 'definition.paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
 });
 
 test('Handles custom authorizer', () => {
@@ -113,7 +113,7 @@ test('Handles custom authorizer', () => {
 
   const authorizerName = 'MyLambdaAuthorizer';
 
-  const { definition } = new openapix.OpenApi(stack, 'MyApi', {
+  const { apiDefinition } = new openapix.OpenApi(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -173,7 +173,7 @@ test('Handles custom authorizer', () => {
     },
   });
 
-  const actual = get(definition, 'definition');
+  const actual = get(apiDefinition, 'definition');
 
   console.log('foo.get', actual.paths['/foo'].GET);
 
