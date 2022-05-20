@@ -18,12 +18,11 @@ export interface OpenApiBaseProps {
    * openapix.Schema.fromInline(yamlContent)
    *
    * @example
-   * new openapix.Schema(definition)
+   * const props: openapix.SchemaProps;
+   * new openapix.Schema(props)
    *
    */
-  readonly source: string | Schema; // TODO figure this out with JSII
-  //readonly source: string;
-
+  readonly source: string | Schema;
 
   /**
    * Schema Definition location (inline vs. S3 location).
