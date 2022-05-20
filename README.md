@@ -317,3 +317,30 @@ new openapix.OpenApi(this, 'MyApi', {
 ```
 
 This will apply the given `cors` configuration to _every_ path as `options` method. You may still do path specific overrides by adding an `options` method to specific paths.
+
+<br/>
+
+## API Gateway EndpointType
+
+AWS CDK API Gateway constructs default to [_Edge-optimized API endpoints_](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html#api-gateway-api-endpoint-types-edge-optimized) by using [`EndpointType.EDGE`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApi.html#endpointtypes) as the default.
+
+This construct `@alma-cdk/openapix` instead defaults to using [_Regional API endpoints_](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html#api-gateway-api-endpoint-types-regional) by setting `EndpointType.REGIONAL` as the default value. This is because we believe that in most cases you're better of by configuring your own CloudFront distribution in front the API. If you do that, you might also be interested in [`@alma-cdk/origin-verify` construct](https://github.com/alma-cdk/origin-verify).
+
+You MAY override this default in `@alma-cdk/openapix` by providing your preferred endpoint types via `restApiProps`:
+```ts
+new openapix.OpenApi(this, 'MyApi', {
+  source: './schema.yaml',
+
+  paths: {/*...*/},
+
+  restApiProps: {
+    endpointConfiguration: {
+      types: [ apigateway.EndpointType.EDGE ],
+    },
+  },
+});
+```
+
+
+
+
