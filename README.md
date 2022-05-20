@@ -76,22 +76,22 @@
 
         // Mock Integration
         '/mock': {
-          'GET': new openapix.MockIntegration(this),
+          get: new openapix.MockIntegration(this),
         },
 
         // AWS Lambda integration
         '/message': {
-          'POST': new openapix.LambdaIntegration(this, fn),
+          post: new openapix.LambdaIntegration(this, fn),
         },
 
         // HTTP Proxy integration
         '/ext': {
-          'ANY': new openapix.HttpIntegration(this, "https://example.com"),
+          any: new openapix.HttpIntegration(this, "https://example.com"),
         },
 
         // Direct integration to AWS Service
         '/item': {
-          'GET': new openapix.AwsIntegration(this, {
+          get: new openapix.AwsIntegration(this, {
             service: 'dynamodb',
             action: 'GetItem',
             options: {
@@ -139,7 +139,7 @@ new openapix.OpenApi(this, 'MyApi', {
   paths: {
     '/message': {
       // Set a method-specific validator by assigning validator into props
-      'POST': new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
+      post: new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
     },
   },
 })
@@ -270,23 +270,23 @@ new openapix.OpenApi(this, 'MyApi', {
 
   paths: {
     '/foo': {
-      'OPTIONS': new openapix.CorsIntegration(this, {
+      options: new openapix.CorsIntegration(this, {
         // using helper method to define explicit values:
         headers: CorsHeaders.from(this, 'Content-Type', 'X-Amz-Date', 'Authorization'),
         origins: CorsOrigins.from(this, 'https://www.example.com'),
-        methods: CorsMethods.from(this, 'OPTIONS','POST','GET'),
+        methods: CorsMethods.from(this, 'options','post','get'),
       }),
     },
     '/bar': {
-      'OPTIONS': new openapix.CorsIntegration(this, {
+      options: new openapix.CorsIntegration(this, {
         // using regular string values:
         headers: 'Content-Type,X-Amz-Date,Authorization',
         origins: '*',
-        methods: 'OPTIONS,GET',
+        methods: 'options,get',
       }),
     },
     '/baz': {
-      'OPTIONS': new openapix.CorsIntegration(this, {
+      options: new openapix.CorsIntegration(this, {
         // using helper constant for wildcard values:
         headers: CorsHeaders.ANY,
         origins: CorsOrigins.ANY,
@@ -316,4 +316,4 @@ new openapix.OpenApi(this, 'MyApi', {
 });
 ```
 
-This will apply the given `cors` configuration to _every_ path as `OPTIONS` method. You may still do path specific overrides by adding an `OPTIONS` method to specific paths.
+This will apply the given `cors` configuration to _every_ path as `options` method. You may still do path specific overrides by adding an `options` method to specific paths.

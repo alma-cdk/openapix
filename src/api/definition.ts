@@ -131,7 +131,7 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
       this.ensureMethodExists(path, method);
       this.ensureNoIntegrationAlready(path, method);
 
-      const integration = methods[method.toUpperCase()]!;
+      const integration = methods[method.toLowerCase()]!;
       const methodPath = `paths['${path}']['${method}']`;
 
       const validator = integration.validator;

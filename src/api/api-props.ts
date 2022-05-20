@@ -41,7 +41,7 @@ export interface OpenApiBaseProps {
    * @example
    * {
    *   '/message': {
-   *     'POST': new openapix.LambdaIntegration(this, fn),
+   *     post: new openapix.LambdaIntegration(this, fn),
    *   },
    * }
    */
@@ -95,14 +95,14 @@ export interface OpenApiBaseProps {
    * Default CORS configuration.
    * Applied to all path integrations.
    *
-   * You can add path specific overrides by adding an `OPTIONS` method with
+   * You can add path specific overrides by adding an `options` method with
    * `new openapix.CorsIntegration(...)` integration.
    *
    * @example
    * new openapix.CorsIntegration(this, {
    *   headers: 'Content-Type,X-Amz-Date,Authorization',
    *   origins: '*',
-   *   methods: 'OPTIONS,GET',
+   *   methods: 'options,get',
    * }),
    */
   readonly defaultCors?: CorsIntegration;

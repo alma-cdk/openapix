@@ -23,10 +23,10 @@ export class OpenApi extends RestApi {
    *   source: './schema.yaml',
    *   paths: {
    *     '/foo': {
-   *       'GET': new openapix.MockIntegration(this),
+   *       get: new openapix.MockIntegration(this),
    *     },
    *     '/bar': {
-   *       'POST': new openapix.LambdaIntegration(this, fn),
+   *       post: new openapix.LambdaIntegration(this, fn),
    *     },
    *   }
    * })
