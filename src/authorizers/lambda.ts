@@ -4,22 +4,27 @@ import { Construct } from 'constructs';
 import { LambdaInvocation } from '../lambda-invocation';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
 import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
-import { Id, AuthorizerConfig } from './authorizer';
+import { Id } from './authorizer';
 
 export interface LambdaAuthorizerProps {
-  fn: IFunction;
+
+  readonly fn: IFunction;
 
   /**
    * @example
    * apigateway.IdentitySource.header('Authorization')
    */
-  identitySource: string;
-  type: 'token'|'request';
-  authType: string;
-  resultsCacheTtl?: Duration;
+  readonly identitySource: string;
+
+  readonly type: 'token'|'request';
+
+  readonly authType: string;
+
+  readonly resultsCacheTtl?: Duration;
 }
 
-export class LambdaAuthorizer extends Construct implements AuthorizerConfig {
+// implements AuthorizerConfig ... JSII doesn't like
+export class LambdaAuthorizer extends Construct {
 
   public readonly id: Id;
   readonly xAmazonApigatewayAuthtype: XAmazonApigatewayAuthType;

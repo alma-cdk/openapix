@@ -11,13 +11,25 @@ test('Basic usage', () => {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
+      paths: {},
     }),
   });
 
   const actual = get(apiDefinition, 'definition');
 
 
-  expect(actual).toEqual({ openapi: '3.0.1' } );
+  expect(actual).toEqual({
+    openapi: '3.0.1',
+    info: {
+      title: 'TestApi',
+      version: '0.0.0',
+    },
+    paths: {},
+  });
 });
 
 test('Inject paths', () => {
@@ -26,9 +38,13 @@ test('Inject paths', () => {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
       paths: {
         '/foo': {
-          GET: {
+          get: {
             operationId: 'get-foo',
             responses: {
               200: {
@@ -63,9 +79,13 @@ test('Reject deep paths', () => {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
       paths: {
         '/foo': {
-          GET: {
+          get: {
             operationId: 'get-foo',
             responses: {
               200: {
@@ -117,6 +137,10 @@ test('Handles custom authorizer', () => {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
       components: {
         securitySchemes: {
           [authorizerName]: {
@@ -128,7 +152,7 @@ test('Handles custom authorizer', () => {
       },
       paths: {
         '/foo': {
-          GET: {
+          get: {
             operationId: 'get-foo',
             security: [
               {
@@ -175,8 +199,6 @@ test('Handles custom authorizer', () => {
 
   const actual = get(apiDefinition, 'definition');
 
-  console.log('foo.get', actual.paths['/foo'].GET);
-
   expect(get(actual, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
-  expect(get(actual, 'paths./foo.GET.security[0].MyLambdaAuthorizer')).toEqual([]);
+  expect(get(actual, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
 });

@@ -41,7 +41,7 @@ export interface SchemaProps {
   readonly security?: SecurityRequirementObject[];
 
   /** A list of tags used by the specification with additional metadata. The order of the tags can be used to reflect on their order by the parsing tools. Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic. Each tag name in the list MUST be unique. */
-  readonly tags: TagObject[];
+  readonly tags?: TagObject[];
 
   /** Additional external documentation. */
   readonly externalDocs?: ExternalDocumentationObject;
@@ -99,14 +99,11 @@ export interface LicenseObject {
 export interface PathsObject {
 
   /** A relative path to an individual endpoint. The field name MUST begin with a forward slash (/). The path is appended (no relative URL resolution) to the expanded URL from the Server Object's url field in order to construct the full URL. Path templating is allowed. When matching URLs, concrete (non-templated) paths would be matched before their templated counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use. */
-  readonly [path: string]: PathItemObject;
+  readonly [path: string]: PathItemObject | ReferenceObject;
 }
 
 /** Describes the operations available on a single path. A Path Item MAY be empty, due to ACL constraints. The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available. */
 export interface PathItemObject {
-
-  /** Allows for an external definition of this path item. The referenced structure MUST be in the format of a Path Item Object. In case a Path Item Object field appears both in the defined object and the referenced object, the behavior is undefined. */
-  readonly $ref?: string;
 
   /** An optional, string summary, intended to apply to all operations in this path. */
   readonly summary?: string;
@@ -179,7 +176,7 @@ export interface OperationObject {
   readonly deprecated?: boolean;
 
   /** A declaration of which security mechanisms can be used for this operation. The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. To make security optional, an empty security requirement ({}) can be included in the array. This definition overrides any declared top-level security. To remove a top-level security declaration, an empty array can be used. */
-  readonly security: SecurityRequirementObject[];
+  readonly security?: SecurityRequirementObject[];
 
   // Servers not allowed since we're using API Gateway where you can't have operation specific "servers".
   // readonly servers?: ServerObject[];
@@ -206,7 +203,7 @@ export interface ResponsesObject {
    * Use this field to cover undeclared responses. A Reference Object can link to a response that the OpenAPI Object's
    * components/responses section defines.
    */
-  readonly [httpStatusCode: string]: ResponsesObject | ReferenceObject;
+  readonly [httpStatusCode: string]: ResponseObject | ReferenceObject;
 }
 
 /** Allows referencing an external resource for extended documentation. */
@@ -236,7 +233,7 @@ export interface RequestBodyObject {
 export interface MediaTypeObject {
 
   /** The schema defining the content of the request, response, or parameter. */
-  readonly schema: SchemaObject | ReferenceObject;
+  readonly schema?: SchemaObject | ReferenceObject;
 
   /** Example of the media type. The example object SHOULD be in the correct format as specified by the media type. The example field is mutually exclusive of the examples field. Furthermore, if referencing a schema which contains an example, the example value SHALL override the example provided by the schema. */
   readonly example?: any;
@@ -379,31 +376,31 @@ export interface CallbackObject {
 export interface ComponentsObject {
 
   /** An object to hold reusable Schema Objects. */
-  readonly schemas: Record<string, SchemaObject | ReferenceObject>;
+  readonly schemas?: Record<string, SchemaObject | ReferenceObject>;
 
   /** An object to hold reusable Response Objects. */
-  readonly responses: Record<string, ResponseObject | ReferenceObject>;
+  readonly responses?: Record<string, ResponseObject | ReferenceObject>;
 
   /** An object to hold reusable Parameter Objects. */
-  readonly parameters: Record<string, ParameterObject | ReferenceObject>;
+  readonly parameters?: Record<string, ParameterObject | ReferenceObject>;
 
   /** An object to hold reusable Example Objects. */
-  readonly examples: Record<string, ExampleObject | ReferenceObject>;
+  readonly examples?: Record<string, ExampleObject | ReferenceObject>;
 
   /** An object to hold reusable Request Body Objects. */
-  readonly requestBodies: Record<string, RequestBodyObject | ReferenceObject>;
+  readonly requestBodies?: Record<string, RequestBodyObject | ReferenceObject>;
 
   /** An object to hold reusable Header Objects. */
-  readonly headers: Record<string, HeaderObject | ReferenceObject>;
+  readonly headers?: Record<string, HeaderObject | ReferenceObject>;
 
   /** An object to hold reusable Security Scheme Objects. */
-  readonly securitySchemes: Record<string, SecuritySchemeObject | ReferenceObject>;
+  readonly securitySchemes?: Record<string, SecuritySchemeObject | ReferenceObject>;
 
   /** An object to hold reusable Link Objects. */
-  readonly links: Record<string, LinkObject | ReferenceObject>;
+  readonly links?: Record<string, LinkObject | ReferenceObject>;
 
   /** An object to hold reusable Callback Objects. */
-  readonly callbacks: Record<string, CallbackObject | ReferenceObject>;
+  readonly callbacks?: Record<string, CallbackObject | ReferenceObject>;
 }
 
 /** Describes a single response from an API Operation, including design-time, static links to operations based on the response. */
@@ -413,13 +410,13 @@ export interface ResponseObject {
   readonly description: string;
 
   /** Maps a header name to its definition. RFC7230 states header names are case insensitive. If a response header is defined with the name "Content-Type", it SHALL be ignored. */
-  readonly headers: Record<string, HeaderObject | ReferenceObject>;
+  readonly headers?: Record<string, HeaderObject | ReferenceObject>;
 
   /** A map containing descriptions of potential response payloads. The key is a media type or media type range and the value describes it. For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/* */
-  readonly content: Record<string, MediaTypeObject | ReferenceObject>;
+  readonly content?: Record<string, MediaTypeObject | ReferenceObject>;
 
   /** A map of operations links that can be followed from the response. The key of the map is a short name for the link, following the naming constraints of the names for Component Objects. */
-  readonly links: Record<string, LinkObject | ReferenceObject>;
+  readonly links?: Record<string, LinkObject | ReferenceObject>;
 }
 
 /** Defines a security scheme that can be used by the operations. Supported schemes are HTTP authentication, an API key (either as a header, a cookie parameter or as a query parameter), OAuth2's common flows (implicit, password, client credentials and authorization code) as defined in RFC6749, and OpenID Connect Discovery. */
@@ -574,8 +571,18 @@ export interface ParameterObject {
 /** A simple object to allow referencing other components in the specification, internally and externally. */
 export interface ReferenceObject {
 
-  /** The reference string. */
-  readonly $ref: string;
+  /**
+   * The reference string.
+   *
+   * Defined via index signature because JSII 8002 validation requires camelCase names for members (not allowing $ prefix).
+   *
+   * @example
+   * {
+   *   $ref: '../resources/users.yaml',
+   * }
+   */
+  readonly [key: string]: string;
+  //readonly $ref: string; can't be done because JSII 8002
 }
 
 
