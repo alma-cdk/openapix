@@ -10,7 +10,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorOrganization: true,
   authorAddress: 'opensource@almamedia.dev',
   name: '@alma-cdk/openapix',
-  description: 'Combine the power of AWS CDK & OpenAPI YAML Schema Definitions ',
+  description: 'Combine the power of AWS CDK & OpenAPI YAML Schema Definitions',
   repositoryUrl: 'https://github.com/alma-cdk/openapix.git',
   keywords: ['cdk', 'aws-cdk', 'awscdk', 'aws', 'cloudfront', 'api-gateway', 'rest-api', 'open-api', 'swagger'],
 
