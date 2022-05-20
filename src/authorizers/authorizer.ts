@@ -1,5 +1,5 @@
-import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
+import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
 
 /**
  * Authorizer Identifier MUST match a object key in OpenApi v3 definition

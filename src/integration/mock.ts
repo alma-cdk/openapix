@@ -1,5 +1,5 @@
-import { Construct } from 'constructs';
 import { IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
+import { Construct } from 'constructs';
 import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 
 export interface MockIntegrationProps extends IntegrationProps, ValidatorConfig {}

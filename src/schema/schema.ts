@@ -6,8 +6,6 @@ import { ISchemaDefinition } from './definition';
 const omitDeep = require('omit-deep-lodash');
 
 
-
-
 /**
  * Represents an OpenApi v3 Schema which can be deserialized from YAML-file, modified
  * and then serialized back to YAML.
@@ -43,6 +41,14 @@ export class Schema {
   /** Serialize to YAML string. */
   public toYaml(): string {
     return yaml.dump(this.definition);
+  }
+
+  public toJson(): string {
+    return JSON.stringify(this.definition);
+  }
+
+  public toObject(): any {
+    return this.definition;
   }
 
   /** Check if definition has a value in given object path. */

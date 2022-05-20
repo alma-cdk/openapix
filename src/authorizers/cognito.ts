@@ -1,9 +1,9 @@
-import { Construct } from 'constructs';
-import { IUserPool } from 'aws-cdk-lib/aws-cognito';
 import { Duration } from 'aws-cdk-lib';
-import { Id, AuthorizerConfig } from './authorizer';
-import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
+import { IUserPool } from 'aws-cdk-lib/aws-cognito';
+import { Construct } from 'constructs';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
+import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
+import { Id, AuthorizerConfig } from './authorizer';
 
 export interface CognitoUserPoolsAuthorizerProps {
   cognitoUserPools: IUserPool[];
@@ -27,15 +27,12 @@ export class CognitoUserPoolsAuthorizer extends Construct implements AuthorizerC
       providerARNs: cognitoUserPools.map(p => p.userPoolArn),
       authorizerResultTtlInSeconds: (function(): number | undefined {
         if (typeof resultsCacheTtl !== 'undefined') {
-          return resultsCacheTtl.toSeconds()
+          return resultsCacheTtl.toSeconds();
         }
-        return undefined
-      }())
-    }
+        return undefined;
+      }()),
+    };
   }
 }
-
-
-
 
 

@@ -1,5 +1,5 @@
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from "../x-amazon-apigateway/integration";
+import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from '../x-amazon-apigateway/integration';
 
 /** Interface implemented by all integrations. */
 export interface IBaseIntegration {

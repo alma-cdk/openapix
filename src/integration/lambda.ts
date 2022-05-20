@@ -1,15 +1,30 @@
-import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
-import { LambdaInvocation } from '../lambda-invocation';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
 import { IGrantable } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { Construct } from 'constructs';
+import { LambdaInvocation } from '../lambda-invocation';
+import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 
 export interface LambdaIntegrationOptions extends apigateway.LambdaIntegrationOptions, ValidatorConfig {}
 
 /** Defines an AWS Lambda integration. */
 export class LambdaIntegration extends Integration {
+
+  /**
+   * Selects the Lambda integration type.
+   *
+   * @default
+   * 'AWS_PROXY'
+   */
+  private static selectIntegrationType(proxy?: boolean): apigateway.IntegrationType {
+    if (proxy === false) {
+      return apigateway.IntegrationType.AWS;
+    }
+
+    // default to proxy as CDK does
+    return apigateway.IntegrationType.AWS_PROXY;
+  }
 
   private fn: IFunction;
 
@@ -45,21 +60,6 @@ export class LambdaIntegration extends Integration {
   /** Allow Lambda invoke action to be performed by given identity. */
   public grantFunctionInvoke(identity: IGrantable): void {
     this.fn.grantInvoke(identity);
-  }
-
-  /**
-   * Selects the Lambda integration type.
-   *
-   * @default
-   * 'AWS_PROXY'
-   */
-  private static selectIntegrationType(proxy?: boolean): apigateway.IntegrationType {
-    if (proxy === false) {
-      return apigateway.IntegrationType.AWS;
-    }
-
-    // default to proxy as CDK does
-    return apigateway.IntegrationType.AWS_PROXY;
   }
 
 }

@@ -2,17 +2,15 @@ import * as fs from 'fs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import { Construct } from 'constructs';
-import { Schema } from '../schema';
+import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
+import { CorsIntegration } from '../integration/cors';
+import { Schema } from '../schema';
 
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
-import { CorsIntegration } from '../integration/cors';
 import { BasePropsWithDefaults, Methods, Paths, Validator } from './api-props';
-import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
-
-
 
 
 export class OpenApiDefinition extends apigateway.ApiDefinition {
@@ -60,20 +58,27 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
 
   private configureValidators(validators: Record<string, Validator>): void {
 
-    const defaults = Object.keys(validators).filter(k => validators[k].default === true)
+    const keys = Object.keys(validators);
+
+    const defaults = keys.filter(k => validators[k].default === true);
 
     // Ensure only single validator configured as default
     if (defaults.length > 1) {
-      addError(this.scope, `You may only configure one default validator`);
+      addError(this.scope, 'You may only configure one default validator');
       return;
     }
 
     // Configure the default validator if provided
     if (defaults.length === 1) {
-      this.source.set('x-amazon-apigateway-request-validator', defaults[0])
+      this.source.set('x-amazon-apigateway-request-validator', defaults[0]);
     }
 
-    const cleaned = <Record<string, XAmazonApigatewayRequestValidator>>omitDeep(validators, 'default')
+    // Do not assign x-amazon-apigateway-request-validators object if none provided
+    if (keys.length < 1) {
+      return;
+    }
+
+    const cleaned = <Record<string, XAmazonApigatewayRequestValidator>>omitDeep(validators, 'default');
 
     this.source.set('x-amazon-apigateway-request-validators', cleaned);
   }
@@ -81,19 +86,19 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure Authorizers within OpenApi `components.securitySchemes`.
    */
-  private configureAuthorizers(authorizers: Record<string, AuthorizerConfig>): void {
-    Object.keys(authorizers).map(id => {
-      const config = authorizers[id];
-      const path = `components.securitySchemes.${id}`;
+  private configureAuthorizers(authorizers: AuthorizerConfig[]): void {
+    authorizers.map(a => {
+
+      const path = `components.securitySchemes.${a.id}`;
 
       if (!this.source.has(path)) {
-        addError(this.scope, `Security Scheme ${id} not found in OpenAPI Definition`);
+        addError(this.scope, `Security Scheme ${a.id} not found in OpenAPI Definition`);
         return;
       }
 
       const authorizer = this.source.get<AuthorizerExtensionsMutable>(path);
-      authorizer['x-amazon-apigateway-authtype'] = config.xAmazonApigatewayAuthtype;
-      authorizer['x-amazon-apigateway-authorizer'] = config.xAmazonApigatewayAuthorizer;
+      authorizer['x-amazon-apigateway-authtype'] = a.xAmazonApigatewayAuthtype;
+      authorizer['x-amazon-apigateway-authorizer'] = a.xAmazonApigatewayAuthorizer;
       this.source.set(path, authorizer);
     });
   }
@@ -154,8 +159,8 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
    * Set `s3Location` or `definition` to expose the generated definition
    * for CDK/CloudFormation.
    */
-   private exposeDefinition(): void {
-    const newSchema = this.source.toYaml();
+  private exposeDefinition(): void {
+    const newSchema = this.source.toObject();
     if (this.upload) {
       const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';// TODO?
       fs.writeFileSync(newSchemaPath, JSON.stringify(newSchema), 'utf-8');

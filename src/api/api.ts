@@ -1,15 +1,15 @@
-import { Construct } from 'constructs';
-import { EndpointType, IRestApi, RestApi, RestApiProps, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { BasePropsWithDefaults, OpenApiProps, Paths } from './api-props';
-import { OpenApiDefinition } from './definition';
+import { ApiDefinition, EndpointType, IRestApi, RestApi, RestApiProps, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Construct } from 'constructs';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
-
+import { BasePropsWithDefaults, OpenApiProps, Paths } from './api-props';
+import { OpenApiDefinition } from './definition';
 
 
 export class OpenApi extends RestApi {
   public readonly api: IRestApi;
+  public readonly definition: ApiDefinition;
   private readonly baseProps: BasePropsWithDefaults;
   private readonly restApiProps?: RestApiProps;
 
@@ -37,10 +37,10 @@ export class OpenApi extends RestApi {
     this.baseProps = this.setBasePropsWithDefaults(props);
     this.restApiProps = props.restApiProps;
 
-    const apiDefinition = new OpenApiDefinition(this, this.baseProps);
+    this.definition = new OpenApiDefinition(this, this.baseProps);
 
     const api = new SpecRestApi(this, 'SpecRestApi', {
-      apiDefinition,
+      apiDefinition: this.definition,
       endpointTypes: [EndpointType.REGIONAL],
       ...this.restApiProps,
     });
@@ -56,13 +56,13 @@ export class OpenApi extends RestApi {
       source: props.source,
       upload: props.upload === false ? false : true,
       paths: props.paths || {},
-      authorizers: props.authorizers || {},
+      authorizers: props.authorizers || [],
       validators: props.validators || {},
       defaultCors: props.defaultCors,
       injections: props.injections || {},
       rejections: props.rejections || [],
       rejectionsDeep: props.rejectionsDeep || [],
-    }
+    };
   }
 
   /** Allow Lambda invocations to API Gateway instance principal. */

@@ -23,20 +23,20 @@ export interface ISchemaDefinition {
    *   version: "1.23.105",
    * }
    */
-   info?: IInfoObject;
+  info?: IInfoObject;
 
   /**
    * API paths with their respective configurations.
    *
    * @todo PathItemObject should have index signature (to support `x-` extensions).
    */
-   paths?: Record<string, any>;
+  paths?: Record<string, any>;
   //paths?: Record<string, PathItemObject>;
 
   /**
    * OpenApi component definitions.
    */
-   components?: {
+  components?: {
     // TODO figure this out with JSII
     //schemas?: Record<string, ReferenceObject | SchemaObject>;
     //responses?: Record<string, ReferenceObject | ResponseObject>;
@@ -95,8 +95,6 @@ export interface ILicenseObject {
   /** A URL to the license used for the API. MUST be in the format of a URL. */
   url?: string;
 }
-
-
 
 
 // /**

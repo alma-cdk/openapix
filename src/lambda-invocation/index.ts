@@ -3,14 +3,16 @@ import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 
 export class LambdaInvocation {
-  /** Invocation URI ARN used by API Gateway. */
-  public readonly uri: string;
 
   /** Lambda API version. */
   public static readonly apiVersion: string = '2015-03-31';
 
   private static readonly service: string = 'apigateway';
   private static readonly resourceType: string = 'lambda';
+
+  /** Invocation URI ARN used by API Gateway. */
+  public readonly uri: string;
+
   private readonly partition: string;
   private readonly region: string;
   private readonly functionArn: string;
@@ -40,7 +42,7 @@ export class LambdaInvocation {
       'functions',
       functionArn,
       'invocations',
-    ].join('/')
+    ].join('/');
   }
 
   private resolveUri(partition: string, region: string, functionArn: string): string {

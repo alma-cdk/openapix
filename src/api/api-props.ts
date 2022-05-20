@@ -1,9 +1,9 @@
-//import { Schema } from '../schema';
-import { Integration } from '../integration/base';
-import { CorsIntegration } from '../integration/cors';
-import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
 import { RestApiProps } from 'aws-cdk-lib/aws-apigateway';
 import { AuthorizerConfig } from '../authorizers/authorizer';
+import { Integration } from '../integration/base';
+import { CorsIntegration } from '../integration/cors';
+import { Schema } from '../schema';
+import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
 
 /** BaseProps for the `OpenApi` construct without `RestApiProps`. */
 export interface OpenApiBaseProps {
@@ -21,8 +21,8 @@ export interface OpenApiBaseProps {
    * new openapix.Schema(definition)
    *
    */
-   readonly source: string;
-  //readonly source: string | Schema; // TODO figure this out with JSII
+  readonly source: string | Schema; // TODO figure this out with JSII
+  //readonly source: string;
 
 
   /**
@@ -54,14 +54,14 @@ export interface OpenApiBaseProps {
    * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
    *
    * @example
-   * {
-   *   MyCognitoAuthorizer: {
+   * [
+   *   new openapix.CognitoUserPoolsAuthorizer(this, 'MyCognitoAuthorizer', {
    *     cognitoUserPools: [userPool],
    *     resultsCacheTtl: Duration.minutes(5),
-   *   },
-   * }
+   *   }),
+   * ]
    */
-  readonly authorizers?: Record<string, AuthorizerConfig>;
+  readonly authorizers?: AuthorizerConfig[];
 
   /**
    * Configure availalbe request validators.
@@ -136,7 +136,6 @@ export interface OpenApiBaseProps {
 }
 
 
-
 /** Props to configure `new openapix.OpenApi`. */
 export interface OpenApiProps extends OpenApiBaseProps {
 
@@ -156,14 +155,14 @@ export interface Validator extends XAmazonApigatewayRequestValidator {
  * Internal interface holding baseProps with default values.
  */
 export interface BasePropsWithDefaults extends OpenApiBaseProps {
-   //readonly source: string | Schema;
-   readonly source: string;
-   readonly upload: boolean;
-   readonly paths: Paths;
-   readonly authorizers: Record<string, AuthorizerConfig>;
-   readonly validators: Record<string, Validator>;
-   readonly injections: Record<string, any>;
-   readonly rejections: string[];
-   readonly rejectionsDeep: string[];
+  readonly source: string | Schema;
+  //readonly source: string;
+  readonly upload: boolean;
+  readonly paths: Paths;
+  readonly authorizers: AuthorizerConfig[];
+  readonly validators: Record<string, Validator>;
+  readonly injections: Record<string, any>;
+  readonly rejections: string[];
+  readonly rejectionsDeep: string[];
 }
 

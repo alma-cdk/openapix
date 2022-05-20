@@ -180,12 +180,12 @@ const userPool: cognito.IUserPool;
 new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
-  authorizers: {
-    MyCognitoAuthorizer: {
+  authorizers: [
+    new openapix.CognitoUserPoolsAuthorizer(this, 'MyCognitoAuthorizer', {
       cognitoUserPools: [userPool],
       resultsCacheTtl: Duration.minutes(5),
-    },
-  },
+    })
+  ],
 })
 ```
 
@@ -218,15 +218,18 @@ const authFn: lambda.IFunction;
 new openapix.OpenApi(this, 'MyApi', {
   source: './schema.yaml',
 
-  authorizers: {
-    MyCustomAuthorizer: {
+  authorizers: [
+
+    new openapix.LambdaAuthorizer(this, 'MyCustomAuthorizer', {
       fn: authFn,
       identitySource: apigateway.IdentitySource.queryString('code'),
       type: 'request',
       authType: 'custom',
       resultsCacheTtl: Duration.minutes(5),
-    },
-  },
+    }),
+  ],
+
+
 })
 ```
 
