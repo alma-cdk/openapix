@@ -34,6 +34,18 @@ export interface SchemaProps {
    */
   readonly servers?: ServerObject[];
 
+  /** An element to hold various schemas for the specification. */
+  readonly components?: ComponentsObject;
+
+  /** A declaration of which security mechanisms can be used across the API. The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. Individual operations can override this definition. To make security optional, an empty security requirement ({}) can be included in the array. */
+  readonly security?: SecurityRequirementObject[];
+
+  /** A list of tags used by the specification with additional metadata. The order of the tags can be used to reflect on their order by the parsing tools. Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic. Each tag name in the list MUST be unique. */
+  readonly tags: TagObject[];
+
+  /** Additional external documentation. */
+  readonly externalDocs?: ExternalDocumentationObject;
+
 }
 
 
@@ -363,6 +375,162 @@ export interface CallbackObject {
   readonly [expression: string]: PathItemObject;
 }
 
+/** Holds a set of reusable objects for different aspects of the OAS. All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object. */
+export interface ComponentsObject {
+
+  /** An object to hold reusable Schema Objects. */
+  readonly schemas: Record<string, SchemaObject | ReferenceObject>;
+
+  /** An object to hold reusable Response Objects. */
+  readonly responses: Record<string, ResponseObject | ReferenceObject>;
+
+  /** An object to hold reusable Parameter Objects. */
+  readonly parameters: Record<string, ParameterObject | ReferenceObject>;
+
+  /** An object to hold reusable Example Objects. */
+  readonly examples: Record<string, ExampleObject | ReferenceObject>;
+
+  /** An object to hold reusable Request Body Objects. */
+  readonly requestBodies: Record<string, RequestBodyObject | ReferenceObject>;
+
+  /** An object to hold reusable Header Objects. */
+  readonly headers: Record<string, HeaderObject | ReferenceObject>;
+
+  /** An object to hold reusable Security Scheme Objects. */
+  readonly securitySchemes: Record<string, SecuritySchemeObject | ReferenceObject>;
+
+  /** An object to hold reusable Link Objects. */
+  readonly links: Record<string, LinkObject | ReferenceObject>;
+
+  /** An object to hold reusable Callback Objects. */
+  readonly callbacks: Record<string, CallbackObject | ReferenceObject>;
+}
+
+/** Describes a single response from an API Operation, including design-time, static links to operations based on the response. */
+export interface ResponseObject {
+
+  /** A short description of the response. CommonMark syntax MAY be used for rich text representation. */
+  readonly description: string;
+
+  /** Maps a header name to its definition. RFC7230 states header names are case insensitive. If a response header is defined with the name "Content-Type", it SHALL be ignored. */
+  readonly headers: Record<string, HeaderObject | ReferenceObject>;
+
+  /** A map containing descriptions of potential response payloads. The key is a media type or media type range and the value describes it. For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/* */
+  readonly content: Record<string, MediaTypeObject | ReferenceObject>;
+
+  /** A map of operations links that can be followed from the response. The key of the map is a short name for the link, following the naming constraints of the names for Component Objects. */
+  readonly links: Record<string, LinkObject | ReferenceObject>;
+}
+
+/** Defines a security scheme that can be used by the operations. Supported schemes are HTTP authentication, an API key (either as a header, a cookie parameter or as a query parameter), OAuth2's common flows (implicit, password, client credentials and authorization code) as defined in RFC6749, and OpenID Connect Discovery. */
+export interface SecuritySchemeObject {
+
+  /** The type of the security scheme. Valid values are "apiKey", "http", "oauth2", "openIdConnect". */
+  readonly type: string;
+
+  /** A short description for security scheme. CommonMark syntax MAY be used for rich text representation. */
+  readonly description?: string;
+
+  /**
+   * The name of the header, query or cookie parameter to be used.
+   * REQUIRED for apiKey.
+   */
+  readonly name?: string;
+
+  /**
+   * The location of the API key. Valid values are "query", "header" or "cookie".
+   * REQUIRED for apiKey.
+   */
+  readonly in?: string;
+
+  /**
+   * The name of the HTTP Authorization scheme to be used in the Authorization header as defined in RFC7235. The values used SHOULD be registered in the IANA Authentication Scheme registry.
+   * REQUIRED for http.
+   */
+  readonly scheme?: string;
+
+  /** A hint to the client to identify how the bearer token is formatted. Bearer tokens are usually generated by an authorization server, so this information is primarily for documentation purposes. */
+  readonly bearerFormat?: string;
+
+  /**
+   * An object containing configuration information for the flow types supported.
+   * REQUIRED for oauth2.
+   */
+  readonly flow?: OAuthFlowsObject;
+
+  /**
+   * OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.
+   * REQUIRED for openIdConnect.
+   */
+  readonly openIdConnectUrl?: string;
+
+}
+
+/** Allows configuration of the supported OAuth Flows. */
+export interface OAuthFlowsObject {
+
+  /** Configuration for the OAuth Implicit flow */
+  readonly implicit?: OAuthFlowObject;
+
+  /** Configuration for the OAuth Resource Owner Password flow */
+  readonly password?: OAuthFlowObject;
+
+  /** Configuration for the OAuth Client Credentials flow. Previously called application in OpenAPI 2.0. */
+  readonly clientCredentials?: OAuthFlowObject;
+
+  /** Configuration for the OAuth Authorization Code flow. Previously called accessCode in OpenAPI 2.0. */
+  readonly authorizationCode?: OAuthFlowObject;
+}
+
+/** Configuration details for a supported OAuth Flow */
+export interface OAuthFlowObject {
+
+  /** The available scopes for the OAuth2 security scheme. A map between the scope name and a short description for it. The map MAY be empty. */
+  readonly scopes: Record<string, string>;
+
+  /**
+   * The authorization URL to be used for this flow. This MUST be in the form of a URL.
+   * REQUIRED for oauth2 ("implicit", "authorizationCode").
+   */
+  readonly authorizationUrl?: string;
+
+  /**
+   * The token URL to be used for this flow. This MUST be in the form of a URL.
+   * REQUIRED for oauth2 ("password", "clientCredentials", "authorizationCode").
+   */
+  readonly tokenUrl?: string;
+
+  /** The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL. */
+  readonly refreshUrl?: string;
+
+}
+
+/**
+ * The Link object represents a possible design-time link for a response. The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known relationship and traversal mechanism between responses and other operations.
+ * Unlike dynamic links (i.e. links provided in the response payload), the OAS linking mechanism does not require link information in the runtime response.
+ * For computing links, and providing instructions to execute them, a runtime expression is used for accessing values in an operation and using them as parameters while invoking the linked operation.
+ */
+export interface LinkObject {
+
+  /** A relative or absolute URI reference to an OAS operation. This field is mutually exclusive of the operationId field, and MUST point to an Operation Object. Relative operationRef values MAY be used to locate an existing Operation Object in the OpenAPI definition. */
+  readonly operationRef?: string;
+
+  /** The name of an existing, resolvable OAS operation, as defined with a unique operationId. This field is mutually exclusive of the operationRef field. */
+  readonly operationId?: string;
+
+  /** A map representing parameters to pass to an operation as specified with operationId or identified via operationRef. The key is the parameter name to be used, whereas the value can be a constant or an expression to be evaluated and passed to the linked operation. The parameter name can be qualified using the parameter location [{in}.]{name} for operations that use the same parameter name in different locations (e.g. path.id). */
+  readonly parameters?: Record<string, any>;
+
+  /** A literal value or {expression} to use as a request body when calling the target operation. */
+  readonly requestBody?: any;
+
+  /** A description of the link. CommonMark syntax MAY be used for rich text representation. */
+  readonly description?: string;
+
+  /** A server object to be used by the target operation. */
+  readonly server?: ServerObject;
+}
+
 /**
  * Lists the required security schemes to execute this operation. The name used for each property MUST correspond to a security scheme declared in the Security Schemes under the Components Object.
  * Security Requirement Objects that contain multiple schemes require that all schemes MUST be satisfied for a request to be authorized. This enables support for scenarios where multiple query parameters or HTTP headers are required to convey security information.
@@ -438,3 +606,16 @@ export interface ServerVariableObject {
 
 }
 
+/** Adds metadata to a single tag that is used by the Operation Object. It is not mandatory to have a Tag Object per tag defined in the Operation Object instances. */
+export interface TagObject {
+
+  /** The name of the tag. */
+  readonly name: string;
+
+  /** A short description for the tag. CommonMark syntax MAY be used for rich text representation. */
+  readonly description?: string;
+
+  /** Additional external documentation for this tag. */
+  readonly externalDocs?: ExternalDocumentationObject;
+
+}
