@@ -155,7 +155,6 @@ export interface Validator extends XAmazonApigatewayRequestValidator {
  */
 export interface BasePropsWithDefaults extends OpenApiBaseProps {
   readonly source: string | Schema;
-  //readonly source: string;
   readonly upload: boolean;
   readonly paths: Paths;
   readonly authorizers: AuthorizerConfig[];
