@@ -1012,6 +1012,19 @@ The value field and externalValue field are mutually exclusive. To represent exa
 
 ---
 
+### Extensible <a name="@alma-cdk/openapix.Extensible" id="almacdkopenapixextensible"></a>
+
+Allow Open Api Extensions via `x-` prefixed values.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { Extensible } from '@alma-cdk/openapix'
+
+const extensible: Extensible = { ... }
+```
+
+
 ### ExternalDocumentationObject <a name="@alma-cdk/openapix.ExternalDocumentationObject" id="almacdkopenapixexternaldocumentationobject"></a>
 
 Allows referencing an external resource for extended documentation.
