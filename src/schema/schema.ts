@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import { get, has, set, unset } from 'lodash';
-import { ISchemaDefinition } from './definition';
+import { IDocument } from './idocument';
 import { SchemaProps } from './props';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
@@ -32,7 +32,7 @@ export class Schema {
    * @todo info object?
    * @todo validate openapi string?
   */
-  private document: ISchemaDefinition;
+  private document: IDocument;
 
   /** Construct a new Schema instance from OpenApi v3 JSON.  */
   constructor(props: SchemaProps) {

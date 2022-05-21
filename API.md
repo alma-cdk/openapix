@@ -4768,7 +4768,156 @@ public readonly validator: string;
 
 ---
 
+### ICallbackObject <a name="@alma-cdk/openapix.ICallbackObject" id="almacdkopenapixicallbackobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.ICallbackObject`](#@alma-cdk/openapix.ICallbackObject)
+
+A map of possible out-of band callbacks related to the parent operation.
+
+Each value in the map is a Path Item Object that describes a set of requests that may be initiated by the API provider and the expected responses. The key value used to identify the path item object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
+
+
+
+### IComponentsObject <a name="@alma-cdk/openapix.IComponentsObject" id="almacdkopenapixicomponentsobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IComponentsObject`](#@alma-cdk/openapix.IComponentsObject)
+
+Holds a set of reusable objects for different aspects of the OAS.
+
+All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`callbacks`](#almacdkopenapixicomponentsobjectpropertycallbacks) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ICallbackObject`](#@alma-cdk/openapix.ICallbackObject)} | An object to hold reusable Callback Objects. |
+| [`examples`](#almacdkopenapixicomponentsobjectpropertyexamples) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IExampleObject`](#@alma-cdk/openapix.IExampleObject)} | An object to hold reusable Example Objects. |
+| [`headers`](#almacdkopenapixicomponentsobjectpropertyheaders) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)} | An object to hold reusable Header Objects. |
+| [`links`](#almacdkopenapixicomponentsobjectpropertylinks) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ILinkObject`](#@alma-cdk/openapix.ILinkObject)} | An object to hold reusable Link Objects. |
+| [`parameters`](#almacdkopenapixicomponentsobjectpropertyparameters) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)} | An object to hold reusable Parameter Objects. |
+| [`requestBodies`](#almacdkopenapixicomponentsobjectpropertyrequestbodies) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IRequestBodyObject`](#@alma-cdk/openapix.IRequestBodyObject)} | An object to hold reusable Request Body Objects. |
+| [`responses`](#almacdkopenapixicomponentsobjectpropertyresponses) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IResponseObject`](#@alma-cdk/openapix.IResponseObject)} | An object to hold reusable Response Objects. |
+| [`schemas`](#almacdkopenapixicomponentsobjectpropertyschemas) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject)} | An object to hold reusable Schema Objects. |
+| [`securitySchemes`](#almacdkopenapixicomponentsobjectpropertysecurityschemes) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ISecuritySchemeObject`](#@alma-cdk/openapix.ISecuritySchemeObject)} | An object to hold reusable Security Scheme Objects. |
+
+---
+
+##### `callbacks`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.callbacks" id="almacdkopenapixicomponentsobjectpropertycallbacks"></a>
+
+```typescript
+public readonly callbacks: {[ key: string ]: IReferenceObject | ICallbackObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ICallbackObject`](#@alma-cdk/openapix.ICallbackObject)}
+
+An object to hold reusable Callback Objects.
+
+---
+
+##### `examples`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.examples" id="almacdkopenapixicomponentsobjectpropertyexamples"></a>
+
+```typescript
+public readonly examples: {[ key: string ]: IReferenceObject | IExampleObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IExampleObject`](#@alma-cdk/openapix.IExampleObject)}
+
+An object to hold reusable Example Objects.
+
+---
+
+##### `headers`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.headers" id="almacdkopenapixicomponentsobjectpropertyheaders"></a>
+
+```typescript
+public readonly headers: {[ key: string ]: IReferenceObject | IHeaderObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)}
+
+An object to hold reusable Header Objects.
+
+---
+
+##### `links`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.links" id="almacdkopenapixicomponentsobjectpropertylinks"></a>
+
+```typescript
+public readonly links: {[ key: string ]: IReferenceObject | ILinkObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ILinkObject`](#@alma-cdk/openapix.ILinkObject)}
+
+An object to hold reusable Link Objects.
+
+---
+
+##### `parameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.parameters" id="almacdkopenapixicomponentsobjectpropertyparameters"></a>
+
+```typescript
+public readonly parameters: {[ key: string ]: IReferenceObject | IParameterObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)}
+
+An object to hold reusable Parameter Objects.
+
+---
+
+##### `requestBodies`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.requestBodies" id="almacdkopenapixicomponentsobjectpropertyrequestbodies"></a>
+
+```typescript
+public readonly requestBodies: {[ key: string ]: IReferenceObject | IRequestBodyObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IRequestBodyObject`](#@alma-cdk/openapix.IRequestBodyObject)}
+
+An object to hold reusable Request Body Objects.
+
+---
+
+##### `responses`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.responses" id="almacdkopenapixicomponentsobjectpropertyresponses"></a>
+
+```typescript
+public readonly responses: {[ key: string ]: IReferenceObject | IResponseObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IResponseObject`](#@alma-cdk/openapix.IResponseObject)}
+
+An object to hold reusable Response Objects.
+
+---
+
+##### `schemas`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.schemas" id="almacdkopenapixicomponentsobjectpropertyschemas"></a>
+
+```typescript
+public readonly schemas: {[ key: string ]: IReferenceObject | ISchemaObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject)}
+
+An object to hold reusable Schema Objects.
+
+---
+
+##### `securitySchemes`<sup>Optional</sup> <a name="@alma-cdk/openapix.IComponentsObject.property.securitySchemes" id="almacdkopenapixicomponentsobjectpropertysecurityschemes"></a>
+
+```typescript
+public readonly securitySchemes: {[ key: string ]: IReferenceObject | ISecuritySchemeObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ISecuritySchemeObject`](#@alma-cdk/openapix.ISecuritySchemeObject)}
+
+An object to hold reusable Security Scheme Objects.
+
+---
+
 ### IContactObject <a name="@alma-cdk/openapix.IContactObject" id="almacdkopenapixicontactobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
 
 - *Implemented By:* [`@alma-cdk/openapix.IContactObject`](#@alma-cdk/openapix.IContactObject)
 
@@ -4825,11 +4974,486 @@ MUST be in the format of a URL.
 
 ---
 
+### IDiscriminatorObject <a name="@alma-cdk/openapix.IDiscriminatorObject" id="almacdkopenapixidiscriminatorobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IDiscriminatorObject`](#@alma-cdk/openapix.IDiscriminatorObject)
+
+When request bodies or response payloads may be one of a number of different schemas, a discriminator object can be used to aid in serialization, deserialization, and validation.
+
+The discriminator is a specific object in a schema which is used to inform the consumer of the specification of an alternative schema based on the value associated with it. When using the discriminator, inline schemas will not be considered.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`propertyName`](#almacdkopenapixidiscriminatorobjectpropertypropertyname)<span title="Required">*</span> | `string` | The name of the property in the payload that will hold the discriminator value. |
+| [`mapping`](#almacdkopenapixidiscriminatorobjectpropertymapping) | {[ key: string ]: `string`} | An object to hold mappings between payload values and schema names or references. |
+
+---
+
+##### `propertyName`<sup>Required</sup> <a name="@alma-cdk/openapix.IDiscriminatorObject.property.propertyName" id="almacdkopenapixidiscriminatorobjectpropertypropertyname"></a>
+
+```typescript
+public readonly propertyName: string;
+```
+
+- *Type:* `string`
+
+The name of the property in the payload that will hold the discriminator value.
+
+---
+
+##### `mapping`<sup>Optional</sup> <a name="@alma-cdk/openapix.IDiscriminatorObject.property.mapping" id="almacdkopenapixidiscriminatorobjectpropertymapping"></a>
+
+```typescript
+public readonly mapping: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: `string`}
+
+An object to hold mappings between payload values and schema names or references.
+
+---
+
+### IDocument <a name="@alma-cdk/openapix.IDocument" id="almacdkopenapixidocument"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument)
+
+Describes a mutable OpenApi v3 Document.
+
+Essentially the same as `SchemaProps` but without `readonly` definitions.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`info`](#almacdkopenapixidocumentpropertyinfo)<span title="Required">*</span> | [`@alma-cdk/openapix.IInfoObject`](#@alma-cdk/openapix.IInfoObject) | Provides metadata about the API. |
+| [`openapi`](#almacdkopenapixidocumentpropertyopenapi)<span title="Required">*</span> | `string` | This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses. |
+| [`paths`](#almacdkopenapixidocumentpropertypaths)<span title="Required">*</span> | [`@alma-cdk/openapix.IPathsObject`](#@alma-cdk/openapix.IPathsObject) | The available paths and operations for the API. |
+| [`components`](#almacdkopenapixidocumentpropertycomponents) | [`@alma-cdk/openapix.IComponentsObject`](#@alma-cdk/openapix.IComponentsObject) | An element to hold various schemas for the specification. |
+| [`externalDocs`](#almacdkopenapixidocumentpropertyexternaldocs) | [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject) | Additional external documentation. |
+| [`security`](#almacdkopenapixidocumentpropertysecurity) | [`@alma-cdk/openapix.ISecurityRequirementObject`](#@alma-cdk/openapix.ISecurityRequirementObject)[] | A declaration of which security mechanisms can be used across the API. |
+| [`servers`](#almacdkopenapixidocumentpropertyservers) | [`@alma-cdk/openapix.IServerObject`](#@alma-cdk/openapix.IServerObject)[] | An array of Server Objects, which provide connectivity information to a target server. |
+| [`tags`](#almacdkopenapixidocumentpropertytags) | [`@alma-cdk/openapix.ITagObject`](#@alma-cdk/openapix.ITagObject)[] | A list of tags used by the specification with additional metadata. |
+
+---
+
+##### `info`<sup>Required</sup> <a name="@alma-cdk/openapix.IDocument.property.info" id="almacdkopenapixidocumentpropertyinfo"></a>
+
+```typescript
+public readonly info: IInfoObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IInfoObject`](#@alma-cdk/openapix.IInfoObject)
+
+Provides metadata about the API.
+
+The metadata MAY be used by tooling as required.
+
+---
+
+##### `openapi`<sup>Required</sup> <a name="@alma-cdk/openapix.IDocument.property.openapi" id="almacdkopenapixidocumentpropertyopenapi"></a>
+
+```typescript
+public readonly openapi: string;
+```
+
+- *Type:* `string`
+
+This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
+
+The openapi field SHOULD be used by tooling specifications and clients to interpret the OpenAPI document. This is not related to the API info.version string.
+
+---
+
+##### `paths`<sup>Required</sup> <a name="@alma-cdk/openapix.IDocument.property.paths" id="almacdkopenapixidocumentpropertypaths"></a>
+
+```typescript
+public readonly paths: IPathsObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IPathsObject`](#@alma-cdk/openapix.IPathsObject)
+
+The available paths and operations for the API.
+
+---
+
+##### `components`<sup>Optional</sup> <a name="@alma-cdk/openapix.IDocument.property.components" id="almacdkopenapixidocumentpropertycomponents"></a>
+
+```typescript
+public readonly components: IComponentsObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IComponentsObject`](#@alma-cdk/openapix.IComponentsObject)
+
+An element to hold various schemas for the specification.
+
+---
+
+##### `externalDocs`<sup>Optional</sup> <a name="@alma-cdk/openapix.IDocument.property.externalDocs" id="almacdkopenapixidocumentpropertyexternaldocs"></a>
+
+```typescript
+public readonly externalDocs: IExternalDocumentationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject)
+
+Additional external documentation.
+
+---
+
+##### `security`<sup>Optional</sup> <a name="@alma-cdk/openapix.IDocument.property.security" id="almacdkopenapixidocumentpropertysecurity"></a>
+
+```typescript
+public readonly security: ISecurityRequirementObject[];
+```
+
+- *Type:* [`@alma-cdk/openapix.ISecurityRequirementObject`](#@alma-cdk/openapix.ISecurityRequirementObject)[]
+
+A declaration of which security mechanisms can be used across the API.
+
+The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. Individual operations can override this definition. To make security optional, an empty security requirement ({}) can be included in the array.
+
+---
+
+##### `servers`<sup>Optional</sup> <a name="@alma-cdk/openapix.IDocument.property.servers" id="almacdkopenapixidocumentpropertyservers"></a>
+
+```typescript
+public readonly servers: IServerObject[];
+```
+
+- *Type:* [`@alma-cdk/openapix.IServerObject`](#@alma-cdk/openapix.IServerObject)[]
+
+An array of Server Objects, which provide connectivity information to a target server.
+
+If the servers property is not provided, or is an empty array, the default value would be a Server Object with a url value of /.
+
+---
+
+##### `tags`<sup>Optional</sup> <a name="@alma-cdk/openapix.IDocument.property.tags" id="almacdkopenapixidocumentpropertytags"></a>
+
+```typescript
+public readonly tags: ITagObject[];
+```
+
+- *Type:* [`@alma-cdk/openapix.ITagObject`](#@alma-cdk/openapix.ITagObject)[]
+
+A list of tags used by the specification with additional metadata.
+
+The order of the tags can be used to reflect on their order by the parsing tools. Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic. Each tag name in the list MUST be unique.
+
+---
+
+### IEncodingObject <a name="@alma-cdk/openapix.IEncodingObject" id="almacdkopenapixiencodingobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IEncodingObject`](#@alma-cdk/openapix.IEncodingObject)
+
+A single encoding definition applied to a single schema property.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`allowReserved`](#almacdkopenapixiencodingobjectpropertyallowreserved) | `boolean` | Determines whether the parameter value SHOULD allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding. The default value is false. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded. |
+| [`contentType`](#almacdkopenapixiencodingobjectpropertycontenttype) | `string` | The Content-Type for encoding a specific property. |
+| [`explode`](#almacdkopenapixiencodingobjectpropertyexplode) | `boolean` | When this is true, property values of type array or object generate separate parameters for each value of the array, or key-value-pair of the map. |
+| [`headers`](#almacdkopenapixiencodingobjectpropertyheaders) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)} | A map allowing additional information to be provided as headers, for example Content-Disposition. |
+| [`style`](#almacdkopenapixiencodingobjectpropertystyle) | `string` | Describes how a specific property value will be serialized depending on its type. |
+
+---
+
+##### `allowReserved`<sup>Optional</sup> <a name="@alma-cdk/openapix.IEncodingObject.property.allowReserved" id="almacdkopenapixiencodingobjectpropertyallowreserved"></a>
+
+```typescript
+public readonly allowReserved: boolean;
+```
+
+- *Type:* `boolean`
+
+Determines whether the parameter value SHOULD allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding. The default value is false. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
+
+---
+
+##### `contentType`<sup>Optional</sup> <a name="@alma-cdk/openapix.IEncodingObject.property.contentType" id="almacdkopenapixiencodingobjectpropertycontenttype"></a>
+
+```typescript
+public readonly contentType: string;
+```
+
+- *Type:* `string`
+
+The Content-Type for encoding a specific property.
+
+Default value depends on the property type: for string with format being binary – application/octet-stream; for other primitive types – text/plain; for object - application/json; for array – the default is defined based on the inner type. The value can be a specific media type (e.g. application/json), a wildcard media type (e.g. image/*), or a comma-separated list of the two types.
+
+---
+
+##### `explode`<sup>Optional</sup> <a name="@alma-cdk/openapix.IEncodingObject.property.explode" id="almacdkopenapixiencodingobjectpropertyexplode"></a>
+
+```typescript
+public readonly explode: boolean;
+```
+
+- *Type:* `boolean`
+
+When this is true, property values of type array or object generate separate parameters for each value of the array, or key-value-pair of the map.
+
+For other types of properties this property has no effect. When style is form, the default value is true. For all other styles, the default value is false. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
+
+---
+
+##### `headers`<sup>Optional</sup> <a name="@alma-cdk/openapix.IEncodingObject.property.headers" id="almacdkopenapixiencodingobjectpropertyheaders"></a>
+
+```typescript
+public readonly headers: {[ key: string ]: IReferenceObject | IHeaderObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)}
+
+A map allowing additional information to be provided as headers, for example Content-Disposition.
+
+Content-Type is described separately and SHALL be ignored in this section. This property SHALL be ignored if the request body media type is not a multipart.
+
+---
+
+##### `style`<sup>Optional</sup> <a name="@alma-cdk/openapix.IEncodingObject.property.style" id="almacdkopenapixiencodingobjectpropertystyle"></a>
+
+```typescript
+public readonly style: string;
+```
+
+- *Type:* `string`
+
+Describes how a specific property value will be serialized depending on its type.
+
+See Parameter Object for details on the style property. The behavior follows the same values as query parameters, including default values. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
+
+---
+
+### IExampleObject <a name="@alma-cdk/openapix.IExampleObject" id="almacdkopenapixiexampleobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IExampleObject`](#@alma-cdk/openapix.IExampleObject)
+
+Example Object.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`description`](#almacdkopenapixiexampleobjectpropertydescription) | `string` | Long description for the example. |
+| [`externalValue`](#almacdkopenapixiexampleobjectpropertyexternalvalue) | `string` | A URL that points to the literal example. |
+| [`summary`](#almacdkopenapixiexampleobjectpropertysummary) | `string` | Short description for the example. |
+| [`value`](#almacdkopenapixiexampleobjectpropertyvalue) | `any` | Embedded literal example. |
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IExampleObject.property.description" id="almacdkopenapixiexampleobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+Long description for the example.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `externalValue`<sup>Optional</sup> <a name="@alma-cdk/openapix.IExampleObject.property.externalValue" id="almacdkopenapixiexampleobjectpropertyexternalvalue"></a>
+
+```typescript
+public readonly externalValue: string;
+```
+
+- *Type:* `string`
+
+A URL that points to the literal example.
+
+This provides the capability to reference examples that cannot easily be included in JSON or YAML documents. The value field and externalValue field are mutually exclusive.
+
+---
+
+##### `summary`<sup>Optional</sup> <a name="@alma-cdk/openapix.IExampleObject.property.summary" id="almacdkopenapixiexampleobjectpropertysummary"></a>
+
+```typescript
+public readonly summary: string;
+```
+
+- *Type:* `string`
+
+Short description for the example.
+
+---
+
+##### `value`<sup>Optional</sup> <a name="@alma-cdk/openapix.IExampleObject.property.value" id="almacdkopenapixiexampleobjectpropertyvalue"></a>
+
+```typescript
+public readonly value: any;
+```
+
+- *Type:* `any`
+
+Embedded literal example.
+
+The value field and externalValue field are mutually exclusive. To represent examples of media types that cannot naturally represented in JSON or YAML, use a string value to contain the example, escaping where necessary.
+
+---
+
+### IExtensible <a name="@alma-cdk/openapix.IExtensible" id="almacdkopenapixiextensible"></a>
+
+- *Implemented By:* [`@alma-cdk/openapix.ICallbackObject`](#@alma-cdk/openapix.ICallbackObject), [`@alma-cdk/openapix.IComponentsObject`](#@alma-cdk/openapix.IComponentsObject), [`@alma-cdk/openapix.IContactObject`](#@alma-cdk/openapix.IContactObject), [`@alma-cdk/openapix.IDiscriminatorObject`](#@alma-cdk/openapix.IDiscriminatorObject), [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument), [`@alma-cdk/openapix.IEncodingObject`](#@alma-cdk/openapix.IEncodingObject), [`@alma-cdk/openapix.IExampleObject`](#@alma-cdk/openapix.IExampleObject), [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible), [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject), [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject), [`@alma-cdk/openapix.IInfoObject`](#@alma-cdk/openapix.IInfoObject), [`@alma-cdk/openapix.ILicenseObject`](#@alma-cdk/openapix.ILicenseObject), [`@alma-cdk/openapix.ILinkObject`](#@alma-cdk/openapix.ILinkObject), [`@alma-cdk/openapix.IMediaTypeObject`](#@alma-cdk/openapix.IMediaTypeObject), [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject), [`@alma-cdk/openapix.IOAuthFlowsObject`](#@alma-cdk/openapix.IOAuthFlowsObject), [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject), [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject), [`@alma-cdk/openapix.IPathItemObject`](#@alma-cdk/openapix.IPathItemObject), [`@alma-cdk/openapix.IPathsObject`](#@alma-cdk/openapix.IPathsObject), [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject), [`@alma-cdk/openapix.IRequestBodyObject`](#@alma-cdk/openapix.IRequestBodyObject), [`@alma-cdk/openapix.IResponseObject`](#@alma-cdk/openapix.IResponseObject), [`@alma-cdk/openapix.IResponsesObject`](#@alma-cdk/openapix.IResponsesObject), [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject), [`@alma-cdk/openapix.ISecurityRequirementObject`](#@alma-cdk/openapix.ISecurityRequirementObject), [`@alma-cdk/openapix.ISecuritySchemeObject`](#@alma-cdk/openapix.ISecuritySchemeObject), [`@alma-cdk/openapix.IServerObject`](#@alma-cdk/openapix.IServerObject), [`@alma-cdk/openapix.IServerVariableObject`](#@alma-cdk/openapix.IServerVariableObject), [`@alma-cdk/openapix.ITagObject`](#@alma-cdk/openapix.ITagObject), [`@alma-cdk/openapix.IXmlObject`](#@alma-cdk/openapix.IXmlObject)
+
+Allow Open Api Extensions via `x-` prefixed values.
+
+
+
+### IExternalDocumentationObject <a name="@alma-cdk/openapix.IExternalDocumentationObject" id="almacdkopenapixiexternaldocumentationobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject)
+
+Allows referencing an external resource for extended documentation.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`url`](#almacdkopenapixiexternaldocumentationobjectpropertyurl)<span title="Required">*</span> | `string` | The URL for the target documentation. |
+| [`description`](#almacdkopenapixiexternaldocumentationobjectpropertydescription) | `string` | A short description of the target documentation. |
+
+---
+
+##### `url`<sup>Required</sup> <a name="@alma-cdk/openapix.IExternalDocumentationObject.property.url" id="almacdkopenapixiexternaldocumentationobjectpropertyurl"></a>
+
+```typescript
+public readonly url: string;
+```
+
+- *Type:* `string`
+
+The URL for the target documentation.
+
+Value MUST be in the format of a URL.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IExternalDocumentationObject.property.description" id="almacdkopenapixiexternaldocumentationobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A short description of the target documentation.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+### IHeaderObject <a name="@alma-cdk/openapix.IHeaderObject" id="almacdkopenapixiheaderobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)
+
+The Header Object follows the structure of the Parameter Object with the following changes:.
+
+1. name MUST NOT be specified, it is given in the corresponding headers map. 2. in MUST NOT be specified, it is implicitly in header. 3. All traits that are affected by the location MUST be applicable to a location of header (for example, style).
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`allowEmptyValue`](#almacdkopenapixiheaderobjectpropertyallowemptyvalue) | `boolean` | Sets the ability to pass empty-valued parameters. |
+| [`deprecated`](#almacdkopenapixiheaderobjectpropertydeprecated) | `boolean` | Specifies that a parameter is deprecated and SHOULD be transitioned out of usage. |
+| [`description`](#almacdkopenapixiheaderobjectpropertydescription) | `string` | A brief description of the parameter. |
+| [`required`](#almacdkopenapixiheaderobjectpropertyrequired) | `boolean` | Determines whether this parameter is mandatory. |
+
+---
+
+##### `allowEmptyValue`<sup>Optional</sup> <a name="@alma-cdk/openapix.IHeaderObject.property.allowEmptyValue" id="almacdkopenapixiheaderobjectpropertyallowemptyvalue"></a>
+
+```typescript
+public readonly allowEmptyValue: boolean;
+```
+
+- *Type:* `boolean`
+
+Sets the ability to pass empty-valued parameters.
+
+This is valid only for query parameters and allows sending a parameter with an empty value. Default value is false. If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored. Use of this property is NOT RECOMMENDED, as it is likely to be removed in a later revision.
+
+---
+
+##### `deprecated`<sup>Optional</sup> <a name="@alma-cdk/openapix.IHeaderObject.property.deprecated" id="almacdkopenapixiheaderobjectpropertydeprecated"></a>
+
+```typescript
+public readonly deprecated: boolean;
+```
+
+- *Type:* `boolean`
+
+Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
+
+Default value is false.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IHeaderObject.property.description" id="almacdkopenapixiheaderobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A brief description of the parameter.
+
+This could contain examples of use. CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `required`<sup>Optional</sup> <a name="@alma-cdk/openapix.IHeaderObject.property.required" id="almacdkopenapixiheaderobjectpropertyrequired"></a>
+
+```typescript
+public readonly required: boolean;
+```
+
+- *Type:* `boolean`
+
+Determines whether this parameter is mandatory.
+
+If the parameter location is "path", this property is REQUIRED and its value MUST be true. Otherwise, the property MAY be included and its default value is false.
+
+---
+
 ### IInfoObject <a name="@alma-cdk/openapix.IInfoObject" id="almacdkopenapixiinfoobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
 
 - *Implemented By:* [`@alma-cdk/openapix.IInfoObject`](#@alma-cdk/openapix.IInfoObject)
 
-OpenApi info object.
+The object provides metadata about the API.
+
+The metadata MAY be used by the clients if needed, and MAY be presented in editing or documentation generation tools for convenience.
 
 
 #### Properties <a name="Properties" id="properties"></a>
@@ -4923,6 +5547,8 @@ MUST be in the format of a URL.
 
 ### ILicenseObject <a name="@alma-cdk/openapix.ILicenseObject" id="almacdkopenapixilicenseobject"></a>
 
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
 - *Implemented By:* [`@alma-cdk/openapix.ILicenseObject`](#@alma-cdk/openapix.ILicenseObject)
 
 The license information for the exposed API.
@@ -4963,87 +5589,1506 @@ MUST be in the format of a URL.
 
 ---
 
-### IMethod <a name="@alma-cdk/openapix.IMethod" id="almacdkopenapiximethod"></a>
+### ILinkObject <a name="@alma-cdk/openapix.ILinkObject" id="almacdkopenapixilinkobject"></a>
 
-- *Implemented By:* [`@alma-cdk/openapix.IMethod`](#@alma-cdk/openapix.IMethod)
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
 
+- *Implemented By:* [`@alma-cdk/openapix.ILinkObject`](#@alma-cdk/openapix.ILinkObject)
 
+The Link object represents a possible design-time link for a response.
 
-### IPath <a name="@alma-cdk/openapix.IPath" id="almacdkopenapixipath"></a>
-
-- *Implemented By:* [`@alma-cdk/openapix.IPath`](#@alma-cdk/openapix.IPath)
-
-
-
-### IPaths <a name="@alma-cdk/openapix.IPaths" id="almacdkopenapixipaths"></a>
-
-- *Implemented By:* [`@alma-cdk/openapix.IPaths`](#@alma-cdk/openapix.IPaths)
-
-
-
-### ISchemaDefinition <a name="@alma-cdk/openapix.ISchemaDefinition" id="almacdkopenapixischemadefinition"></a>
-
-- *Implemented By:* [`@alma-cdk/openapix.ISchemaDefinition`](#@alma-cdk/openapix.ISchemaDefinition)
+The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known relationship and traversal mechanism between responses and other operations. Unlike dynamic links (i.e. links provided in the response payload), the OAS linking mechanism does not require link information in the runtime response. For computing links, and providing instructions to execute them, a runtime expression is used for accessing values in an operation and using them as parameters while invoking the linked operation.
 
 
 #### Properties <a name="Properties" id="properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`openapi`](#almacdkopenapixischemadefinitionpropertyopenapi)<span title="Required">*</span> | `string` | OpenApi specification version used. |
-| [`components`](#almacdkopenapixischemadefinitionpropertycomponents) | {[ key: string ]: `any`} | OpenApi component definitions. |
-| [`info`](#almacdkopenapixischemadefinitionpropertyinfo) | [`@alma-cdk/openapix.IInfoObject`](#@alma-cdk/openapix.IInfoObject) | OpenApi info object. |
-| [`paths`](#almacdkopenapixischemadefinitionpropertypaths) | [`@alma-cdk/openapix.IPaths`](#@alma-cdk/openapix.IPaths) | API paths with their respective configurations. |
+| [`description`](#almacdkopenapixilinkobjectpropertydescription) | `string` | A description of the link. |
+| [`operationId`](#almacdkopenapixilinkobjectpropertyoperationid) | `string` | The name of an existing, resolvable OAS operation, as defined with a unique operationId. |
+| [`operationRef`](#almacdkopenapixilinkobjectpropertyoperationref) | `string` | A relative or absolute URI reference to an OAS operation. |
+| [`parameters`](#almacdkopenapixilinkobjectpropertyparameters) | {[ key: string ]: `any`} | A map representing parameters to pass to an operation as specified with operationId or identified via operationRef. |
+| [`requestBody`](#almacdkopenapixilinkobjectpropertyrequestbody) | `any` | A literal value or {expression} to use as a request body when calling the target operation. |
+| [`server`](#almacdkopenapixilinkobjectpropertyserver) | [`@alma-cdk/openapix.IServerObject`](#@alma-cdk/openapix.IServerObject) | A server object to be used by the target operation. |
 
 ---
 
-##### `openapi`<sup>Required</sup> <a name="@alma-cdk/openapix.ISchemaDefinition.property.openapi" id="almacdkopenapixischemadefinitionpropertyopenapi"></a>
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.ILinkObject.property.description" id="almacdkopenapixilinkobjectpropertydescription"></a>
 
 ```typescript
-public readonly openapi: string;
+public readonly description: string;
 ```
 
 - *Type:* `string`
 
-OpenApi specification version used.
+A description of the link.
 
-Only major version `3` currently supported.
+CommonMark syntax MAY be used for rich text representation.
 
 ---
 
-##### `components`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaDefinition.property.components" id="almacdkopenapixischemadefinitionpropertycomponents"></a>
+##### `operationId`<sup>Optional</sup> <a name="@alma-cdk/openapix.ILinkObject.property.operationId" id="almacdkopenapixilinkobjectpropertyoperationid"></a>
 
 ```typescript
-public readonly components: {[ key: string ]: any};
+public readonly operationId: string;
+```
+
+- *Type:* `string`
+
+The name of an existing, resolvable OAS operation, as defined with a unique operationId.
+
+This field is mutually exclusive of the operationRef field.
+
+---
+
+##### `operationRef`<sup>Optional</sup> <a name="@alma-cdk/openapix.ILinkObject.property.operationRef" id="almacdkopenapixilinkobjectpropertyoperationref"></a>
+
+```typescript
+public readonly operationRef: string;
+```
+
+- *Type:* `string`
+
+A relative or absolute URI reference to an OAS operation.
+
+This field is mutually exclusive of the operationId field, and MUST point to an Operation Object. Relative operationRef values MAY be used to locate an existing Operation Object in the OpenAPI definition.
+
+---
+
+##### `parameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.ILinkObject.property.parameters" id="almacdkopenapixilinkobjectpropertyparameters"></a>
+
+```typescript
+public readonly parameters: {[ key: string ]: any};
 ```
 
 - *Type:* {[ key: string ]: `any`}
 
-OpenApi component definitions.
+A map representing parameters to pass to an operation as specified with operationId or identified via operationRef.
+
+The key is the parameter name to be used, whereas the value can be a constant or an expression to be evaluated and passed to the linked operation. The parameter name can be qualified using the parameter location [{in}.]{name} for operations that use the same parameter name in different locations (e.g. path.id).
 
 ---
 
-##### `info`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaDefinition.property.info" id="almacdkopenapixischemadefinitionpropertyinfo"></a>
+##### `requestBody`<sup>Optional</sup> <a name="@alma-cdk/openapix.ILinkObject.property.requestBody" id="almacdkopenapixilinkobjectpropertyrequestbody"></a>
 
 ```typescript
-public readonly info: IInfoObject;
+public readonly requestBody: any;
 ```
 
-- *Type:* [`@alma-cdk/openapix.IInfoObject`](#@alma-cdk/openapix.IInfoObject)
+- *Type:* `any`
 
-OpenApi info object.
+A literal value or {expression} to use as a request body when calling the target operation.
 
 ---
 
-##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaDefinition.property.paths" id="almacdkopenapixischemadefinitionpropertypaths"></a>
+##### `server`<sup>Optional</sup> <a name="@alma-cdk/openapix.ILinkObject.property.server" id="almacdkopenapixilinkobjectpropertyserver"></a>
 
 ```typescript
-public readonly paths: IPaths;
+public readonly server: IServerObject;
 ```
 
-- *Type:* [`@alma-cdk/openapix.IPaths`](#@alma-cdk/openapix.IPaths)
+- *Type:* [`@alma-cdk/openapix.IServerObject`](#@alma-cdk/openapix.IServerObject)
 
-API paths with their respective configurations.
+A server object to be used by the target operation.
+
+---
+
+### IMediaTypeObject <a name="@alma-cdk/openapix.IMediaTypeObject" id="almacdkopenapiximediatypeobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IMediaTypeObject`](#@alma-cdk/openapix.IMediaTypeObject)
+
+Each Media Type Object provides schema and examples for the media type identified by its key.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`encoding`](#almacdkopenapiximediatypeobjectpropertyencoding) | {[ key: string ]: [`@alma-cdk/openapix.IEncodingObject`](#@alma-cdk/openapix.IEncodingObject)} | A map between a property name and its encoding information. |
+| [`example`](#almacdkopenapiximediatypeobjectpropertyexample) | `any` | Example of the media type. |
+| [`examples`](#almacdkopenapiximediatypeobjectpropertyexamples) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IExampleObject`](#@alma-cdk/openapix.IExampleObject)} | Examples of the media type. |
+| [`schema`](#almacdkopenapiximediatypeobjectpropertyschema) | [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject) | The schema defining the content of the request, response, or parameter. |
+
+---
+
+##### `encoding`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMediaTypeObject.property.encoding" id="almacdkopenapiximediatypeobjectpropertyencoding"></a>
+
+```typescript
+public readonly encoding: {[ key: string ]: IEncodingObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IEncodingObject`](#@alma-cdk/openapix.IEncodingObject)}
+
+A map between a property name and its encoding information.
+
+The key, being the property name, MUST exist in the schema as a property. The encoding object SHALL only apply to requestBody objects when the media type is multipart or application/x-www-form-urlencoded.
+
+---
+
+##### `example`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMediaTypeObject.property.example" id="almacdkopenapiximediatypeobjectpropertyexample"></a>
+
+```typescript
+public readonly example: any;
+```
+
+- *Type:* `any`
+
+Example of the media type.
+
+The example object SHOULD be in the correct format as specified by the media type. The example field is mutually exclusive of the examples field. Furthermore, if referencing a schema which contains an example, the example value SHALL override the example provided by the schema.
+
+---
+
+##### `examples`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMediaTypeObject.property.examples" id="almacdkopenapiximediatypeobjectpropertyexamples"></a>
+
+```typescript
+public readonly examples: {[ key: string ]: IReferenceObject | IExampleObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IExampleObject`](#@alma-cdk/openapix.IExampleObject)}
+
+Examples of the media type.
+
+Each example object SHOULD match the media type and specified schema if present. The examples field is mutually exclusive of the example field. Furthermore, if referencing a schema which contains an example, the examples value SHALL override the example provided by the schema.
+
+---
+
+##### `schema`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMediaTypeObject.property.schema" id="almacdkopenapiximediatypeobjectpropertyschema"></a>
+
+```typescript
+public readonly schema: IReferenceObject | ISchemaObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject)
+
+The schema defining the content of the request, response, or parameter.
+
+---
+
+### IOAuthFlowObject <a name="@alma-cdk/openapix.IOAuthFlowObject" id="almacdkopenapixioauthflowobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject)
+
+Configuration details for a supported OAuth Flow.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`scopes`](#almacdkopenapixioauthflowobjectpropertyscopes)<span title="Required">*</span> | {[ key: string ]: `string`} | The available scopes for the OAuth2 security scheme. |
+| [`authorizationUrl`](#almacdkopenapixioauthflowobjectpropertyauthorizationurl) | `string` | The authorization URL to be used for this flow. |
+| [`refreshUrl`](#almacdkopenapixioauthflowobjectpropertyrefreshurl) | `string` | The URL to be used for obtaining refresh tokens. |
+| [`tokenUrl`](#almacdkopenapixioauthflowobjectpropertytokenurl) | `string` | The token URL to be used for this flow. |
+
+---
+
+##### `scopes`<sup>Required</sup> <a name="@alma-cdk/openapix.IOAuthFlowObject.property.scopes" id="almacdkopenapixioauthflowobjectpropertyscopes"></a>
+
+```typescript
+public readonly scopes: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: `string`}
+
+The available scopes for the OAuth2 security scheme.
+
+A map between the scope name and a short description for it. The map MAY be empty.
+
+---
+
+##### `authorizationUrl`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowObject.property.authorizationUrl" id="almacdkopenapixioauthflowobjectpropertyauthorizationurl"></a>
+
+```typescript
+public readonly authorizationUrl: string;
+```
+
+- *Type:* `string`
+
+The authorization URL to be used for this flow.
+
+This MUST be in the form of a URL. REQUIRED for oauth2 ("implicit", "authorizationCode").
+
+---
+
+##### `refreshUrl`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowObject.property.refreshUrl" id="almacdkopenapixioauthflowobjectpropertyrefreshurl"></a>
+
+```typescript
+public readonly refreshUrl: string;
+```
+
+- *Type:* `string`
+
+The URL to be used for obtaining refresh tokens.
+
+This MUST be in the form of a URL.
+
+---
+
+##### `tokenUrl`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowObject.property.tokenUrl" id="almacdkopenapixioauthflowobjectpropertytokenurl"></a>
+
+```typescript
+public readonly tokenUrl: string;
+```
+
+- *Type:* `string`
+
+The token URL to be used for this flow.
+
+This MUST be in the form of a URL. REQUIRED for oauth2 ("password", "clientCredentials", "authorizationCode").
+
+---
+
+### IOAuthFlowsObject <a name="@alma-cdk/openapix.IOAuthFlowsObject" id="almacdkopenapixioauthflowsobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IOAuthFlowsObject`](#@alma-cdk/openapix.IOAuthFlowsObject)
+
+Allows configuration of the supported OAuth Flows.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`authorizationCode`](#almacdkopenapixioauthflowsobjectpropertyauthorizationcode) | [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject) | Configuration for the OAuth Authorization Code flow. |
+| [`clientCredentials`](#almacdkopenapixioauthflowsobjectpropertyclientcredentials) | [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject) | Configuration for the OAuth Client Credentials flow. |
+| [`implicit`](#almacdkopenapixioauthflowsobjectpropertyimplicit) | [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject) | Configuration for the OAuth Implicit flow. |
+| [`password`](#almacdkopenapixioauthflowsobjectpropertypassword) | [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject) | Configuration for the OAuth Resource Owner Password flow. |
+
+---
+
+##### `authorizationCode`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowsObject.property.authorizationCode" id="almacdkopenapixioauthflowsobjectpropertyauthorizationcode"></a>
+
+```typescript
+public readonly authorizationCode: IOAuthFlowObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject)
+
+Configuration for the OAuth Authorization Code flow.
+
+Previously called accessCode in OpenAPI 2.0.
+
+---
+
+##### `clientCredentials`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowsObject.property.clientCredentials" id="almacdkopenapixioauthflowsobjectpropertyclientcredentials"></a>
+
+```typescript
+public readonly clientCredentials: IOAuthFlowObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject)
+
+Configuration for the OAuth Client Credentials flow.
+
+Previously called application in OpenAPI 2.0.
+
+---
+
+##### `implicit`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowsObject.property.implicit" id="almacdkopenapixioauthflowsobjectpropertyimplicit"></a>
+
+```typescript
+public readonly implicit: IOAuthFlowObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject)
+
+Configuration for the OAuth Implicit flow.
+
+---
+
+##### `password`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOAuthFlowsObject.property.password" id="almacdkopenapixioauthflowsobjectpropertypassword"></a>
+
+```typescript
+public readonly password: IOAuthFlowObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOAuthFlowObject`](#@alma-cdk/openapix.IOAuthFlowObject)
+
+Configuration for the OAuth Resource Owner Password flow.
+
+---
+
+### IOperationObject <a name="@alma-cdk/openapix.IOperationObject" id="almacdkopenapixioperationobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+Describes a single API operation on a path.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`responses`](#almacdkopenapixioperationobjectpropertyresponses)<span title="Required">*</span> | [`@alma-cdk/openapix.IResponsesObject`](#@alma-cdk/openapix.IResponsesObject) | The list of possible responses as they are returned from executing this operation. |
+| [`callbacks`](#almacdkopenapixioperationobjectpropertycallbacks) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ICallbackObject`](#@alma-cdk/openapix.ICallbackObject)} | A map of possible out-of band callbacks related to the parent operation. |
+| [`deprecated`](#almacdkopenapixioperationobjectpropertydeprecated) | `boolean` | Declares this operation to be deprecated. |
+| [`description`](#almacdkopenapixioperationobjectpropertydescription) | `string` | A verbose explanation of the operation behavior. |
+| [`externalDocs`](#almacdkopenapixioperationobjectpropertyexternaldocs) | [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject) | Additional external documentation for this operation. |
+| [`operationId`](#almacdkopenapixioperationobjectpropertyoperationid) | `string` | Unique string used to identify the operation. |
+| [`parameters`](#almacdkopenapixioperationobjectpropertyparameters) | [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)[] | A list of parameters that are applicable for this operation. |
+| [`requestBody`](#almacdkopenapixioperationobjectpropertyrequestbody) | [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IRequestBodyObject`](#@alma-cdk/openapix.IRequestBodyObject) | The request body applicable for this operation. |
+| [`security`](#almacdkopenapixioperationobjectpropertysecurity) | [`@alma-cdk/openapix.ISecurityRequirementObject`](#@alma-cdk/openapix.ISecurityRequirementObject)[] | A declaration of which security mechanisms can be used for this operation. |
+| [`summary`](#almacdkopenapixioperationobjectpropertysummary) | `string` | A short summary of what the operation does. |
+| [`tags`](#almacdkopenapixioperationobjectpropertytags) | `string`[] | A list of tags for API documentation control. |
+
+---
+
+##### `responses`<sup>Required</sup> <a name="@alma-cdk/openapix.IOperationObject.property.responses" id="almacdkopenapixioperationobjectpropertyresponses"></a>
+
+```typescript
+public readonly responses: IResponsesObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IResponsesObject`](#@alma-cdk/openapix.IResponsesObject)
+
+The list of possible responses as they are returned from executing this operation.
+
+---
+
+##### `callbacks`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.callbacks" id="almacdkopenapixioperationobjectpropertycallbacks"></a>
+
+```typescript
+public readonly callbacks: {[ key: string ]: IReferenceObject | ICallbackObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ICallbackObject`](#@alma-cdk/openapix.ICallbackObject)}
+
+A map of possible out-of band callbacks related to the parent operation.
+
+The key is a unique identifier for the Callback Object. Each value in the map is a Callback Object that describes a request that may be initiated by the API provider and the expected responses.
+
+---
+
+##### `deprecated`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.deprecated" id="almacdkopenapixioperationobjectpropertydeprecated"></a>
+
+```typescript
+public readonly deprecated: boolean;
+```
+
+- *Type:* `boolean`
+
+Declares this operation to be deprecated.
+
+Consumers SHOULD refrain from usage of the declared operation. Default value is false.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.description" id="almacdkopenapixioperationobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A verbose explanation of the operation behavior.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `externalDocs`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.externalDocs" id="almacdkopenapixioperationobjectpropertyexternaldocs"></a>
+
+```typescript
+public readonly externalDocs: IExternalDocumentationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject)
+
+Additional external documentation for this operation.
+
+---
+
+##### `operationId`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.operationId" id="almacdkopenapixioperationobjectpropertyoperationid"></a>
+
+```typescript
+public readonly operationId: string;
+```
+
+- *Type:* `string`
+
+Unique string used to identify the operation.
+
+The id MUST be unique among all operations described in the API. The operationId value is case-sensitive. Tools and libraries MAY use the operationId to uniquely identify an operation, therefore, it is RECOMMENDED to follow common programming naming conventions.
+
+---
+
+##### `parameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.parameters" id="almacdkopenapixioperationobjectpropertyparameters"></a>
+
+```typescript
+public readonly parameters: IReferenceObject | IParameterObject[];
+```
+
+- *Type:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)[]
+
+A list of parameters that are applicable for this operation.
+
+If a parameter is already defined at the Path Item, the new definition will override it but can never remove it. The list MUST NOT include duplicated parameters. A unique parameter is defined by a combination of a name and location. The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.
+
+---
+
+##### `requestBody`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.requestBody" id="almacdkopenapixioperationobjectpropertyrequestbody"></a>
+
+```typescript
+public readonly requestBody: IReferenceObject | IRequestBodyObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IRequestBodyObject`](#@alma-cdk/openapix.IRequestBodyObject)
+
+The request body applicable for this operation.
+
+The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody SHALL be ignored by consumers.
+
+---
+
+##### `security`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.security" id="almacdkopenapixioperationobjectpropertysecurity"></a>
+
+```typescript
+public readonly security: ISecurityRequirementObject[];
+```
+
+- *Type:* [`@alma-cdk/openapix.ISecurityRequirementObject`](#@alma-cdk/openapix.ISecurityRequirementObject)[]
+
+A declaration of which security mechanisms can be used for this operation.
+
+The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. To make security optional, an empty security requirement ({}) can be included in the array. This definition overrides any declared top-level security. To remove a top-level security declaration, an empty array can be used.
+
+---
+
+##### `summary`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.summary" id="almacdkopenapixioperationobjectpropertysummary"></a>
+
+```typescript
+public readonly summary: string;
+```
+
+- *Type:* `string`
+
+A short summary of what the operation does.
+
+---
+
+##### `tags`<sup>Optional</sup> <a name="@alma-cdk/openapix.IOperationObject.property.tags" id="almacdkopenapixioperationobjectpropertytags"></a>
+
+```typescript
+public readonly tags: string[];
+```
+
+- *Type:* `string`[]
+
+A list of tags for API documentation control.
+
+Tags can be used for logical grouping of operations by resources or any other qualifier.
+
+---
+
+### IParameterObject <a name="@alma-cdk/openapix.IParameterObject" id="almacdkopenapixiparameterobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)
+
+Describes a single operation parameter.
+
+A unique parameter is defined by a combination of a name and location.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`in`](#almacdkopenapixiparameterobjectpropertyin)<span title="Required">*</span> | `string` | The location of the parameter. |
+| [`name`](#almacdkopenapixiparameterobjectpropertyname)<span title="Required">*</span> | `string` | The name of the parameter. Parameter names are case sensitive. |
+| [`allowEmptyValue`](#almacdkopenapixiparameterobjectpropertyallowemptyvalue) | `boolean` | Sets the ability to pass empty-valued parameters. |
+| [`deprecated`](#almacdkopenapixiparameterobjectpropertydeprecated) | `boolean` | Specifies that a parameter is deprecated and SHOULD be transitioned out of usage. |
+| [`description`](#almacdkopenapixiparameterobjectpropertydescription) | `string` | A brief description of the parameter. |
+| [`required`](#almacdkopenapixiparameterobjectpropertyrequired) | `boolean` | Determines whether this parameter is mandatory. |
+
+---
+
+##### `in`<sup>Required</sup> <a name="@alma-cdk/openapix.IParameterObject.property.in" id="almacdkopenapixiparameterobjectpropertyin"></a>
+
+```typescript
+public readonly in: string;
+```
+
+- *Type:* `string`
+
+The location of the parameter.
+
+Possible values are "query", "header", "path" or "cookie".
+
+---
+
+##### `name`<sup>Required</sup> <a name="@alma-cdk/openapix.IParameterObject.property.name" id="almacdkopenapixiparameterobjectpropertyname"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* `string`
+
+The name of the parameter. Parameter names are case sensitive.
+
+If in is "path", the name field MUST correspond to a template expression occurring within the path field in the Paths Object. See Path Templating for further information. If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition SHALL be ignored. For all other cases, the name corresponds to the parameter name used by the in property.
+
+---
+
+##### `allowEmptyValue`<sup>Optional</sup> <a name="@alma-cdk/openapix.IParameterObject.property.allowEmptyValue" id="almacdkopenapixiparameterobjectpropertyallowemptyvalue"></a>
+
+```typescript
+public readonly allowEmptyValue: boolean;
+```
+
+- *Type:* `boolean`
+
+Sets the ability to pass empty-valued parameters.
+
+This is valid only for query parameters and allows sending a parameter with an empty value. Default value is false. If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored. Use of this property is NOT RECOMMENDED, as it is likely to be removed in a later revision.
+
+---
+
+##### `deprecated`<sup>Optional</sup> <a name="@alma-cdk/openapix.IParameterObject.property.deprecated" id="almacdkopenapixiparameterobjectpropertydeprecated"></a>
+
+```typescript
+public readonly deprecated: boolean;
+```
+
+- *Type:* `boolean`
+
+Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
+
+Default value is false.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IParameterObject.property.description" id="almacdkopenapixiparameterobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A brief description of the parameter.
+
+This could contain examples of use. CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `required`<sup>Optional</sup> <a name="@alma-cdk/openapix.IParameterObject.property.required" id="almacdkopenapixiparameterobjectpropertyrequired"></a>
+
+```typescript
+public readonly required: boolean;
+```
+
+- *Type:* `boolean`
+
+Determines whether this parameter is mandatory.
+
+If the parameter location is "path", this property is REQUIRED and its value MUST be true. Otherwise, the property MAY be included and its default value is false.
+
+---
+
+### IPathItemObject <a name="@alma-cdk/openapix.IPathItemObject" id="almacdkopenapixipathitemobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IPathItemObject`](#@alma-cdk/openapix.IPathItemObject)
+
+Describes the operations available on a single path.
+
+A Path Item MAY be empty, due to ACL constraints. The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`delete`](#almacdkopenapixipathitemobjectpropertydelete) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a DELETE operation on this path. |
+| [`description`](#almacdkopenapixipathitemobjectpropertydescription) | `string` | An optional, string description, intended to apply to all operations in this path. |
+| [`get`](#almacdkopenapixipathitemobjectpropertyget) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a GET operation on this path. |
+| [`head`](#almacdkopenapixipathitemobjectpropertyhead) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a HEAD operation on this path. |
+| [`options`](#almacdkopenapixipathitemobjectpropertyoptions) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a OPTIONS operation on this path. |
+| [`parameters`](#almacdkopenapixipathitemobjectpropertyparameters) | [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)[] | A list of parameters that are applicable for all the operations described under this path. |
+| [`patch`](#almacdkopenapixipathitemobjectpropertypatch) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a PATCH operation on this path. |
+| [`post`](#almacdkopenapixipathitemobjectpropertypost) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a POST operation on this path. |
+| [`put`](#almacdkopenapixipathitemobjectpropertyput) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a PUT operation on this path. |
+| [`summary`](#almacdkopenapixipathitemobjectpropertysummary) | `string` | An optional, string summary, intended to apply to all operations in this path. |
+| [`trace`](#almacdkopenapixipathitemobjectpropertytrace) | [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject) | A definition of a TRACE operation on this path. |
+
+---
+
+##### `delete`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.delete" id="almacdkopenapixipathitemobjectpropertydelete"></a>
+
+```typescript
+public readonly delete: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a DELETE operation on this path.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.description" id="almacdkopenapixipathitemobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+An optional, string description, intended to apply to all operations in this path.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `get`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.get" id="almacdkopenapixipathitemobjectpropertyget"></a>
+
+```typescript
+public readonly get: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a GET operation on this path.
+
+---
+
+##### `head`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.head" id="almacdkopenapixipathitemobjectpropertyhead"></a>
+
+```typescript
+public readonly head: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a HEAD operation on this path.
+
+---
+
+##### `options`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.options" id="almacdkopenapixipathitemobjectpropertyoptions"></a>
+
+```typescript
+public readonly options: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a OPTIONS operation on this path.
+
+---
+
+##### `parameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.parameters" id="almacdkopenapixipathitemobjectpropertyparameters"></a>
+
+```typescript
+public readonly parameters: IReferenceObject | IParameterObject[];
+```
+
+- *Type:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IParameterObject`](#@alma-cdk/openapix.IParameterObject)[]
+
+A list of parameters that are applicable for all the operations described under this path.
+
+These parameters can be overridden at the operation level, but cannot be removed there. The list MUST NOT include duplicated parameters. A unique parameter is defined by a combination of a name and location. The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.
+
+---
+
+##### `patch`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.patch" id="almacdkopenapixipathitemobjectpropertypatch"></a>
+
+```typescript
+public readonly patch: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a PATCH operation on this path.
+
+---
+
+##### `post`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.post" id="almacdkopenapixipathitemobjectpropertypost"></a>
+
+```typescript
+public readonly post: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a POST operation on this path.
+
+---
+
+##### `put`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.put" id="almacdkopenapixipathitemobjectpropertyput"></a>
+
+```typescript
+public readonly put: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a PUT operation on this path.
+
+---
+
+##### `summary`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.summary" id="almacdkopenapixipathitemobjectpropertysummary"></a>
+
+```typescript
+public readonly summary: string;
+```
+
+- *Type:* `string`
+
+An optional, string summary, intended to apply to all operations in this path.
+
+---
+
+##### `trace`<sup>Optional</sup> <a name="@alma-cdk/openapix.IPathItemObject.property.trace" id="almacdkopenapixipathitemobjectpropertytrace"></a>
+
+```typescript
+public readonly trace: IOperationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOperationObject`](#@alma-cdk/openapix.IOperationObject)
+
+A definition of a TRACE operation on this path.
+
+---
+
+### IPathsObject <a name="@alma-cdk/openapix.IPathsObject" id="almacdkopenapixipathsobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IPathsObject`](#@alma-cdk/openapix.IPathsObject)
+
+Holds the relative paths to the individual endpoints and their operations.
+
+The path is appended to the URL from the Server Object in order to construct the full URL. The Paths MAY be empty, due to ACL constraints.
+
+
+
+### IReferenceObject <a name="@alma-cdk/openapix.IReferenceObject" id="almacdkopenapixireferenceobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject)
+
+A simple object to allow referencing other components in the specification, internally and externally.
+
+
+
+### IRequestBodyObject <a name="@alma-cdk/openapix.IRequestBodyObject" id="almacdkopenapixirequestbodyobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IRequestBodyObject`](#@alma-cdk/openapix.IRequestBodyObject)
+
+Describes a single request body.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`content`](#almacdkopenapixirequestbodyobjectpropertycontent)<span title="Required">*</span> | {[ key: string ]: [`@alma-cdk/openapix.IMediaTypeObject`](#@alma-cdk/openapix.IMediaTypeObject)} | The content of the request body. |
+| [`description`](#almacdkopenapixirequestbodyobjectpropertydescription) | `string` | A brief description of the request body. |
+| [`required`](#almacdkopenapixirequestbodyobjectpropertyrequired) | `boolean` | Determines if the request body is required in the request. |
+
+---
+
+##### `content`<sup>Required</sup> <a name="@alma-cdk/openapix.IRequestBodyObject.property.content" id="almacdkopenapixirequestbodyobjectpropertycontent"></a>
+
+```typescript
+public readonly content: {[ key: string ]: IMediaTypeObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IMediaTypeObject`](#@alma-cdk/openapix.IMediaTypeObject)}
+
+The content of the request body.
+
+The key is a media type or media type range and the value describes it. For requests that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/*
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IRequestBodyObject.property.description" id="almacdkopenapixirequestbodyobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A brief description of the request body.
+
+This could contain examples of use. CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `required`<sup>Optional</sup> <a name="@alma-cdk/openapix.IRequestBodyObject.property.required" id="almacdkopenapixirequestbodyobjectpropertyrequired"></a>
+
+```typescript
+public readonly required: boolean;
+```
+
+- *Type:* `boolean`
+
+Determines if the request body is required in the request.
+
+Defaults to false.
+
+---
+
+### IResponseObject <a name="@alma-cdk/openapix.IResponseObject" id="almacdkopenapixiresponseobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IResponseObject`](#@alma-cdk/openapix.IResponseObject)
+
+Describes a single response from an API Operation, including design-time, static links to operations based on the response.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`description`](#almacdkopenapixiresponseobjectpropertydescription)<span title="Required">*</span> | `string` | A short description of the response. |
+| [`content`](#almacdkopenapixiresponseobjectpropertycontent) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IMediaTypeObject`](#@alma-cdk/openapix.IMediaTypeObject)} | A map containing descriptions of potential response payloads. |
+| [`headers`](#almacdkopenapixiresponseobjectpropertyheaders) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)} | Maps a header name to its definition. |
+| [`links`](#almacdkopenapixiresponseobjectpropertylinks) | {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) \| [`@alma-cdk/openapix.ILinkObject`](#@alma-cdk/openapix.ILinkObject)} | A map of operations links that can be followed from the response. |
+
+---
+
+##### `description`<sup>Required</sup> <a name="@alma-cdk/openapix.IResponseObject.property.description" id="almacdkopenapixiresponseobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A short description of the response.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `content`<sup>Optional</sup> <a name="@alma-cdk/openapix.IResponseObject.property.content" id="almacdkopenapixiresponseobjectpropertycontent"></a>
+
+```typescript
+public readonly content: {[ key: string ]: IReferenceObject | IMediaTypeObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IMediaTypeObject`](#@alma-cdk/openapix.IMediaTypeObject)}
+
+A map containing descriptions of potential response payloads.
+
+The key is a media type or media type range and the value describes it. For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/*
+
+---
+
+##### `headers`<sup>Optional</sup> <a name="@alma-cdk/openapix.IResponseObject.property.headers" id="almacdkopenapixiresponseobjectpropertyheaders"></a>
+
+```typescript
+public readonly headers: {[ key: string ]: IReferenceObject | IHeaderObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.IHeaderObject`](#@alma-cdk/openapix.IHeaderObject)}
+
+Maps a header name to its definition.
+
+RFC7230 states header names are case insensitive. If a response header is defined with the name "Content-Type", it SHALL be ignored.
+
+---
+
+##### `links`<sup>Optional</sup> <a name="@alma-cdk/openapix.IResponseObject.property.links" id="almacdkopenapixiresponseobjectpropertylinks"></a>
+
+```typescript
+public readonly links: {[ key: string ]: IReferenceObject | ILinkObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ILinkObject`](#@alma-cdk/openapix.ILinkObject)}
+
+A map of operations links that can be followed from the response.
+
+The key of the map is a short name for the link, following the naming constraints of the names for Component Objects.
+
+---
+
+### IResponsesObject <a name="@alma-cdk/openapix.IResponsesObject" id="almacdkopenapixiresponsesobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IResponsesObject`](#@alma-cdk/openapix.IResponsesObject)
+
+A container for the expected responses of an operation.
+
+The container maps a HTTP response code to the expected response. The documentation is not necessarily expected to cover all possible HTTP response codes because they may not be known in advance. However, documentation is expected to cover a successful operation response and any known errors. The default MAY be used as a default response object for all HTTP codes that are not covered individually by the specification. The Responses Object MUST contain at least one response code, and it SHOULD be the response for a successful operation call.
+
+
+
+### ISchemaObject <a name="@alma-cdk/openapix.ISchemaObject" id="almacdkopenapixischemaobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject)
+
+The Schema Object allows the definition of input and output data types.
+
+These types can be objects, but also primitives and arrays. This object is an extended subset of the JSON Schema Specification Wright Draft 00. For more information about the properties, see JSON Schema Core and JSON Schema Validation. Unless stated otherwise, the property definitions follow the JSON Schema.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`deprecated`](#almacdkopenapixischemaobjectpropertydeprecated) | `boolean` | Specifies that a schema is deprecated and SHOULD be transitioned out of usage. |
+| [`discriminator`](#almacdkopenapixischemaobjectpropertydiscriminator) | [`@alma-cdk/openapix.IDiscriminatorObject`](#@alma-cdk/openapix.IDiscriminatorObject) | Adds support for polymorphism. |
+| [`example`](#almacdkopenapixischemaobjectpropertyexample) | `any` | A free-form property to include an example of an instance for this schema. |
+| [`externalDocs`](#almacdkopenapixischemaobjectpropertyexternaldocs) | [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject) | Additional external documentation for this schema. |
+| [`nullable`](#almacdkopenapixischemaobjectpropertynullable) | `boolean` | A true value adds "null" to the allowed type specified by the type keyword, only if type is explicitly defined within the same Schema Object. |
+| [`readOnly`](#almacdkopenapixischemaobjectpropertyreadonly) | `boolean` | Relevant only for Schema "properties" definitions. |
+| [`writeOnly`](#almacdkopenapixischemaobjectpropertywriteonly) | `boolean` | Relevant only for Schema "properties" definitions. |
+| [`xml`](#almacdkopenapixischemaobjectpropertyxml) | [`@alma-cdk/openapix.IXmlObject`](#@alma-cdk/openapix.IXmlObject) | This MAY be used only on properties schemas. |
+
+---
+
+##### `deprecated`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.deprecated" id="almacdkopenapixischemaobjectpropertydeprecated"></a>
+
+```typescript
+public readonly deprecated: boolean;
+```
+
+- *Type:* `boolean`
+
+Specifies that a schema is deprecated and SHOULD be transitioned out of usage.
+
+Default value is false.
+
+---
+
+##### `discriminator`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.discriminator" id="almacdkopenapixischemaobjectpropertydiscriminator"></a>
+
+```typescript
+public readonly discriminator: IDiscriminatorObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IDiscriminatorObject`](#@alma-cdk/openapix.IDiscriminatorObject)
+
+Adds support for polymorphism.
+
+The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description. See Composition and Inheritance for more details.
+
+---
+
+##### `example`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.example" id="almacdkopenapixischemaobjectpropertyexample"></a>
+
+```typescript
+public readonly example: any;
+```
+
+- *Type:* `any`
+
+A free-form property to include an example of an instance for this schema.
+
+To represent examples that cannot be naturally represented in JSON or YAML, a string value can be used to contain the example with escaping where necessary.
+
+---
+
+##### `externalDocs`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.externalDocs" id="almacdkopenapixischemaobjectpropertyexternaldocs"></a>
+
+```typescript
+public readonly externalDocs: IExternalDocumentationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject)
+
+Additional external documentation for this schema.
+
+---
+
+##### `nullable`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.nullable" id="almacdkopenapixischemaobjectpropertynullable"></a>
+
+```typescript
+public readonly nullable: boolean;
+```
+
+- *Type:* `boolean`
+
+A true value adds "null" to the allowed type specified by the type keyword, only if type is explicitly defined within the same Schema Object.
+
+Other Schema Object constraints retain their defined behavior, and therefore may disallow the use of null as a value. A false value leaves the specified or default type unmodified. The default value is false.
+
+---
+
+##### `readOnly`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.readOnly" id="almacdkopenapixischemaobjectpropertyreadonly"></a>
+
+```typescript
+public readonly readOnly: boolean;
+```
+
+- *Type:* `boolean`
+
+Relevant only for Schema "properties" definitions.
+
+Declares the property as "read only". This means that it MAY be sent as part of a response but SHOULD NOT be sent as part of the request. If the property is marked as being true and is in the required list, the required will take effect on the response only. A property MUST NOT be marked as both and writeOnly being true. Default value is false.
+
+---
+
+##### `writeOnly`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.writeOnly" id="almacdkopenapixischemaobjectpropertywriteonly"></a>
+
+```typescript
+public readonly writeOnly: boolean;
+```
+
+- *Type:* `boolean`
+
+Relevant only for Schema "properties" definitions.
+
+Declares the property as "write only". Therefore, it MAY be sent as part of a request but SHOULD NOT be sent as part of the response. If the property is marked as writeOnly being true and is in the required list, the required will take effect on the request only. A property MUST NOT be marked as both and writeOnly being true. Default value is false.
+
+---
+
+##### `xml`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISchemaObject.property.xml" id="almacdkopenapixischemaobjectpropertyxml"></a>
+
+```typescript
+public readonly xml: IXmlObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IXmlObject`](#@alma-cdk/openapix.IXmlObject)
+
+This MAY be used only on properties schemas.
+
+It has no effect on root schemas. Adds additional metadata to describe the XML representation of this property.
+
+---
+
+### ISecurityRequirementObject <a name="@alma-cdk/openapix.ISecurityRequirementObject" id="almacdkopenapixisecurityrequirementobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.ISecurityRequirementObject`](#@alma-cdk/openapix.ISecurityRequirementObject)
+
+Lists the required security schemes to execute this operation.
+
+The name used for each property MUST correspond to a security scheme declared in the Security Schemes under the Components Object. Security Requirement Objects that contain multiple schemes require that all schemes MUST be satisfied for a request to be authorized. This enables support for scenarios where multiple query parameters or HTTP headers are required to convey security information. When a list of Security Requirement Objects is defined on the OpenAPI Object or Operation Object, only one of the Security Requirement Objects in the list needs to be satisfied to authorize the request.
+
+
+
+### ISecuritySchemeObject <a name="@alma-cdk/openapix.ISecuritySchemeObject" id="almacdkopenapixisecurityschemeobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.ISecuritySchemeObject`](#@alma-cdk/openapix.ISecuritySchemeObject)
+
+Defines a security scheme that can be used by the operations.
+
+Supported schemes are HTTP authentication, an API key (either as a header, a cookie parameter or as a query parameter), OAuth2's common flows (implicit, password, client credentials and authorization code) as defined in RFC6749, and OpenID Connect Discovery.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`type`](#almacdkopenapixisecurityschemeobjectpropertytype)<span title="Required">*</span> | `string` | The type of the security scheme. |
+| [`bearerFormat`](#almacdkopenapixisecurityschemeobjectpropertybearerformat) | `string` | A hint to the client to identify how the bearer token is formatted. |
+| [`description`](#almacdkopenapixisecurityschemeobjectpropertydescription) | `string` | A short description for security scheme. |
+| [`flow`](#almacdkopenapixisecurityschemeobjectpropertyflow) | [`@alma-cdk/openapix.IOAuthFlowsObject`](#@alma-cdk/openapix.IOAuthFlowsObject) | An object containing configuration information for the flow types supported. |
+| [`in`](#almacdkopenapixisecurityschemeobjectpropertyin) | `string` | The location of the API key. |
+| [`name`](#almacdkopenapixisecurityschemeobjectpropertyname) | `string` | The name of the header, query or cookie parameter to be used. |
+| [`openIdConnectUrl`](#almacdkopenapixisecurityschemeobjectpropertyopenidconnecturl) | `string` | OpenId Connect URL to discover OAuth2 configuration values. |
+| [`scheme`](#almacdkopenapixisecurityschemeobjectpropertyscheme) | `string` | The name of the HTTP Authorization scheme to be used in the Authorization header as defined in RFC7235. |
+
+---
+
+##### `type`<sup>Required</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.type" id="almacdkopenapixisecurityschemeobjectpropertytype"></a>
+
+```typescript
+public readonly type: string;
+```
+
+- *Type:* `string`
+
+The type of the security scheme.
+
+Valid values are "apiKey", "http", "oauth2", "openIdConnect".
+
+---
+
+##### `bearerFormat`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.bearerFormat" id="almacdkopenapixisecurityschemeobjectpropertybearerformat"></a>
+
+```typescript
+public readonly bearerFormat: string;
+```
+
+- *Type:* `string`
+
+A hint to the client to identify how the bearer token is formatted.
+
+Bearer tokens are usually generated by an authorization server, so this information is primarily for documentation purposes.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.description" id="almacdkopenapixisecurityschemeobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A short description for security scheme.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `flow`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.flow" id="almacdkopenapixisecurityschemeobjectpropertyflow"></a>
+
+```typescript
+public readonly flow: IOAuthFlowsObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IOAuthFlowsObject`](#@alma-cdk/openapix.IOAuthFlowsObject)
+
+An object containing configuration information for the flow types supported.
+
+REQUIRED for oauth2.
+
+---
+
+##### `in`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.in" id="almacdkopenapixisecurityschemeobjectpropertyin"></a>
+
+```typescript
+public readonly in: string;
+```
+
+- *Type:* `string`
+
+The location of the API key.
+
+Valid values are "query", "header" or "cookie". REQUIRED for apiKey.
+
+---
+
+##### `name`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.name" id="almacdkopenapixisecurityschemeobjectpropertyname"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* `string`
+
+The name of the header, query or cookie parameter to be used.
+
+REQUIRED for apiKey.
+
+---
+
+##### `openIdConnectUrl`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.openIdConnectUrl" id="almacdkopenapixisecurityschemeobjectpropertyopenidconnecturl"></a>
+
+```typescript
+public readonly openIdConnectUrl: string;
+```
+
+- *Type:* `string`
+
+OpenId Connect URL to discover OAuth2 configuration values.
+
+This MUST be in the form of a URL. REQUIRED for openIdConnect.
+
+---
+
+##### `scheme`<sup>Optional</sup> <a name="@alma-cdk/openapix.ISecuritySchemeObject.property.scheme" id="almacdkopenapixisecurityschemeobjectpropertyscheme"></a>
+
+```typescript
+public readonly scheme: string;
+```
+
+- *Type:* `string`
+
+The name of the HTTP Authorization scheme to be used in the Authorization header as defined in RFC7235.
+
+The values used SHOULD be registered in the IANA Authentication Scheme registry. REQUIRED for http.
+
+---
+
+### IServerObject <a name="@alma-cdk/openapix.IServerObject" id="almacdkopenapixiserverobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IServerObject`](#@alma-cdk/openapix.IServerObject)
+
+An object representing a Server.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`url`](#almacdkopenapixiserverobjectpropertyurl)<span title="Required">*</span> | `string` | REQUIRED. |
+| [`description`](#almacdkopenapixiserverobjectpropertydescription) | `string` | An optional string describing the host designated by the URL. |
+| [`variables`](#almacdkopenapixiserverobjectpropertyvariables) | {[ key: string ]: [`@alma-cdk/openapix.IServerVariableObject`](#@alma-cdk/openapix.IServerVariableObject)} | A map between a variable name and its value. |
+
+---
+
+##### `url`<sup>Required</sup> <a name="@alma-cdk/openapix.IServerObject.property.url" id="almacdkopenapixiserverobjectpropertyurl"></a>
+
+```typescript
+public readonly url: string;
+```
+
+- *Type:* `string`
+
+REQUIRED.
+
+A URL to the target host. This URL supports Server Variables and MAY be relative, to indicate that the host location is relative to the location where the OpenAPI document is being served. Variable substitutions will be made when a variable is named in {brackets}.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IServerObject.property.description" id="almacdkopenapixiserverobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+An optional string describing the host designated by the URL.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `variables`<sup>Optional</sup> <a name="@alma-cdk/openapix.IServerObject.property.variables" id="almacdkopenapixiserverobjectpropertyvariables"></a>
+
+```typescript
+public readonly variables: {[ key: string ]: IServerVariableObject};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.IServerVariableObject`](#@alma-cdk/openapix.IServerVariableObject)}
+
+A map between a variable name and its value.
+
+The value is used for substitution in the server's URL template.
+
+---
+
+### IServerVariableObject <a name="@alma-cdk/openapix.IServerVariableObject" id="almacdkopenapixiservervariableobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IServerVariableObject`](#@alma-cdk/openapix.IServerVariableObject)
+
+An object representing a Server Variable for server URL template substitution.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`default`](#almacdkopenapixiservervariableobjectpropertydefault)<span title="Required">*</span> | `string` | The default value to use for substitution, which SHALL be sent if an alternate value is not supplied. |
+| [`description`](#almacdkopenapixiservervariableobjectpropertydescription) | `string` | An optional description for the server variable. |
+| [`enum`](#almacdkopenapixiservervariableobjectpropertyenum) | `string`[] | An enumeration of string values to be used if the substitution options are from a limited set. |
+
+---
+
+##### `default`<sup>Required</sup> <a name="@alma-cdk/openapix.IServerVariableObject.property.default" id="almacdkopenapixiservervariableobjectpropertydefault"></a>
+
+```typescript
+public readonly default: string;
+```
+
+- *Type:* `string`
+
+The default value to use for substitution, which SHALL be sent if an alternate value is not supplied.
+
+Note this behavior is different than the Schema Object's treatment of default values, because in those cases parameter values are optional. If the enum is defined, the value SHOULD exist in the enum's values.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.IServerVariableObject.property.description" id="almacdkopenapixiservervariableobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+An optional description for the server variable.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `enum`<sup>Optional</sup> <a name="@alma-cdk/openapix.IServerVariableObject.property.enum" id="almacdkopenapixiservervariableobjectpropertyenum"></a>
+
+```typescript
+public readonly enum: string[];
+```
+
+- *Type:* `string`[]
+
+An enumeration of string values to be used if the substitution options are from a limited set.
+
+The array SHOULD NOT be empty.
+
+---
+
+### ITagObject <a name="@alma-cdk/openapix.ITagObject" id="almacdkopenapixitagobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.ITagObject`](#@alma-cdk/openapix.ITagObject)
+
+Adds metadata to a single tag that is used by the Operation Object.
+
+It is not mandatory to have a Tag Object per tag defined in the Operation Object instances.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`name`](#almacdkopenapixitagobjectpropertyname)<span title="Required">*</span> | `string` | The name of the tag. |
+| [`description`](#almacdkopenapixitagobjectpropertydescription) | `string` | A short description for the tag. |
+| [`externalDocs`](#almacdkopenapixitagobjectpropertyexternaldocs) | [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject) | Additional external documentation for this tag. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="@alma-cdk/openapix.ITagObject.property.name" id="almacdkopenapixitagobjectpropertyname"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* `string`
+
+The name of the tag.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="@alma-cdk/openapix.ITagObject.property.description" id="almacdkopenapixitagobjectpropertydescription"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* `string`
+
+A short description for the tag.
+
+CommonMark syntax MAY be used for rich text representation.
+
+---
+
+##### `externalDocs`<sup>Optional</sup> <a name="@alma-cdk/openapix.ITagObject.property.externalDocs" id="almacdkopenapixitagobjectpropertyexternaldocs"></a>
+
+```typescript
+public readonly externalDocs: IExternalDocumentationObject;
+```
+
+- *Type:* [`@alma-cdk/openapix.IExternalDocumentationObject`](#@alma-cdk/openapix.IExternalDocumentationObject)
+
+Additional external documentation for this tag.
+
+---
+
+### IXmlObject <a name="@alma-cdk/openapix.IXmlObject" id="almacdkopenapixixmlobject"></a>
+
+- *Extends:* [`@alma-cdk/openapix.IExtensible`](#@alma-cdk/openapix.IExtensible)
+
+- *Implemented By:* [`@alma-cdk/openapix.IXmlObject`](#@alma-cdk/openapix.IXmlObject)
+
+A metadata object that allows for more fine-tuned XML model definitions.
+
+When using arrays, XML element names are not inferred (for singular/plural forms) and the name property SHOULD be used to add that information. See examples for expected behavior.
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`attribute`](#almacdkopenapixixmlobjectpropertyattribute) | `boolean` | Declares whether the property definition translates to an attribute instead of an element. |
+| [`name`](#almacdkopenapixixmlobjectpropertyname) | `string` | Replaces the name of the element/attribute used for the described schema property. |
+| [`namespace`](#almacdkopenapixixmlobjectpropertynamespace) | `string` | The URI of the namespace definition. |
+| [`prefix`](#almacdkopenapixixmlobjectpropertyprefix) | `string` | The prefix to be used for the name. |
+| [`wrapped`](#almacdkopenapixixmlobjectpropertywrapped) | `boolean` | MAY be used only for an array definition. |
+
+---
+
+##### `attribute`<sup>Optional</sup> <a name="@alma-cdk/openapix.IXmlObject.property.attribute" id="almacdkopenapixixmlobjectpropertyattribute"></a>
+
+```typescript
+public readonly attribute: boolean;
+```
+
+- *Type:* `boolean`
+
+Declares whether the property definition translates to an attribute instead of an element.
+
+Default value is false.
+
+---
+
+##### `name`<sup>Optional</sup> <a name="@alma-cdk/openapix.IXmlObject.property.name" id="almacdkopenapixixmlobjectpropertyname"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* `string`
+
+Replaces the name of the element/attribute used for the described schema property.
+
+When defined within items, it will affect the name of the individual XML elements within the list. When defined alongside type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If wrapped is false, it will be ignored.
+
+---
+
+##### `namespace`<sup>Optional</sup> <a name="@alma-cdk/openapix.IXmlObject.property.namespace" id="almacdkopenapixixmlobjectpropertynamespace"></a>
+
+```typescript
+public readonly namespace: string;
+```
+
+- *Type:* `string`
+
+The URI of the namespace definition.
+
+Value MUST be in the form of an absolute URI.
+
+---
+
+##### `prefix`<sup>Optional</sup> <a name="@alma-cdk/openapix.IXmlObject.property.prefix" id="almacdkopenapixixmlobjectpropertyprefix"></a>
+
+```typescript
+public readonly prefix: string;
+```
+
+- *Type:* `string`
+
+The prefix to be used for the name.
+
+---
+
+##### `wrapped`<sup>Optional</sup> <a name="@alma-cdk/openapix.IXmlObject.property.wrapped" id="almacdkopenapixixmlobjectpropertywrapped"></a>
+
+```typescript
+public readonly wrapped: boolean;
+```
+
+- *Type:* `boolean`
+
+MAY be used only for an array definition.
+
+Signifies whether the array is wrapped (for example, <books><book/><book/></books>) or unwrapped (<book/><book/>). Default value is false. The definition takes effect only when defined alongside type being array (outside the items).
 
 ---
 
