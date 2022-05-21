@@ -5,7 +5,7 @@ import { addError } from '../errors/add';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
-import { ApiBaseProps, Methods, Paths, Validator } from './api-props';
+import { ApiBaseProps, Methods, Paths, Validator } from './props';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 

@@ -4,7 +4,7 @@ import { Construct } from 'constructs';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
-import { ApiProps, Paths } from './api-props';
+import { ApiProps, Paths } from './props';
 import { ApiDefinition } from './definition';
 
 /**

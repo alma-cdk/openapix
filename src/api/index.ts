@@ -1,2 +1,2 @@
-export { ApiProps, ApiBaseProps, Validator } from './api-props';
+export { ApiProps, ApiBaseProps, Validator } from './props';
 export { Api } from './api';
