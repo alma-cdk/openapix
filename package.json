@@ -1,6 +1,6 @@
 {
   "name": "@alma-cdk/openapix",
-  "description": "Combine the power of AWS CDK & OpenAPI YAML Schema Definitions ",
+  "description": "Combine the power of AWS CDK & OpenAPI YAML Schema Definitions",
   "repository": {
     "type": "git",
     "url": "https://github.com/alma-cdk/openapix.git"
