@@ -30,11 +30,11 @@
 
 <br/>
 
-## Work in Progress
+## 🚧 &nbsp; Project Stability
 
 ![experimental](https://img.shields.io/badge/stability-experimental-yellow "Stability: Experimental")
 
-🚧 &nbsp;**Do not use for production critial stuff! This construct is still very much work in progress and breaking changes may occur.** 🚧
+This construct is still versioned with `v0` major version and breaking changes might be introduced if necessary (without a major version bump), though we aim to keep the API as stable as possible (even within `v0` development). We aim to publish `v1.0.0` soon and after that breaking changes will be introduced via major version bumps.
 
 
 <br/>
