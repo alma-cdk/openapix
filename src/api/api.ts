@@ -4,8 +4,8 @@ import { Construct } from 'constructs';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
-import { ApiProps, Paths } from './props';
 import { ApiDefinition } from './definition';
+import { ApiProps, Paths } from './props';
 
 /**
  * AWS API Gateway REST API defined with OpenApi v3 schema.
