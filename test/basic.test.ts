@@ -3,7 +3,7 @@ import { Duration } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { get } from 'lodash';
+import { get, set } from 'lodash';
 import * as openapix from '../src';
 
 test('Synth', () => {
@@ -70,45 +70,15 @@ test('Synth', () => {
     },
   });
 
-  const expectation = {
-    ...value,
-    paths: {
-      [path]: {
-        get: {
-          ...value.paths[path].get,
-          'x-amazon-apigateway-integration': {
-            type: 'AWS_PROXY',
-            httpMethod: 'POST',
-            uri: {
-              'Fn::Join': [
-                '',
-                [
-                  'arn:',
-                  {
-                    Ref: 'AWS::Partition',
-                  },
-                  ':apigateway:',
-                  {
-                    Ref: 'AWS::Region',
-                  },
-                  ':lambda:path/2015-03-31/functions/',
-                  {
-                    'Fn::GetAtt': [
-                      Match.stringLikeRegexp('TestFunction*'),
-                      'Arn',
-                    ],
-                  },
-                  '/invocations',
-                ],
-              ],
-            },
-          },
-        },
-      },
-    },
-  };
+  const expectationBase = Object.assign({}, value);
 
-  expect(document).toMatchObject(expectation);
+  expect(document).toMatchObject(
+    set(expectationBase, `paths.${path}.get.x-amazon-apigateway-integration`, {
+      type: 'AWS_PROXY',
+      httpMethod: 'POST',
+      uri: expect.stringMatching(/^arn:.*:apigateway:.*:lambda.path\/2015-03-31\/functions\/.*\/invocations/),
+    }),
+  );
 
   const template = Template.fromStack(stack);
 
@@ -119,7 +89,33 @@ test('Synth', () => {
       ],
     },
     Name: 'Testing',
-    Body: expectation,
+    Body: set(expectationBase, `paths.${path}.get.x-amazon-apigateway-integration`, {
+      type: 'AWS_PROXY',
+      httpMethod: 'POST',
+      uri: {
+        'Fn::Join': [
+          '',
+          [
+            'arn:',
+            {
+              Ref: 'AWS::Partition',
+            },
+            ':apigateway:',
+            {
+              Ref: 'AWS::Region',
+            },
+            ':lambda:path/2015-03-31/functions/',
+            {
+              'Fn::GetAtt': [
+                Match.stringLikeRegexp('TestFunction*'),
+                'Arn',
+              ],
+            },
+            '/invocations',
+          ],
+        ],
+      },
+    }),
   }));
 
 
@@ -139,8 +135,6 @@ test('Basic usage', () => {
       paths: {},
     }),
   });
-
-  //console.log(openapiSchema);
 
   expect(document).toEqual({
     openapi: '3.0.1',
@@ -190,8 +184,6 @@ test('Inject paths', () => {
     },
   });
 
-  //console.log(openapiSchema);
-
   expect(get(document, 'baz')).toBe(1);
 });
 
@@ -230,8 +222,6 @@ test('Reject deep paths', () => {
     }),
     rejectionsDeep: ['example'],
   });
-
-  //console.log(openapiSchema);
 
   expect(get(document, 'paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
 });
@@ -319,8 +309,6 @@ test('Handles custom authorizer', () => {
       },
     },
   });
-
-  //console.log(openapiSchema);
 
   expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
   expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
