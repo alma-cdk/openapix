@@ -1,6 +1,9 @@
 import * as fs from 'fs';
+import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import { Construct } from 'constructs';
 import * as yaml from 'js-yaml';
 import { get, has, set, unset } from 'lodash';
+import { SchemaAsset } from './asset';
 import { IDocument } from './idocument';
 import { SchemaProps } from './props';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -44,12 +47,19 @@ export class Schema {
     return yaml.dump(this.document);
   }
 
+  /** Serialize to JSON string. */
   public toJson(): string {
     return JSON.stringify(this.document);
   }
 
+  /** Return the actual OpenApi v3 document. */
   public toDocument(): IDocument {
     return this.document;
+  }
+
+  /** Return the OpenApi v3 document as an S3 Asset. */
+  public toAsset(scope: Construct, id: string): Asset {
+    return new SchemaAsset(scope, id, this.document);
   }
 
   /** Check if definition has a value in given object path. */

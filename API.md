@@ -4576,8 +4576,9 @@ new Schema(props: SchemaProps)
 | [`reject`](#almacdkopenapixschemareject) | Reject – i.e. remove values – from given object paths. |
 | [`rejectDeep`](#almacdkopenapixschemarejectdeep) | Reject deep within object – i.e. remove all nested object paths. |
 | [`set`](#almacdkopenapixschemaset) | Set a value to given object path. |
-| [`toDocument`](#almacdkopenapixschematodocument) | *No description.* |
-| [`toJson`](#almacdkopenapixschematojson) | *No description.* |
+| [`toAsset`](#almacdkopenapixschematoasset) | Return the OpenApi v3 document as an S3 Asset. |
+| [`toDocument`](#almacdkopenapixschematodocument) | Return the actual OpenApi v3 document. |
+| [`toJson`](#almacdkopenapixschematojson) | Serialize to JSON string. |
 | [`toYaml`](#almacdkopenapixschematoyaml) | Serialize to YAML string. |
 
 ---
@@ -4657,6 +4658,24 @@ public set(path: string, value: any)
 ###### `value`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.parameter.value" id="almacdkopenapixschemaparametervalue"></a>
 
 - *Type:* `any`
+
+---
+
+##### `toAsset` <a name="@alma-cdk/openapix.Schema.toAsset" id="almacdkopenapixschematoasset"></a>
+
+```typescript
+public toAsset(scope: Construct, id: string)
+```
+
+###### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.parameter.scope" id="almacdkopenapixschemaparameterscope"></a>
+
+- *Type:* [`constructs.Construct`](#constructs.Construct)
+
+---
+
+###### `id`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.parameter.id" id="almacdkopenapixschemaparameterid"></a>
+
+- *Type:* `string`
 
 ---
 

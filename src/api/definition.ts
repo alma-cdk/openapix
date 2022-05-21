@@ -4,7 +4,6 @@ import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/au
 import { addError } from '../errors/add';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
-import { SchemaAsset } from '../schema-asset';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
 import { ApiBaseProps, Methods, Paths, Validator } from './api-props';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -164,10 +163,8 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * @see https://github.com/aws/aws-cdk/blob/87dd2a6eb0b8208e49ff5f0cc8486ad58410d3ef/packages/%40aws-cdk/aws-apigateway/lib/api-definition.ts#L81-L88
    */
   public bind(_: Construct): apigateway.ApiDefinitionConfig {
-    const definition = this.document;
-
     if (this.upload === true) {
-      const asset = new SchemaAsset(this.scope, 'SchemaAsset', definition);
+      const asset = this.schema.toAsset(this.scope, 'SchemaAsset');
       return {
         s3Location: {
           bucket: asset.bucket.bucketArn,
@@ -177,7 +174,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     }
 
     return {
-      inlineDefinition: definition,
+      inlineDefinition: this.schema.toDocument(),
     };
   }
 

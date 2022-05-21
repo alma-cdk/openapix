@@ -4,7 +4,7 @@ import { join } from 'path';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { paramCase } from 'change-case';
 import { Construct } from 'constructs';
-import { IDocument } from '../schema';
+import { IDocument } from '..';
 
 
 export interface SchemaAssetProps {
