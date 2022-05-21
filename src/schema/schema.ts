@@ -6,6 +6,7 @@ import { get, has, set, unset } from 'lodash';
 import { SchemaAsset } from './asset';
 import { IDocument } from './idocument';
 import { SchemaProps } from './props';
+import { getValidVersion } from './version';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -15,6 +16,12 @@ const omitDeep = require('omit-deep-lodash');
  * and then serialized back to YAML.
  */
 export class Schema {
+
+  /**
+   * A string representing supported SemVer range.
+   * @see https://github.com/npm/node-semver
+   */
+  public static openApiSupportedVersions: string = '3.0.x';
 
   /** Parse OpenApi v3 schema from inline YAML content. */
   public static fromInline(content: string): Schema {
@@ -37,10 +44,24 @@ export class Schema {
   */
   private document: IDocument;
 
+  /**
+   * OpenApi version used by schema document.
+   *
+   * @example
+   * '3.0.3'
+   */
+  public openApiVersion: string;
+
   /** Construct a new Schema instance from OpenApi v3 JSON.  */
   constructor(props: SchemaProps) {
     this.document = props;
+
+    this.openApiVersion = getValidVersion(
+      Schema.openApiSupportedVersions,
+      this.document.openapi,
+    );
   }
+
 
   /** Serialize to YAML string. */
   public toYaml(): string {

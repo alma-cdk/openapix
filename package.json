@@ -42,6 +42,7 @@
     "@types/node": "^14",
     "@types/omit-deep-lodash": "^1.1.1",
     "@types/prettier": "v2.6.0",
+    "@types/semver": "^7.3.9",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "aws-cdk-lib": "2.24.1",
@@ -59,6 +60,7 @@
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
     "projen": "0.56.16",
+    "semver": "^7.3.7",
     "standard-version": "^9",
     "ts-jest": "^27",
     "typescript": "^4.6.4"
@@ -71,13 +73,15 @@
     "change-case": "^4.1.2",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "omit-deep-lodash": "^1.1.6"
+    "omit-deep-lodash": "^1.1.6",
+    "semver": "^7.3.7"
   },
   "bundledDependencies": [
     "change-case",
     "js-yaml",
     "lodash",
-    "omit-deep-lodash"
+    "omit-deep-lodash",
+    "semver"
   ],
   "keywords": [
     "api-gateway",

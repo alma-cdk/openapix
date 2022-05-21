@@ -4734,6 +4734,40 @@ Schema.fromInline(content: string)
 
 ---
 
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`openApiSupportedVersions`](#almacdkopenapixschemapropertyopenapisupportedversions)<span title="Required">*</span> | `string` | A string representing supported SemVer range. |
+| [`openApiVersion`](#almacdkopenapixschemapropertyopenapiversion)<span title="Required">*</span> | `string` | OpenApi version used by schema document. |
+
+---
+
+##### `openApiSupportedVersions`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.property.openApiSupportedVersions" id="almacdkopenapixschemapropertyopenapisupportedversions"></a>
+
+```typescript
+public readonly openApiSupportedVersions: string;
+```
+
+- *Type:* `string`
+
+A string representing supported SemVer range.
+
+> https://github.com/npm/node-semver
+
+---
+
+##### `openApiVersion`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.property.openApiVersion" id="almacdkopenapixschemapropertyopenapiversion"></a>
+
+```typescript
+public readonly openApiVersion: string;
+```
+
+- *Type:* `string`
+
+OpenApi version used by schema document.
+
+---
 
 
 ## Protocols <a name="Protocols" id="protocols"></a>

@@ -27,6 +27,10 @@
       "type": "build"
     },
     {
+      "name": "@types/semver",
+      "type": "build"
+    },
+    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^5",
       "type": "build"
@@ -103,6 +107,10 @@
       "type": "build"
     },
     {
+      "name": "semver",
+      "type": "build"
+    },
+    {
       "name": "standard-version",
       "version": "^9",
       "type": "build"
@@ -130,6 +138,10 @@
     },
     {
       "name": "omit-deep-lodash",
+      "type": "bundled"
+    },
+    {
+      "name": "semver",
       "type": "bundled"
     },
     {

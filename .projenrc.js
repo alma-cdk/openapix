@@ -30,16 +30,19 @@ const project = new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'constructs',
     'aws-cdk-lib',
+    'semver',
     '@types/lodash',
     '@types/js-yaml',
     '@types/omit-deep-lodash',
     '@types/prettier@v2.6.0',
+    '@types/semver',
   ],
   bundledDeps: [
     'change-case',
     'lodash',
     'js-yaml',
     'omit-deep-lodash',
+    'semver',
   ],
 
   // Gitignore
