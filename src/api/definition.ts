@@ -14,8 +14,13 @@ const omitDeep = require('omit-deep-lodash');
 
 
 export class OpenApiDefinition extends apigateway.ApiDefinition {
-  private definition?: any;
-  private s3Location?: apigateway.ApiDefinitionS3Location;
+
+  /**
+   * Exposes the processed OpenApi Schema Object.
+   * Mainly useful for testing purposes.
+   */
+  public readonly schema: any;
+
   private readonly upload: boolean;
   private readonly scope: Construct;
   private readonly source: Schema;
@@ -51,8 +56,8 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
     this.configureAuthorizers(authorizers);
     this.configurePaths(paths);
 
-    // Finally expose the definition for CDK/CloudFormation
-    this.exposeDefinition();
+    this.schema = this.source.toObject();
+
   }
 
 
@@ -107,14 +112,19 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
    * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
    */
   private configurePaths(paths: Paths): void {
+
+
     Object.keys(paths).map(path => {
-      if (!this.source.has(path)) {
-        addError(this.scope, `OpenAPI schema is missing path for: ${path}`);
-        return;
+
+
+      if (!this.source.has(`paths.${path}`)) {
+        const message = `OpenAPI schema is missing path for: ${path}`;
+        addError(this.scope, message);
+        //return;
       }
 
       if (typeof this.defaultCors !== 'undefined') {
-        this.source.set(`${path}.OPTIONS`, this.defaultCors);
+        this.source.set(`${path}.options`, this.defaultCors);
       }
 
       const methods = paths[path];
@@ -128,6 +138,8 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   private configurePathMethods(path: string, methods: Methods): void {
     Object.keys(methods).map(m => {
       const method = m.toLowerCase();
+
+
       this.ensureMethodExists(path, method);
       this.ensureNoIntegrationAlready(path, method);
 
@@ -154,41 +166,42 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
     return source;
   }
 
-
-  /**
-   * Set `s3Location` or `definition` to expose the generated definition
-   * for CDK/CloudFormation.
-   */
-  private exposeDefinition(): void {
-    const newSchema = this.source.toObject();
-    if (this.upload) {
-      const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';// TODO?
-      fs.writeFileSync(newSchemaPath, JSON.stringify(newSchema), 'utf-8');
-      const asset = new assets.Asset(this.scope, 'DefinitionAsset', {
-        path: newSchemaPath,
-      });
-
-      this.s3Location = {
-        bucket: asset.bucket.bucketArn,
-        key: asset.s3ObjectKey,
-      };
-    } else {
-      this.definition = newSchema;
-    }
-  }
-
   /**
    * Implement the functionality of exposing the API definition, either as S3 Asset Location or as Inline Definition.
    * @see https://github.com/aws/aws-cdk/blob/master/packages/%40aws-cdk/aws-apigateway/lib/api-definition.ts#L134-L228
    */
-  bind(_: Construct): apigateway.ApiDefinitionConfig {
-    if (this.upload) {
+  bind(_scope: Construct): apigateway.ApiDefinitionConfig {
+    const definition = this.schema;
+
+
+    if (typeof(definition) !== 'object') {
+      throw new Error('definition should be of type object');
+    }
+
+    if (Object.keys(definition).length === 0) {
+      throw new Error('JSON definition cannot be empty');
+    }
+
+    if (this.upload === true) {
+
+
+      const newSchemaPath = __dirname + 'open-api-schema.compiled.yaml';// TODO?
+      fs.writeFileSync(newSchemaPath, JSON.stringify(definition), 'utf-8');
+      const asset = new assets.Asset(this.scope, 'DefinitionAsset', {
+        path: newSchemaPath,
+      });
+
       return {
-        s3Location: this.s3Location,
+        s3Location: {
+          bucket: asset.bucket.bucketArn,
+          key: asset.s3ObjectKey,
+        },
       };
     }
+
+
     return {
-      inlineDefinition: this.definition,
+      inlineDefinition: definition,
     };
   }
 
@@ -199,7 +212,8 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
     const value = this.source.get(`paths[${path}][${method}]`);
 
     if (typeof value === 'undefined') {
-      addError(this.scope, `OpenAPI schema is missing method ${method} for path: ${path}`);
+      const message = `OpenAPI schema is missing method ${method} for path: ${path}`;
+      addError(this.scope, message);
     }
   }
 
@@ -210,7 +224,8 @@ export class OpenApiDefinition extends apigateway.ApiDefinition {
   private ensureNoIntegrationAlready(path: string, method: string): void {
     const value = this.source.get(`paths[${path}][${method}]['x-amazon-apigateway-integration']`);
     if (typeof value !== 'undefined') {
-      addError(this.scope, `OpenAPI schema already has x-amazon-apigateway-integration configuration for method ${method} in path: ${path}`);
+      const message = `OpenAPI schema already has x-amazon-apigateway-integration configuration for method ${method} in path: ${path}`;
+      addError(this.scope, message);
     }
   }
 

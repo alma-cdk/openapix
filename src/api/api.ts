@@ -1,4 +1,4 @@
-import { ApiDefinition, EndpointType, IRestApi, RestApi, RestApiProps, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { EndpointType, IRestApi, RestApiProps, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { Integration, InternalIntegrationType } from '../integration/base';
@@ -7,9 +7,9 @@ import { BasePropsWithDefaults, OpenApiProps, Paths } from './api-props';
 import { OpenApiDefinition } from './definition';
 
 
-export class OpenApi extends RestApi {
+export class OpenApi extends Construct {
   public readonly api: IRestApi;
-  public readonly apiDefinition: ApiDefinition;
+  public readonly schema: any;
   private readonly baseProps: BasePropsWithDefaults;
   private readonly restApiProps?: RestApiProps;
 
@@ -33,14 +33,16 @@ export class OpenApi extends RestApi {
    *
    */
   constructor(scope: Construct, id: string, props: OpenApiProps) {
-    super(scope, id, props.restApiProps);
+    super(scope, id);
     this.baseProps = this.setBasePropsWithDefaults(props);
     this.restApiProps = props.restApiProps;
 
-    this.apiDefinition = new OpenApiDefinition(this, this.baseProps);
+    const apiDefinition = new OpenApiDefinition(this, this.baseProps);
+
+    this.schema = apiDefinition.schema;
 
     const api = new SpecRestApi(this, 'SpecRestApi', {
-      apiDefinition: this.apiDefinition,
+      apiDefinition: apiDefinition,
       endpointTypes: [EndpointType.REGIONAL],
       ...this.restApiProps,
     });
@@ -54,7 +56,7 @@ export class OpenApi extends RestApi {
   private setBasePropsWithDefaults(props: OpenApiProps): BasePropsWithDefaults {
     return {
       source: props.source,
-      upload: props.upload === false ? false : true,
+      upload: props.upload === true,
       paths: props.paths || {},
       authorizers: props.authorizers || [],
       validators: props.validators || {},

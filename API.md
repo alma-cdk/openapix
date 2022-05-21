@@ -203,7 +203,7 @@ new OpenApi(scope: Construct, id: string, props: OpenApiProps)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`api`](#almacdkopenapixopenapipropertyapi)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IRestApi`](#aws-cdk-lib.aws_apigateway.IRestApi) | *No description.* |
-| [`apiDefinition`](#almacdkopenapixopenapipropertyapidefinition)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.ApiDefinition`](#aws-cdk-lib.aws_apigateway.ApiDefinition) | *No description.* |
+| [`schema`](#almacdkopenapixopenapipropertyschema)<span title="Required">*</span> | `any` | *No description.* |
 
 ---
 
@@ -217,13 +217,13 @@ public readonly api: IRestApi;
 
 ---
 
-##### `apiDefinition`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.property.apiDefinition" id="almacdkopenapixopenapipropertyapidefinition"></a>
+##### `schema`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.property.schema" id="almacdkopenapixopenapipropertyschema"></a>
 
 ```typescript
-public readonly apiDefinition: ApiDefinition;
+public readonly schema: any;
 ```
 
-- *Type:* [`aws-cdk-lib.aws_apigateway.ApiDefinition`](#aws-cdk-lib.aws_apigateway.ApiDefinition)
+- *Type:* `any`
 
 ---
 
