@@ -48,7 +48,7 @@ export class Schema {
     return JSON.stringify(this.document);
   }
 
-  public toDocument(): any {
+  public toDocument(): IDocument {
     return this.document;
   }
 

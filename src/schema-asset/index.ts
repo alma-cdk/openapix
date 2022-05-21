@@ -4,6 +4,7 @@ import { join } from 'path';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { paramCase } from 'change-case';
 import { Construct } from 'constructs';
+import { IDocument } from '../schema';
 
 
 export interface SchemaAssetProps {
@@ -24,16 +25,16 @@ export class SchemaAsset extends Asset {
     return join(dirPath, fileName);
   }
 
-  private static write(filePath: string, definition: any): void {
-    writeFileSync(filePath, JSON.stringify(definition), 'utf-8');
+  private static write(filePath: string, document: IDocument): void {
+    writeFileSync(filePath, JSON.stringify(document), 'utf-8');
   }
 
-  constructor(scope: Construct, id: string, definition: any, props?: SchemaAssetProps) {
+  constructor(scope: Construct, id: string, document: IDocument, props?: SchemaAssetProps) {
 
     const dirPath = SchemaAsset.resolveDir(props);
     const fileName = SchemaAsset.resolveFileName(scope, id);
     const filePath = SchemaAsset.resolveFilePath(dirPath, fileName);
-    SchemaAsset.write(filePath, definition);
+    SchemaAsset.write(filePath, document);
 
     super(scope, id, {
       path: filePath,

@@ -3,6 +3,7 @@ import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
+import { IDocument } from '../schema';
 import { ApiProps, Paths } from './api-props';
 import { ApiDefinition } from './definition';
 
@@ -14,7 +15,7 @@ export class Api extends SpecRestApi {
   /**
    * The final OpenApi v3 document used to generate the AWS API Gateway.
    */
-  public readonly document: any;
+  public readonly document: IDocument;
 
 
   /**

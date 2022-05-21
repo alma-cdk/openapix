@@ -46,17 +46,17 @@ new Api(scope: Construct, id: string, props: ApiProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`document`](#almacdkopenapixapipropertydocument)<span title="Required">*</span> | `any` | The final OpenApi v3 document used to generate the AWS API Gateway. |
+| [`document`](#almacdkopenapixapipropertydocument)<span title="Required">*</span> | [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument) | The final OpenApi v3 document used to generate the AWS API Gateway. |
 
 ---
 
 ##### `document`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.property.document" id="almacdkopenapixapipropertydocument"></a>
 
 ```typescript
-public readonly document: any;
+public readonly document: IDocument;
 ```
 
-- *Type:* `any`
+- *Type:* [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument)
 
 The final OpenApi v3 document used to generate the AWS API Gateway.
 

@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
 import { CorsIntegration } from '../integration/cors';
-import { Schema } from '../schema';
+import { IDocument, Schema } from '../schema';
 import { SchemaAsset } from '../schema-asset';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
 import { ApiBaseProps, Methods, Paths, Validator } from './api-props';
@@ -17,7 +17,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * Exposes the processed OpenApi Schema Object.
    * Mainly useful for testing purposes.
    */
-  public readonly document: any;
+  public readonly document: IDocument;
 
   /** Determines if `s3Location` or `inlineDefinition` is used by `bind()` method. */
   private readonly upload: boolean;
@@ -206,7 +206,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   }
 
   /** Validate final OpenApi v3 document. */
-  private validateDocument(document: any) {
+  private validateDocument(document: IDocument) {
     if (typeof(document) !== 'object') {
       addError(this.scope, 'definition should be of type object');
     }
