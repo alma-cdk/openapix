@@ -1,2 +1,2 @@
-export { OpenApiProps, OpenApiBaseProps, Validator } from './api-props';
-export { OpenApi } from './api';
+export { ApiProps, ApiBaseProps, Validator } from './api-props';
+export { Api } from './api';

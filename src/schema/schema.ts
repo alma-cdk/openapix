@@ -32,53 +32,53 @@ export class Schema {
    * @todo info object?
    * @todo validate openapi string?
   */
-  private definition: ISchemaDefinition;
+  private document: ISchemaDefinition;
 
   /** Construct a new Schema instance from OpenApi v3 JSON.  */
   constructor(props: SchemaProps) {
-    this.definition = props;
+    this.document = props;
   }
 
   /** Serialize to YAML string. */
   public toYaml(): string {
-    return yaml.dump(this.definition);
+    return yaml.dump(this.document);
   }
 
   public toJson(): string {
-    return JSON.stringify(this.definition);
+    return JSON.stringify(this.document);
   }
 
-  public toObject(): any {
-    return this.definition;
+  public toDocument(): any {
+    return this.document;
   }
 
   /** Check if definition has a value in given object path. */
   public has(path: string): boolean {
-    return has(this.definition, path);
+    return has(this.document, path);
   }
 
   /** Get a value from given object path. */
   public get<T>(path: string): T {
-    return get(this.definition, path);
+    return get(this.document, path);
   }
 
   /** Set a value to given object path. */
   public set(path: string, value: any): void {
-    set(this.definition, path, value);
+    set(this.document, path, value);
   }
 
   /** Inject multiple values to given paths. */
-  public inject(records: Record<string, any>): void {
-    Object.keys(records).forEach(path => set(this.definition, path, records[path]));
+  public inject(records: Record<string, any> = {}): void {
+    Object.keys(records).forEach(path => set(this.document, path, records[path]));
   }
 
   /** Reject – i.e. remove values – from given object paths. */
-  public reject(paths: string[]): void {
-    paths.forEach(path => unset(this.definition, path));
+  public reject(paths: string[] = []): void {
+    paths.forEach(path => unset(this.document, path));
   }
 
   /** Reject deep within object – i.e. remove all nested object paths. */
-  public rejectDeep(paths: string[]): void {
-    this.definition = omitDeep(this.definition, ...paths);
+  public rejectDeep(paths: string[] = []): void {
+    this.document = omitDeep(this.document, ...paths);
   }
 }

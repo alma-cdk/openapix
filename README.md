@@ -69,7 +69,7 @@ This construct is still versioned with `v0` major version and breaking changes m
     ```ts
     import * as openapix from '@alma-cdk/openapix';
 
-    new openapix.OpenApi(this, 'MyApi', {
+    new openapix.Api(this, 'MyApi', {
       upload: false, // by default add as inline Body, set to true to use as BodyS3Location
       source: './schema.yaml',
       paths: {
@@ -121,7 +121,7 @@ This construct is still versioned with `v0` major version and breaking changes m
 API Gateway REST APIs can perform [request parameter and request body validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html). You can provide both default validator and integration specific validator (which will override the default for given integration).
 
 ```ts
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   validators: {
@@ -177,7 +177,7 @@ You can define the Cognito Authorizer in CDK with:
 ```ts
 const userPool: cognito.IUserPool;
 
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   authorizers: [
@@ -215,7 +215,7 @@ You can define the custom Lambda Authorizer in CDK with:
 ```ts
 const authFn: lambda.IFunction;
 
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   authorizers: [
@@ -240,7 +240,7 @@ new openapix.OpenApi(this, 'MyApi', {
 
 You may modify the generated OpenAPI definition (which is used to define API Gateway REST API) by injecting or rejecting values from the source OpenAPI schema definition:
 ```ts
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   // Add any OpenAPI v3 data.
@@ -265,7 +265,7 @@ new openapix.OpenApi(this, 'MyApi', {
 Using `openapix.CorsIntegration` creates a Mock integration which responds with correct response headers:
 
 ```ts
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   paths: {
@@ -303,7 +303,7 @@ When specifying multiple `origins` the mock integration uses [VTL magic](https:/
 
 If you wish to define same CORS options to every path, you may do so by providing a default `cors` value:
 ```ts
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   defaultCors: new openapix.CorsIntegration(this, {
@@ -328,7 +328,7 @@ This construct `@alma-cdk/openapix` instead defaults to using [_Regional API end
 
 You MAY override this default in `@alma-cdk/openapix` by providing your preferred endpoint types via `restApiProps`:
 ```ts
-new openapix.OpenApi(this, 'MyApi', {
+new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
 
   paths: {/*...*/},

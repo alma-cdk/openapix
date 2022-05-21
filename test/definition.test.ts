@@ -1,7 +1,7 @@
 
 import * as cdk from 'aws-cdk-lib';
 import * as openapix from '../src';
-import { OpenApiDefinition } from '../src/api/definition';
+import { ApiDefinition } from '../src/api/definition';
 
 
 test('Definition', () => {
@@ -37,16 +37,8 @@ test('Definition', () => {
     },
   };
 
-  const definition = new OpenApiDefinition(stack, {
+  const definition = new ApiDefinition(stack, {
     source: new openapix.Schema(value),
-    upload: false,
-    paths: {},
-    authorizers: [],
-    validators: {},
-    defaultCors: undefined,
-    injections: {},
-    rejections: [],
-    rejectionsDeep: [],
   });
 
   const config = definition.bind(stack);

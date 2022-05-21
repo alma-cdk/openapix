@@ -5,8 +5,8 @@ import { CorsIntegration } from '../integration/cors';
 import { Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
 
-/** BaseProps for the `OpenApi` construct without `RestApiProps`. */
-export interface OpenApiBaseProps {
+/** BaseProps for the `Api` construct without `RestApiProps`. */
+export interface ApiBaseProps {
   /**
    * OpenApi Schema Definition source configuration.
    * Provide either string path to source or an instance of `openapix.Schema`.
@@ -135,8 +135,8 @@ export interface OpenApiBaseProps {
 }
 
 
-/** Props to configure `new openapix.OpenApi`. */
-export interface OpenApiProps extends OpenApiBaseProps {
+/** Props to configure `new openapix.Api`. */
+export interface ApiProps extends ApiBaseProps {
 
   /** Props to configure the underlying CDK `apigateway.RestApi`. */
   readonly restApiProps?: RestApiProps;
@@ -149,18 +149,3 @@ export type Methods = Record<string, Integration>
 export interface Validator extends XAmazonApigatewayRequestValidator {
   readonly default?: boolean;
 }
-
-/**
- * Internal interface holding baseProps with default values.
- */
-export interface BasePropsWithDefaults extends OpenApiBaseProps {
-  readonly source: string | Schema;
-  readonly upload: boolean;
-  readonly paths: Paths;
-  readonly authorizers: AuthorizerConfig[];
-  readonly validators: Record<string, Validator>;
-  readonly injections: Record<string, any>;
-  readonly rejections: string[];
-  readonly rejectionsDeep: string[];
-}
-

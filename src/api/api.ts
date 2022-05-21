@@ -1,17 +1,21 @@
-import { EndpointType, IRestApi, RestApiProps, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { EndpointType, IRestApi, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
-import { BasePropsWithDefaults, OpenApiProps, Paths } from './api-props';
-import { OpenApiDefinition } from './definition';
+import { ApiProps, Paths } from './api-props';
+import { ApiDefinition } from './definition';
 
+/**
+ * AWS API Gateway REST API defined with OpenApi v3 schema.
+ */
+export class Api extends SpecRestApi {
 
-export class OpenApi extends Construct {
-  public readonly api: IRestApi;
-  public readonly schema: any;
-  private readonly baseProps: BasePropsWithDefaults;
-  private readonly restApiProps?: RestApiProps;
+  /**
+   * The final OpenApi v3 document used to generate the AWS API Gateway.
+   */
+  public readonly document: any;
+
 
   /**
    * Define a new API Gateway REST API using OpenApi v3 Schema definition.
@@ -19,7 +23,7 @@ export class OpenApi extends Construct {
    * @example
    * const fn: IFunction;
    *
-   * new openapix.OpenApi(this, 'MyApi', {
+   * new openapix.Api(this, 'MyApi', {
    *   source: './schema.yaml',
    *   paths: {
    *     '/foo': {
@@ -32,29 +36,9 @@ export class OpenApi extends Construct {
    * })
    *
    */
-  constructor(scope: Construct, id: string, props: OpenApiProps) {
-    super(scope, id);
-    this.baseProps = this.setBasePropsWithDefaults(props);
-    this.restApiProps = props.restApiProps;
+  constructor(scope: Construct, id: string, props: ApiProps) {
 
-    const apiDefinition = new OpenApiDefinition(this, this.baseProps);
-
-    this.schema = apiDefinition.schema;
-
-    const api = new SpecRestApi(this, 'SpecRestApi', {
-      apiDefinition: apiDefinition,
-      endpointTypes: [EndpointType.REGIONAL],
-      ...this.restApiProps,
-    });
-
-    this.api = api;
-
-    this.grantLambdaInvokes(this.baseProps.paths);
-  }
-
-  /** Sets baseProps with default values. */
-  private setBasePropsWithDefaults(props: OpenApiProps): BasePropsWithDefaults {
-    return {
+    const apiDefinition = new ApiDefinition(scope, {
       source: props.source,
       upload: props.upload === true,
       paths: props.paths || {},
@@ -64,18 +48,31 @@ export class OpenApi extends Construct {
       injections: props.injections || {},
       rejections: props.rejections || [],
       rejectionsDeep: props.rejectionsDeep || [],
-    };
+    });
+
+    super(scope, id, {
+      apiDefinition: apiDefinition,
+      endpointTypes: [EndpointType.REGIONAL],
+      ...props.restApiProps,
+    });
+
+    // Allow the API Gateway to invoke given Lambda function integrations
+    this.grantLambdaInvokes(props.paths);
+
+    // Expose the processed OpenApi v3 document.
+    // Mainly used for testing.
+    this.document = apiDefinition.document;
   }
 
-  /** Allow Lambda invocations to API Gateway instance principal. */
-  private grantLambdaInvokes(pathIntegrations: Paths): void {
-    if (!pathIntegrations) return;
 
-    const apiGatewayPrincipal = this.getApiGatewayPrincipal(this.api);
+  /** Allow Lambda invocations to API Gateway instance principal. */
+  private grantLambdaInvokes(paths: Paths = {}): void {
+
+    const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
 
     // loop through paths
-    Object.keys(pathIntegrations).forEach(path => {
-      const methodIntegrations = pathIntegrations[path];
+    Object.keys(paths).forEach(path => {
+      const methodIntegrations = paths[path];
 
       // loop through methods
       Object.keys(methodIntegrations).forEach(method => {

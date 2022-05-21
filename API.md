@@ -2,6 +2,67 @@
 
 ## Constructs <a name="Constructs" id="constructs"></a>
 
+### Api <a name="@alma-cdk/openapix.Api" id="almacdkopenapixapi"></a>
+
+AWS API Gateway REST API defined with OpenApi v3 schema.
+
+#### Initializers <a name="@alma-cdk/openapix.Api.Initializer" id="almacdkopenapixapiinitializer"></a>
+
+```typescript
+import { Api } from '@alma-cdk/openapix'
+
+new Api(scope: Construct, id: string, props: ApiProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`scope`](#almacdkopenapixapiparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
+| [`id`](#almacdkopenapixapiparameterid)<span title="Required">*</span> | `string` | *No description.* |
+| [`props`](#almacdkopenapixapiparameterprops)<span title="Required">*</span> | [`@alma-cdk/openapix.ApiProps`](#@alma-cdk/openapix.ApiProps) | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.parameter.scope" id="almacdkopenapixapiparameterscope"></a>
+
+- *Type:* [`constructs.Construct`](#constructs.Construct)
+
+---
+
+##### `id`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.parameter.id" id="almacdkopenapixapiparameterid"></a>
+
+- *Type:* `string`
+
+---
+
+##### `props`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.parameter.props" id="almacdkopenapixapiparameterprops"></a>
+
+- *Type:* [`@alma-cdk/openapix.ApiProps`](#@alma-cdk/openapix.ApiProps)
+
+---
+
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`document`](#almacdkopenapixapipropertydocument)<span title="Required">*</span> | `any` | The final OpenApi v3 document used to generate the AWS API Gateway. |
+
+---
+
+##### `document`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.property.document" id="almacdkopenapixapipropertydocument"></a>
+
+```typescript
+public readonly document: any;
+```
+
+- *Type:* `any`
+
+The final OpenApi v3 document used to generate the AWS API Gateway.
+
+---
+
+
 ### CognitoUserPoolsAuthorizer <a name="@alma-cdk/openapix.CognitoUserPoolsAuthorizer" id="almacdkopenapixcognitouserpoolsauthorizer"></a>
 
 #### Initializers <a name="@alma-cdk/openapix.CognitoUserPoolsAuthorizer.Initializer" id="almacdkopenapixcognitouserpoolsauthorizerinitializer"></a>
@@ -160,75 +221,318 @@ public readonly xAmazonApigatewayAuthtype: string;
 ---
 
 
-### OpenApi <a name="@alma-cdk/openapix.OpenApi" id="almacdkopenapixopenapi"></a>
+## Structs <a name="Structs" id="structs"></a>
 
-#### Initializers <a name="@alma-cdk/openapix.OpenApi.Initializer" id="almacdkopenapixopenapiinitializer"></a>
+### ApiBaseProps <a name="@alma-cdk/openapix.ApiBaseProps" id="almacdkopenapixapibaseprops"></a>
+
+BaseProps for the `Api` construct without `RestApiProps`.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
 
 ```typescript
-import { OpenApi } from '@alma-cdk/openapix'
+import { ApiBaseProps } from '@alma-cdk/openapix'
 
-new OpenApi(scope: Construct, id: string, props: OpenApiProps)
+const apiBaseProps: ApiBaseProps = { ... }
 ```
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| [`scope`](#almacdkopenapixopenapiparameterscope)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
-| [`id`](#almacdkopenapixopenapiparameterid)<span title="Required">*</span> | `string` | *No description.* |
-| [`props`](#almacdkopenapixopenapiparameterprops)<span title="Required">*</span> | [`@alma-cdk/openapix.OpenApiProps`](#@alma-cdk/openapix.OpenApiProps) | *No description.* |
-
----
-
-##### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.parameter.scope" id="almacdkopenapixopenapiparameterscope"></a>
-
-- *Type:* [`constructs.Construct`](#constructs.Construct)
-
----
-
-##### `id`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.parameter.id" id="almacdkopenapixopenapiparameterid"></a>
-
-- *Type:* `string`
-
----
-
-##### `props`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.parameter.props" id="almacdkopenapixopenapiparameterprops"></a>
-
-- *Type:* [`@alma-cdk/openapix.OpenApiProps`](#@alma-cdk/openapix.OpenApiProps)
-
----
-
-
 
 #### Properties <a name="Properties" id="properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`api`](#almacdkopenapixopenapipropertyapi)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IRestApi`](#aws-cdk-lib.aws_apigateway.IRestApi) | *No description.* |
-| [`schema`](#almacdkopenapixopenapipropertyschema)<span title="Required">*</span> | `any` | *No description.* |
+| [`source`](#almacdkopenapixapibasepropspropertysource)<span title="Required">*</span> | `string` \| [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema) | OpenApi Schema Definition source configuration. |
+| [`authorizers`](#almacdkopenapixapibasepropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
+| [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
+| [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
+| [`paths`](#almacdkopenapixapibasepropspropertypaths) | {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}} | Integrations for OpenApi Path definitions. |
+| [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
+| [`rejectionsDeep`](#almacdkopenapixapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
+| [`upload`](#almacdkopenapixapibasepropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
+| [`validators`](#almacdkopenapixapibasepropspropertyvalidators) | {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)} | Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation. |
 
 ---
 
-##### `api`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.property.api" id="almacdkopenapixopenapipropertyapi"></a>
+##### `source`<sup>Required</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.source" id="almacdkopenapixapibasepropspropertysource"></a>
 
 ```typescript
-public readonly api: IRestApi;
+public readonly source: string | Schema;
 ```
 
-- *Type:* [`aws-cdk-lib.aws_apigateway.IRestApi`](#aws-cdk-lib.aws_apigateway.IRestApi)
+- *Type:* `string` | [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema)
+
+OpenApi Schema Definition source configuration.
+
+Provide either string path to source or an instance of `openapix.Schema`.
 
 ---
 
-##### `schema`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApi.property.schema" id="almacdkopenapixopenapipropertyschema"></a>
+##### `authorizers`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.authorizers" id="almacdkopenapixapibasepropspropertyauthorizers"></a>
 
 ```typescript
-public readonly schema: any;
+public readonly authorizers: AuthorizerConfig[];
 ```
 
-- *Type:* `any`
+- *Type:* [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[]
+
+Cognito User Pool or Custom Lambda based Authorizer configurations.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
 
 ---
 
+##### `defaultCors`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.defaultCors" id="almacdkopenapixapibasepropspropertydefaultcors"></a>
 
-## Structs <a name="Structs" id="structs"></a>
+```typescript
+public readonly defaultCors: CorsIntegration;
+```
+
+- *Type:* [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration)
+
+Default CORS configuration. Applied to all path integrations.
+
+You can add path specific overrides by adding an `options` method with `new openapix.CorsIntegration(...)` integration.
+
+---
+
+##### `injections`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.injections" id="almacdkopenapixapibasepropspropertyinjections"></a>
+
+```typescript
+public readonly injections: {[ key: string ]: any};
+```
+
+- *Type:* {[ key: string ]: `any`}
+
+Inject any OpenApi v3 data to given schema definition object paths.
+
+---
+
+##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.paths" id="almacdkopenapixapibasepropspropertypaths"></a>
+
+```typescript
+public readonly paths: {[ key: string ]: {[ key: string ]: Integration}};
+```
+
+- *Type:* {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}}
+
+Integrations for OpenApi Path definitions.
+
+---
+
+##### `rejections`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.rejections" id="almacdkopenapixapibasepropspropertyrejections"></a>
+
+```typescript
+public readonly rejections: string[];
+```
+
+- *Type:* `string`[]
+
+Reject fields by absolute object path from generated definition.
+
+---
+
+##### `rejectionsDeep`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.rejectionsDeep" id="almacdkopenapixapibasepropspropertyrejectionsdeep"></a>
+
+```typescript
+public readonly rejectionsDeep: string[];
+```
+
+- *Type:* `string`[]
+
+Reject all matching fields from generated definition.
+
+---
+
+##### `upload`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.upload" id="almacdkopenapixapibasepropspropertyupload"></a>
+
+```typescript
+public readonly upload: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Schema Definition location (inline vs.
+
+S3 location). Set `true` to upload to S3 or `false` (default) to inline it into resulting CloudFormation template.
+
+---
+
+##### `validators`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.validators" id="almacdkopenapixapibasepropspropertyvalidators"></a>
+
+```typescript
+public readonly validators: {[ key: string ]: Validator};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)}
+
+Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation.
+
+You can optionally specify one of them with `default: true` to promote it as the default validator applied to all integrations.  For non-default validators, you must specify `validator: '<name>'` prop in every integration you wish to use the given validator.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html
+
+---
+
+### ApiProps <a name="@alma-cdk/openapix.ApiProps" id="almacdkopenapixapiprops"></a>
+
+Props to configure `new openapix.Api`.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { ApiProps } from '@alma-cdk/openapix'
+
+const apiProps: ApiProps = { ... }
+```
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`source`](#almacdkopenapixapipropspropertysource)<span title="Required">*</span> | `string` \| [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema) | OpenApi Schema Definition source configuration. |
+| [`authorizers`](#almacdkopenapixapipropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
+| [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
+| [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
+| [`paths`](#almacdkopenapixapipropspropertypaths) | {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}} | Integrations for OpenApi Path definitions. |
+| [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
+| [`rejectionsDeep`](#almacdkopenapixapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
+| [`upload`](#almacdkopenapixapipropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
+| [`validators`](#almacdkopenapixapipropspropertyvalidators) | {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)} | Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation. |
+| [`restApiProps`](#almacdkopenapixapipropspropertyrestapiprops) | [`aws-cdk-lib.aws_apigateway.RestApiProps`](#aws-cdk-lib.aws_apigateway.RestApiProps) | Props to configure the underlying CDK `apigateway.RestApi`. |
+
+---
+
+##### `source`<sup>Required</sup> <a name="@alma-cdk/openapix.ApiProps.property.source" id="almacdkopenapixapipropspropertysource"></a>
+
+```typescript
+public readonly source: string | Schema;
+```
+
+- *Type:* `string` | [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema)
+
+OpenApi Schema Definition source configuration.
+
+Provide either string path to source or an instance of `openapix.Schema`.
+
+---
+
+##### `authorizers`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.authorizers" id="almacdkopenapixapipropspropertyauthorizers"></a>
+
+```typescript
+public readonly authorizers: AuthorizerConfig[];
+```
+
+- *Type:* [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[]
+
+Cognito User Pool or Custom Lambda based Authorizer configurations.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
+
+---
+
+##### `defaultCors`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.defaultCors" id="almacdkopenapixapipropspropertydefaultcors"></a>
+
+```typescript
+public readonly defaultCors: CorsIntegration;
+```
+
+- *Type:* [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration)
+
+Default CORS configuration. Applied to all path integrations.
+
+You can add path specific overrides by adding an `options` method with `new openapix.CorsIntegration(...)` integration.
+
+---
+
+##### `injections`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.injections" id="almacdkopenapixapipropspropertyinjections"></a>
+
+```typescript
+public readonly injections: {[ key: string ]: any};
+```
+
+- *Type:* {[ key: string ]: `any`}
+
+Inject any OpenApi v3 data to given schema definition object paths.
+
+---
+
+##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.paths" id="almacdkopenapixapipropspropertypaths"></a>
+
+```typescript
+public readonly paths: {[ key: string ]: {[ key: string ]: Integration}};
+```
+
+- *Type:* {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}}
+
+Integrations for OpenApi Path definitions.
+
+---
+
+##### `rejections`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.rejections" id="almacdkopenapixapipropspropertyrejections"></a>
+
+```typescript
+public readonly rejections: string[];
+```
+
+- *Type:* `string`[]
+
+Reject fields by absolute object path from generated definition.
+
+---
+
+##### `rejectionsDeep`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.rejectionsDeep" id="almacdkopenapixapipropspropertyrejectionsdeep"></a>
+
+```typescript
+public readonly rejectionsDeep: string[];
+```
+
+- *Type:* `string`[]
+
+Reject all matching fields from generated definition.
+
+---
+
+##### `upload`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.upload" id="almacdkopenapixapipropspropertyupload"></a>
+
+```typescript
+public readonly upload: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Schema Definition location (inline vs.
+
+S3 location). Set `true` to upload to S3 or `false` (default) to inline it into resulting CloudFormation template.
+
+---
+
+##### `validators`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.validators" id="almacdkopenapixapipropspropertyvalidators"></a>
+
+```typescript
+public readonly validators: {[ key: string ]: Validator};
+```
+
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)}
+
+Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation.
+
+You can optionally specify one of them with `default: true` to promote it as the default validator applied to all integrations.  For non-default validators, you must specify `validator: '<name>'` prop in every integration you wish to use the given validator.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html
+
+---
+
+##### `restApiProps`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.restApiProps" id="almacdkopenapixapipropspropertyrestapiprops"></a>
+
+```typescript
+public readonly restApiProps: RestApiProps;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.RestApiProps`](#aws-cdk-lib.aws_apigateway.RestApiProps)
+
+Props to configure the underlying CDK `apigateway.RestApi`.
+
+---
 
 ### AuthorizerConfig <a name="@alma-cdk/openapix.AuthorizerConfig" id="almacdkopenapixauthorizerconfig"></a>
 
@@ -2164,317 +2468,6 @@ public readonly password: OAuthFlowObject;
 - *Type:* [`@alma-cdk/openapix.OAuthFlowObject`](#@alma-cdk/openapix.OAuthFlowObject)
 
 Configuration for the OAuth Resource Owner Password flow.
-
----
-
-### OpenApiBaseProps <a name="@alma-cdk/openapix.OpenApiBaseProps" id="almacdkopenapixopenapibaseprops"></a>
-
-BaseProps for the `OpenApi` construct without `RestApiProps`.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { OpenApiBaseProps } from '@alma-cdk/openapix'
-
-const openApiBaseProps: OpenApiBaseProps = { ... }
-```
-
-#### Properties <a name="Properties" id="properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| [`source`](#almacdkopenapixopenapibasepropspropertysource)<span title="Required">*</span> | `string` \| [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema) | OpenApi Schema Definition source configuration. |
-| [`authorizers`](#almacdkopenapixopenapibasepropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
-| [`defaultCors`](#almacdkopenapixopenapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
-| [`injections`](#almacdkopenapixopenapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixopenapibasepropspropertypaths) | {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}} | Integrations for OpenApi Path definitions. |
-| [`rejections`](#almacdkopenapixopenapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
-| [`rejectionsDeep`](#almacdkopenapixopenapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
-| [`upload`](#almacdkopenapixopenapibasepropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
-| [`validators`](#almacdkopenapixopenapibasepropspropertyvalidators) | {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)} | Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation. |
-
----
-
-##### `source`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.source" id="almacdkopenapixopenapibasepropspropertysource"></a>
-
-```typescript
-public readonly source: string | Schema;
-```
-
-- *Type:* `string` | [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema)
-
-OpenApi Schema Definition source configuration.
-
-Provide either string path to source or an instance of `openapix.Schema`.
-
----
-
-##### `authorizers`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.authorizers" id="almacdkopenapixopenapibasepropspropertyauthorizers"></a>
-
-```typescript
-public readonly authorizers: AuthorizerConfig[];
-```
-
-- *Type:* [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[]
-
-Cognito User Pool or Custom Lambda based Authorizer configurations.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
-
----
-
-##### `defaultCors`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.defaultCors" id="almacdkopenapixopenapibasepropspropertydefaultcors"></a>
-
-```typescript
-public readonly defaultCors: CorsIntegration;
-```
-
-- *Type:* [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration)
-
-Default CORS configuration. Applied to all path integrations.
-
-You can add path specific overrides by adding an `options` method with `new openapix.CorsIntegration(...)` integration.
-
----
-
-##### `injections`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.injections" id="almacdkopenapixopenapibasepropspropertyinjections"></a>
-
-```typescript
-public readonly injections: {[ key: string ]: any};
-```
-
-- *Type:* {[ key: string ]: `any`}
-
-Inject any OpenApi v3 data to given schema definition object paths.
-
----
-
-##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.paths" id="almacdkopenapixopenapibasepropspropertypaths"></a>
-
-```typescript
-public readonly paths: {[ key: string ]: {[ key: string ]: Integration}};
-```
-
-- *Type:* {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}}
-
-Integrations for OpenApi Path definitions.
-
----
-
-##### `rejections`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.rejections" id="almacdkopenapixopenapibasepropspropertyrejections"></a>
-
-```typescript
-public readonly rejections: string[];
-```
-
-- *Type:* `string`[]
-
-Reject fields by absolute object path from generated definition.
-
----
-
-##### `rejectionsDeep`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.rejectionsDeep" id="almacdkopenapixopenapibasepropspropertyrejectionsdeep"></a>
-
-```typescript
-public readonly rejectionsDeep: string[];
-```
-
-- *Type:* `string`[]
-
-Reject all matching fields from generated definition.
-
----
-
-##### `upload`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.upload" id="almacdkopenapixopenapibasepropspropertyupload"></a>
-
-```typescript
-public readonly upload: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Schema Definition location (inline vs.
-
-S3 location). Set `true` to upload to S3 or `false` (default) to inline it into resulting CloudFormation template.
-
----
-
-##### `validators`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiBaseProps.property.validators" id="almacdkopenapixopenapibasepropspropertyvalidators"></a>
-
-```typescript
-public readonly validators: {[ key: string ]: Validator};
-```
-
-- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)}
-
-Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation.
-
-You can optionally specify one of them with `default: true` to promote it as the default validator applied to all integrations.  For non-default validators, you must specify `validator: '<name>'` prop in every integration you wish to use the given validator.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html
-
----
-
-### OpenApiProps <a name="@alma-cdk/openapix.OpenApiProps" id="almacdkopenapixopenapiprops"></a>
-
-Props to configure `new openapix.OpenApi`.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { OpenApiProps } from '@alma-cdk/openapix'
-
-const openApiProps: OpenApiProps = { ... }
-```
-
-#### Properties <a name="Properties" id="properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| [`source`](#almacdkopenapixopenapipropspropertysource)<span title="Required">*</span> | `string` \| [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema) | OpenApi Schema Definition source configuration. |
-| [`authorizers`](#almacdkopenapixopenapipropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
-| [`defaultCors`](#almacdkopenapixopenapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
-| [`injections`](#almacdkopenapixopenapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixopenapipropspropertypaths) | {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}} | Integrations for OpenApi Path definitions. |
-| [`rejections`](#almacdkopenapixopenapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
-| [`rejectionsDeep`](#almacdkopenapixopenapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
-| [`upload`](#almacdkopenapixopenapipropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
-| [`validators`](#almacdkopenapixopenapipropspropertyvalidators) | {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)} | Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation. |
-| [`restApiProps`](#almacdkopenapixopenapipropspropertyrestapiprops) | [`aws-cdk-lib.aws_apigateway.RestApiProps`](#aws-cdk-lib.aws_apigateway.RestApiProps) | Props to configure the underlying CDK `apigateway.RestApi`. |
-
----
-
-##### `source`<sup>Required</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.source" id="almacdkopenapixopenapipropspropertysource"></a>
-
-```typescript
-public readonly source: string | Schema;
-```
-
-- *Type:* `string` | [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema)
-
-OpenApi Schema Definition source configuration.
-
-Provide either string path to source or an instance of `openapix.Schema`.
-
----
-
-##### `authorizers`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.authorizers" id="almacdkopenapixopenapipropspropertyauthorizers"></a>
-
-```typescript
-public readonly authorizers: AuthorizerConfig[];
-```
-
-- *Type:* [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[]
-
-Cognito User Pool or Custom Lambda based Authorizer configurations.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
-
----
-
-##### `defaultCors`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.defaultCors" id="almacdkopenapixopenapipropspropertydefaultcors"></a>
-
-```typescript
-public readonly defaultCors: CorsIntegration;
-```
-
-- *Type:* [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration)
-
-Default CORS configuration. Applied to all path integrations.
-
-You can add path specific overrides by adding an `options` method with `new openapix.CorsIntegration(...)` integration.
-
----
-
-##### `injections`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.injections" id="almacdkopenapixopenapipropspropertyinjections"></a>
-
-```typescript
-public readonly injections: {[ key: string ]: any};
-```
-
-- *Type:* {[ key: string ]: `any`}
-
-Inject any OpenApi v3 data to given schema definition object paths.
-
----
-
-##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.paths" id="almacdkopenapixopenapipropspropertypaths"></a>
-
-```typescript
-public readonly paths: {[ key: string ]: {[ key: string ]: Integration}};
-```
-
-- *Type:* {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}}
-
-Integrations for OpenApi Path definitions.
-
----
-
-##### `rejections`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.rejections" id="almacdkopenapixopenapipropspropertyrejections"></a>
-
-```typescript
-public readonly rejections: string[];
-```
-
-- *Type:* `string`[]
-
-Reject fields by absolute object path from generated definition.
-
----
-
-##### `rejectionsDeep`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.rejectionsDeep" id="almacdkopenapixopenapipropspropertyrejectionsdeep"></a>
-
-```typescript
-public readonly rejectionsDeep: string[];
-```
-
-- *Type:* `string`[]
-
-Reject all matching fields from generated definition.
-
----
-
-##### `upload`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.upload" id="almacdkopenapixopenapipropspropertyupload"></a>
-
-```typescript
-public readonly upload: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Schema Definition location (inline vs.
-
-S3 location). Set `true` to upload to S3 or `false` (default) to inline it into resulting CloudFormation template.
-
----
-
-##### `validators`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.validators" id="almacdkopenapixopenapipropspropertyvalidators"></a>
-
-```typescript
-public readonly validators: {[ key: string ]: Validator};
-```
-
-- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Validator`](#@alma-cdk/openapix.Validator)}
-
-Configure availalbe request validators. API Gateway REST APIs can perform request parameter and request body validation.
-
-You can optionally specify one of them with `default: true` to promote it as the default validator applied to all integrations.  For non-default validators, you must specify `validator: '<name>'` prop in every integration you wish to use the given validator.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html
-
----
-
-##### `restApiProps`<sup>Optional</sup> <a name="@alma-cdk/openapix.OpenApiProps.property.restApiProps" id="almacdkopenapixopenapipropspropertyrestapiprops"></a>
-
-```typescript
-public readonly restApiProps: RestApiProps;
-```
-
-- *Type:* [`aws-cdk-lib.aws_apigateway.RestApiProps`](#aws-cdk-lib.aws_apigateway.RestApiProps)
-
-Props to configure the underlying CDK `apigateway.RestApi`.
 
 ---
 
@@ -4583,8 +4576,8 @@ new Schema(props: SchemaProps)
 | [`reject`](#almacdkopenapixschemareject) | Reject – i.e. remove values – from given object paths. |
 | [`rejectDeep`](#almacdkopenapixschemarejectdeep) | Reject deep within object – i.e. remove all nested object paths. |
 | [`set`](#almacdkopenapixschemaset) | Set a value to given object path. |
+| [`toDocument`](#almacdkopenapixschematodocument) | *No description.* |
 | [`toJson`](#almacdkopenapixschematojson) | *No description.* |
-| [`toObject`](#almacdkopenapixschematoobject) | *No description.* |
 | [`toYaml`](#almacdkopenapixschematoyaml) | Serialize to YAML string. |
 
 ---
@@ -4616,10 +4609,10 @@ public has(path: string)
 ##### `inject` <a name="@alma-cdk/openapix.Schema.inject" id="almacdkopenapixschemainject"></a>
 
 ```typescript
-public inject(records: {[ key: string ]: any})
+public inject(records?: {[ key: string ]: any})
 ```
 
-###### `records`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.parameter.records" id="almacdkopenapixschemaparameterrecords"></a>
+###### `records`<sup>Optional</sup> <a name="@alma-cdk/openapix.Schema.parameter.records" id="almacdkopenapixschemaparameterrecords"></a>
 
 - *Type:* {[ key: string ]: `any`}
 
@@ -4628,10 +4621,10 @@ public inject(records: {[ key: string ]: any})
 ##### `reject` <a name="@alma-cdk/openapix.Schema.reject" id="almacdkopenapixschemareject"></a>
 
 ```typescript
-public reject(paths: string[])
+public reject(paths?: string[])
 ```
 
-###### `paths`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.parameter.paths" id="almacdkopenapixschemaparameterpaths"></a>
+###### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.Schema.parameter.paths" id="almacdkopenapixschemaparameterpaths"></a>
 
 - *Type:* `string`[]
 
@@ -4640,10 +4633,10 @@ public reject(paths: string[])
 ##### `rejectDeep` <a name="@alma-cdk/openapix.Schema.rejectDeep" id="almacdkopenapixschemarejectdeep"></a>
 
 ```typescript
-public rejectDeep(paths: string[])
+public rejectDeep(paths?: string[])
 ```
 
-###### `paths`<sup>Required</sup> <a name="@alma-cdk/openapix.Schema.parameter.paths" id="almacdkopenapixschemaparameterpaths"></a>
+###### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.Schema.parameter.paths" id="almacdkopenapixschemaparameterpaths"></a>
 
 - *Type:* `string`[]
 
@@ -4667,16 +4660,16 @@ public set(path: string, value: any)
 
 ---
 
+##### `toDocument` <a name="@alma-cdk/openapix.Schema.toDocument" id="almacdkopenapixschematodocument"></a>
+
+```typescript
+public toDocument()
+```
+
 ##### `toJson` <a name="@alma-cdk/openapix.Schema.toJson" id="almacdkopenapixschematojson"></a>
 
 ```typescript
 public toJson()
-```
-
-##### `toObject` <a name="@alma-cdk/openapix.Schema.toObject" id="almacdkopenapixschematoobject"></a>
-
-```typescript
-public toObject()
 ```
 
 ##### `toYaml` <a name="@alma-cdk/openapix.Schema.toYaml" id="almacdkopenapixschematoyaml"></a>

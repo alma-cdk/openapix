@@ -60,7 +60,7 @@ test('Synth', () => {
     },
   };
 
-  const { schema } = new openapix.OpenApi(stack, 'Testing', {
+  const { document } = new openapix.Api(stack, 'Testing', {
     upload: false,
     source: new openapix.Schema(value),
     paths: {
@@ -70,8 +70,7 @@ test('Synth', () => {
     },
   });
 
-
-  expect(schema).toMatchObject({
+  const expectation = {
     ...value,
     paths: {
       [path]: {
@@ -80,11 +79,36 @@ test('Synth', () => {
           'x-amazon-apigateway-integration': {
             type: 'AWS_PROXY',
             httpMethod: 'POST',
+            uri: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    Ref: 'AWS::Partition',
+                  },
+                  ':apigateway:',
+                  {
+                    Ref: 'AWS::Region',
+                  },
+                  ':lambda:path/2015-03-31/functions/',
+                  {
+                    'Fn::GetAtt': [
+                      Match.stringLikeRegexp('TestFunction*'),
+                      'Arn',
+                    ],
+                  },
+                  '/invocations',
+                ],
+              ],
+            },
           },
         },
       },
     },
-  });
+  };
+
+  expect(document).toMatchObject(expectation);
 
   const template = Template.fromStack(stack);
 
@@ -94,46 +118,8 @@ test('Synth', () => {
         'REGIONAL',
       ],
     },
-    Name: 'SpecRestApi',
-    Body: {
-      openapi: '3.0.1',
-      info: {
-        title: 'TestApi',
-        version: '0.0.0',
-      },
-      paths: {
-        [path]: {
-          get: {
-            'x-amazon-apigateway-integration': {
-              type: 'AWS_PROXY',
-              uri: {
-                'Fn::Join': [
-                  '',
-                  [
-                    'arn:',
-                    {
-                      Ref: 'AWS::Partition',
-                    },
-                    ':apigateway:',
-                    {
-                      Ref: 'AWS::Region',
-                    },
-                    ':lambda:path/2015-03-31/functions/',
-                    {
-                      'Fn::GetAtt': [
-                        Match.stringLikeRegexp('TestFunction*'),
-                        'Arn',
-                      ],
-                    },
-                    '/invocations',
-                  ],
-                ],
-              },
-            },
-          },
-        },
-      },
-    },
+    Name: 'Testing',
+    Body: expectation,
   }));
 
 
@@ -142,7 +128,7 @@ test('Synth', () => {
 
 test('Basic usage', () => {
   const stack = new cdk.Stack();
-  const { schema } = new openapix.OpenApi(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -156,7 +142,7 @@ test('Basic usage', () => {
 
   //console.log(openapiSchema);
 
-  expect(schema).toEqual({
+  expect(document).toEqual({
     openapi: '3.0.1',
     info: {
       title: 'TestApi',
@@ -168,7 +154,7 @@ test('Basic usage', () => {
 
 test('Inject paths', () => {
   const stack = new cdk.Stack();
-  const { schema } = new openapix.OpenApi(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -206,12 +192,12 @@ test('Inject paths', () => {
 
   //console.log(openapiSchema);
 
-  expect(get(schema, 'baz')).toBe(1);
+  expect(get(document, 'baz')).toBe(1);
 });
 
 test('Reject deep paths', () => {
   const stack = new cdk.Stack();
-  const { schema } = new openapix.OpenApi(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -247,7 +233,7 @@ test('Reject deep paths', () => {
 
   //console.log(openapiSchema);
 
-  expect(get(schema, 'paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
+  expect(get(document, 'paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
 });
 
 test('Handles custom authorizer', () => {
@@ -270,7 +256,7 @@ test('Handles custom authorizer', () => {
 
   const authorizerName = 'MyLambdaAuthorizer';
 
-  const { schema } = new openapix.OpenApi(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -336,6 +322,6 @@ test('Handles custom authorizer', () => {
 
   //console.log(openapiSchema);
 
-  expect(get(schema, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
-  expect(get(schema, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
+  expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
+  expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
 });
