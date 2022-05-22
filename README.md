@@ -159,7 +159,7 @@ In this example we're defining a Congito User Pool based authorizer.
 
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
-openapi: 3.0.0
+openapi: 3.0.1
 paths:
   /:
     get:
@@ -197,7 +197,7 @@ In this example we're defining a custom Lambda authorizer. The authorizer functi
 
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
-openapi: 3.0.0
+openapi: 3.0.1
 paths:
   /:
     get:
