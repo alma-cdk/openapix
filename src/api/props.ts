@@ -134,7 +134,6 @@ export interface ApiBaseProps {
 
 }
 
-
 /** Props to configure `new openapix.Api`. */
 export interface ApiProps extends ApiBaseProps {
 
@@ -142,10 +141,31 @@ export interface ApiProps extends ApiBaseProps {
   readonly restApiProps?: RestApiProps;
 }
 
-export type Paths = Record<string, Methods>
-export type Methods = Record<string, Integration>
+/** Paths with methods containing integrations. */
+export interface Paths {
+  /**
+   * {
+   *   '/message': {
+   *     post: new openapix.LambdaIntegration(this, fn),
+   *   },
+   * }
+   */
+  [path: string]: Methods;
+}
 
+/** Methods with integrations. */
+export interface Methods {
+  /**
+   *
+   * @example
+   * {
+   *   post: new openapix.LambdaIntegration(this, fn),
+   * }
+   */
+  [method: string]: Integration;
+}
 
+/** Validator configuration  */
 export interface Validator extends XAmazonApigatewayRequestValidator {
   readonly default?: boolean;
 }

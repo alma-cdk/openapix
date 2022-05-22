@@ -243,7 +243,7 @@ const apiBaseProps: ApiBaseProps = { ... }
 | [`authorizers`](#almacdkopenapixapibasepropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixapibasepropspropertypaths) | {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}} | Integrations for OpenApi Path definitions. |
+| [`paths`](#almacdkopenapixapibasepropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
 | [`upload`](#almacdkopenapixapibasepropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
@@ -308,10 +308,10 @@ Inject any OpenApi v3 data to given schema definition object paths.
 ##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.paths" id="almacdkopenapixapibasepropspropertypaths"></a>
 
 ```typescript
-public readonly paths: {[ key: string ]: {[ key: string ]: Integration}};
+public readonly paths: Paths;
 ```
 
-- *Type:* {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}}
+- *Type:* [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths)
 
 Integrations for OpenApi Path definitions.
 
@@ -392,7 +392,7 @@ const apiProps: ApiProps = { ... }
 | [`authorizers`](#almacdkopenapixapipropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixapipropspropertypaths) | {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}} | Integrations for OpenApi Path definitions. |
+| [`paths`](#almacdkopenapixapipropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
 | [`upload`](#almacdkopenapixapipropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
@@ -458,10 +458,10 @@ Inject any OpenApi v3 data to given schema definition object paths.
 ##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.paths" id="almacdkopenapixapipropspropertypaths"></a>
 
 ```typescript
-public readonly paths: {[ key: string ]: {[ key: string ]: Integration}};
+public readonly paths: Paths;
 ```
 
-- *Type:* {[ key: string ]: {[ key: string ]: [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)}}
+- *Type:* [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths)
 
 Integrations for OpenApi Path definitions.
 
@@ -2227,6 +2227,19 @@ The schema defining the content of the request, response, or parameter.
 
 ---
 
+### Methods <a name="@alma-cdk/openapix.Methods" id="almacdkopenapixmethods"></a>
+
+Methods with integrations.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { Methods } from '@alma-cdk/openapix'
+
+const methods: Methods = { ... }
+```
+
+
 ### MockIntegrationProps <a name="@alma-cdk/openapix.MockIntegrationProps" id="almacdkopenapixmockintegrationprops"></a>
 
 #### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
@@ -2927,6 +2940,19 @@ public readonly trace: OperationObject;
 A definition of a TRACE operation on this path.
 
 ---
+
+### Paths <a name="@alma-cdk/openapix.Paths" id="almacdkopenapixpaths"></a>
+
+Paths with methods containing integrations.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { Paths } from '@alma-cdk/openapix'
+
+const paths: Paths = { ... }
+```
+
 
 ### PathsObject <a name="@alma-cdk/openapix.PathsObject" id="almacdkopenapixpathsobject"></a>
 
@@ -3735,6 +3761,8 @@ Additional external documentation for this tag.
 ---
 
 ### Validator <a name="@alma-cdk/openapix.Validator" id="almacdkopenapixvalidator"></a>
+
+Validator configuration.
 
 #### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
 
