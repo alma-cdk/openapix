@@ -6,6 +6,107 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { get, set } from 'lodash';
 import * as openapix from '../src';
 
+test('Validators', () => {
+
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, 'TestStack');
+  const fn = new lambda.Function(stack, 'TestFunction', {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromInline(`module.exports = {
+      handler: async (event) => {
+        console.log(event);
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            message: 'Hello',
+          }),
+        };
+      },
+    }`),
+  });
+
+  const path = '/message';
+
+  const value = {
+    openapi: '3.0.1',
+    info: {
+      title: 'TestApi',
+      version: '0.0.0',
+    },
+    paths: {
+      [path]: {
+        get: {
+          operationId: 'get-message',
+          responses: {
+            200: {
+              content: {
+                'application/json': {
+                  example: [
+                    {
+                      some: 'foo',
+                      thing: 'bar',
+                    },
+                  ],
+                },
+              },
+              description: 'foo',
+            },
+          },
+        },
+      },
+    },
+  };
+
+  const { document } = new openapix.Api(stack, 'Testing', {
+    upload: false,
+    source: new openapix.Schema(value),
+    validators: {
+      'all': {
+        validateRequestBody: true,
+        validateRequestParameters: true,
+        default: true, // set this as the "API level" default validator (there can be only one)
+      },
+      'params-only': {
+        validateRequestBody: false,
+        validateRequestParameters: true,
+      },
+    },
+    paths: {
+      [path]: {
+        get: new openapix.LambdaIntegration(stack, fn, {
+          validator: 'params-only',
+        }),
+      },
+    },
+  });
+
+  const expectationBase = Object.assign({}, value);
+
+  expect(document).toMatchObject(
+    set(
+      set(
+        expectationBase,
+        `paths.${path}.get.x-amazon-apigateway-request-validator`,
+        'params-only',
+      ),
+      'x-amazon-apigateway-request-validators',
+      {
+        'all': {
+          validateRequestBody: true,
+          validateRequestParameters: true,
+        },
+        'params-only': {
+          validateRequestBody: false,
+          validateRequestParameters: true,
+        },
+      },
+    ),
+  );
+
+
+});
+
 test('Synth', () => {
 
   const app = new cdk.App();
