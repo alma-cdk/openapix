@@ -1,8 +1,6 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 
-// TODO https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype
-
 // https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html
 // TODO this is missing all sorts of things
 export interface XAmazonApigatewayIntegration {
