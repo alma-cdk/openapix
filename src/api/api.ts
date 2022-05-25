@@ -1,6 +1,7 @@
 import { EndpointType, IRestApi, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
+import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
@@ -59,6 +60,8 @@ export class Api extends SpecRestApi {
 
     // Allow the API Gateway to invoke given Lambda function integrations
     this.grantLambdaInvokes(props.paths);
+    // Allow the API Gateway to invoke Lambda authorizers
+    this.grantLambdaAuthorizerInvokes(props.authorizers);
 
     // Expose the processed OpenApi v3 document.
     // Mainly used for testing.
@@ -82,6 +85,21 @@ export class Api extends SpecRestApi {
           methodIntegration.grantFunctionInvoke(apiGatewayPrincipal);
         }
       });
+    });
+  }
+
+  /** Allow authorizer Lambda invocations to API Gateway instance principal */
+  private grantLambdaAuthorizerInvokes(authorizers?: AuthorizerConfig[]): void {
+    if (!authorizers) {
+      return;
+    }
+
+    const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
+
+    authorizers.forEach(authorizer => {
+      if (authorizer instanceof LambdaAuthorizer) {
+        authorizer.fn.grantInvoke(apiGatewayPrincipal);
+      }
     });
   }
 

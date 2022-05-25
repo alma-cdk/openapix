@@ -184,9 +184,20 @@ new LambdaAuthorizer(scope: Construct, id: string, props: LambdaAuthorizerProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| [`fn`](#almacdkopenapixlambdaauthorizerpropertyfn)<span title="Required">*</span> | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
 | [`id`](#almacdkopenapixlambdaauthorizerpropertyid)<span title="Required">*</span> | `string` | *No description.* |
 | [`xAmazonApigatewayAuthorizer`](#almacdkopenapixlambdaauthorizerpropertyxamazonapigatewayauthorizer)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayAuthorizer`](#@alma-cdk/openapix.XAmazonApigatewayAuthorizer) | *No description.* |
 | [`xAmazonApigatewayAuthtype`](#almacdkopenapixlambdaauthorizerpropertyxamazonapigatewayauthtype)<span title="Required">*</span> | `string` | *No description.* |
+
+---
+
+##### `fn`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaAuthorizer.property.fn" id="almacdkopenapixlambdaauthorizerpropertyfn"></a>
+
+```typescript
+public readonly fn: IFunction;
+```
+
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
 
 ---
 
@@ -4436,7 +4447,7 @@ new Integration(props: IntegrationProps, config: IntegrationConfig)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`type`](#almacdkopenapixintegrationpropertytype)<span title="Required">*</span> | [`@alma-cdk/openapix.InternalIntegrationType`](#@alma-cdk/openapix.InternalIntegrationType) | Identifier to enable internal type checks. |
-| [`xAmazonApigatwayIntegration`](#almacdkopenapixintegrationpropertyxamazonapigatwayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
+| [`xAmazonApigatewayIntegration`](#almacdkopenapixintegrationpropertyxamazonapigatewayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
 | [`validator`](#almacdkopenapixintegrationpropertyvalidator) | `string` | *No description.* |
 
 ---
@@ -4453,10 +4464,10 @@ Identifier to enable internal type checks.
 
 ---
 
-##### `xAmazonApigatwayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.Integration.property.xAmazonApigatwayIntegration" id="almacdkopenapixintegrationpropertyxamazonapigatwayintegration"></a>
+##### `xAmazonApigatewayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.Integration.property.xAmazonApigatewayIntegration" id="almacdkopenapixintegrationpropertyxamazonapigatewayintegration"></a>
 
 ```typescript
-public readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+public readonly xAmazonApigatewayIntegration: XAmazonApigatewayIntegration;
 ```
 
 - *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration)
@@ -4812,7 +4823,7 @@ Interface implemented by all integrations.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`type`](#almacdkopenapixibaseintegrationpropertytype)<span title="Required">*</span> | [`@alma-cdk/openapix.InternalIntegrationType`](#@alma-cdk/openapix.InternalIntegrationType) | Identifier to enable internal type checks. |
-| [`xAmazonApigatwayIntegration`](#almacdkopenapixibaseintegrationpropertyxamazonapigatwayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
+| [`xAmazonApigatewayIntegration`](#almacdkopenapixibaseintegrationpropertyxamazonapigatewayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
 | [`validator`](#almacdkopenapixibaseintegrationpropertyvalidator) | `string` | *No description.* |
 
 ---
@@ -4829,10 +4840,10 @@ Identifier to enable internal type checks.
 
 ---
 
-##### `xAmazonApigatwayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.IBaseIntegration.property.xAmazonApigatwayIntegration" id="almacdkopenapixibaseintegrationpropertyxamazonapigatwayintegration"></a>
+##### `xAmazonApigatewayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.IBaseIntegration.property.xAmazonApigatewayIntegration" id="almacdkopenapixibaseintegrationpropertyxamazonapigatewayintegration"></a>
 
 ```typescript
-public readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+public readonly xAmazonApigatewayIntegration: XAmazonApigatewayIntegration;
 ```
 
 - *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration)

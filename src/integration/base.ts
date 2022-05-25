@@ -1,22 +1,24 @@
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from '../x-amazon-apigateway/integration';
+import {
+  XAmazonApigatewayIntegration,
+  XAmazonApigatewayIntegrationResponse,
+} from '../x-amazon-apigateway/integration';
 
 /** Interface implemented by all integrations. */
 export interface IBaseIntegration {
-
   /** Identifier to enable internal type checks. */
   readonly type: InternalIntegrationType;
 
-  readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+  readonly xAmazonApigatewayIntegration: XAmazonApigatewayIntegration;
   readonly validator?: string;
 }
 
 export enum InternalIntegrationType {
-  AWS='AWS',
-  CORS='CORS',
-  HTTP='HTTP',
-  LAMBDA='LAMBDA',
-  MOCK='MOCK',
+  AWS = 'AWS',
+  CORS = 'CORS',
+  HTTP = 'HTTP',
+  LAMBDA = 'LAMBDA',
+  MOCK = 'MOCK',
 }
 
 /** Method integration validator configuration. */
@@ -42,20 +44,22 @@ export interface IntegrationConfig extends ValidatorConfig {
  * by derivative classes.
  */
 export abstract class Integration implements IBaseIntegration {
-  public readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+  public readonly xAmazonApigatewayIntegration: XAmazonApigatewayIntegration;
   public readonly validator?: string;
 
   public readonly type: InternalIntegrationType;
 
   /** Construc a new integration. */
   constructor(props: IntegrationProps, config: IntegrationConfig) {
-    this.xAmazonApigatwayIntegration = this.mapPropsToIntegration(props);
+    this.xAmazonApigatewayIntegration = this.mapPropsToIntegration(props);
     this.validator = config.validator;
     this.type = config.type;
   }
 
   /** Convert CDK integration into API Gateway OpenApi integration extension. */
-  private mapPropsToIntegration(props: IntegrationProps): XAmazonApigatewayIntegration {
+  private mapPropsToIntegration(
+    props: IntegrationProps,
+  ): XAmazonApigatewayIntegration {
     return {
       type: props.type,
       uri: props.uri,
@@ -65,9 +69,10 @@ export abstract class Integration implements IBaseIntegration {
       requestParameters: props.options?.requestParameters,
       cacheNamespace: props.options?.cacheNamespace,
       passthroughBehavior: props.options?.passthroughBehavior,
-      responses: (function() {
-        const responses: Record<string, XAmazonApigatewayIntegrationResponse> = {};
-        props.options?.integrationResponses?.forEach(resp => {
+      responses: (function () {
+        const responses: Record<string, XAmazonApigatewayIntegrationResponse> =
+          {};
+        props.options?.integrationResponses?.forEach((resp) => {
           if (typeof resp.selectionPattern !== 'string') return;
           responses[resp.selectionPattern] = {
             statusCode: resp.statusCode,
@@ -76,8 +81,7 @@ export abstract class Integration implements IBaseIntegration {
           };
         });
         return responses;
-      }()),
+      })(),
     };
   }
 }
-
