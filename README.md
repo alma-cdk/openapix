@@ -153,7 +153,7 @@ See [`/examples/hello-api`](https://github.com/alma-cdk/openapix/tree/main/examp
 
 ## AWS Service Integration
 
-Given [`books-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/books-api/schema/books-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
+Given [`books-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/books-api/schema/books-api.yaml), _without_ any AWS API Gateway OpenApi extensions, You may then define API Gateway AWS service integration such as DynamoDB (within your stack):
 
 ```ts
 new openapix.Api(this, 'BooksApi', {
@@ -261,7 +261,7 @@ components:
           example: Hello World!
 ```
 
-You may then define API Gateway HTTP integration (within your stack):
+You may then define API Gateway Mock integration (within your stack):
 ```ts
 new openapix.Api(this, 'MockApi', {
   source: path.join(__dirname, '../schema/mock-api.yaml'),
