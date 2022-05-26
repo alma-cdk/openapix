@@ -2254,65 +2254,186 @@ const mockIntegrationProps: MockIntegrationProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`type`](#almacdkopenapixmockintegrationpropspropertytype)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType) | Specifies an API method integration type. |
-| [`integrationHttpMethod`](#almacdkopenapixmockintegrationpropspropertyintegrationhttpmethod) | `string` | The integration's HTTP method type. |
-| [`options`](#almacdkopenapixmockintegrationpropspropertyoptions) | [`aws-cdk-lib.aws_apigateway.IntegrationOptions`](#aws-cdk-lib.aws_apigateway.IntegrationOptions) | Integration options. |
-| [`uri`](#almacdkopenapixmockintegrationpropspropertyuri) | `any` | The Uniform Resource Identifier (URI) for the integration. |
+| [`cacheKeyParameters`](#almacdkopenapixmockintegrationpropspropertycachekeyparameters) | `string`[] | A list of request parameters whose values are to be cached. |
+| [`cacheNamespace`](#almacdkopenapixmockintegrationpropspropertycachenamespace) | `string` | An API-specific tag group of related cached parameters. |
+| [`connectionType`](#almacdkopenapixmockintegrationpropspropertyconnectiontype) | [`aws-cdk-lib.aws_apigateway.ConnectionType`](#aws-cdk-lib.aws_apigateway.ConnectionType) | The type of network connection to the integration endpoint. |
+| [`contentHandling`](#almacdkopenapixmockintegrationpropspropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Specifies how to handle request payload content type conversions. |
+| [`credentialsPassthrough`](#almacdkopenapixmockintegrationpropspropertycredentialspassthrough) | `boolean` | Requires that the caller's identity be passed through from the request. |
+| [`credentialsRole`](#almacdkopenapixmockintegrationpropspropertycredentialsrole) | [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole) | An IAM role that API Gateway assumes. |
+| [`integrationResponses`](#almacdkopenapixmockintegrationpropspropertyintegrationresponses) | [`aws-cdk-lib.aws_apigateway.IntegrationResponse`](#aws-cdk-lib.aws_apigateway.IntegrationResponse)[] | The response that API Gateway provides after a method's backend completes processing a request. |
+| [`passthroughBehavior`](#almacdkopenapixmockintegrationpropspropertypassthroughbehavior) | [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior) | Specifies the pass-through behavior for incoming requests based on the Content-Type header in the request, and the available mapping templates specified as the requestTemplates property on the Integration resource. |
+| [`requestParameters`](#almacdkopenapixmockintegrationpropspropertyrequestparameters) | {[ key: string ]: `string`} | The request parameters that API Gateway sends with the backend request. |
+| [`requestTemplates`](#almacdkopenapixmockintegrationpropspropertyrequesttemplates) | {[ key: string ]: `string`} | A map of Apache Velocity templates that are applied on the request payload. |
+| [`timeout`](#almacdkopenapixmockintegrationpropspropertytimeout) | [`aws-cdk-lib.Duration`](#aws-cdk-lib.Duration) | The maximum amount of time an integration will run before it returns without a response. |
+| [`vpcLink`](#almacdkopenapixmockintegrationpropspropertyvpclink) | [`aws-cdk-lib.aws_apigateway.IVpcLink`](#aws-cdk-lib.aws_apigateway.IVpcLink) | The VpcLink used for the integration. |
 | [`validator`](#almacdkopenapixmockintegrationpropspropertyvalidator) | `string` | Validator identifier for method integration. This will override the default validator if one configured. |
 
 ---
 
-##### `type`<sup>Required</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.type" id="almacdkopenapixmockintegrationpropspropertytype"></a>
+##### `cacheKeyParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.cacheKeyParameters" id="almacdkopenapixmockintegrationpropspropertycachekeyparameters"></a>
 
 ```typescript
-public readonly type: IntegrationType;
+public readonly cacheKeyParameters: string[];
 ```
 
-- *Type:* [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType)
+- *Type:* `string`[]
 
-Specifies an API method integration type.
+A list of request parameters whose values are to be cached.
+
+It determines request parameters that will make it into the cache key.
 
 ---
 
-##### `integrationHttpMethod`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.integrationHttpMethod" id="almacdkopenapixmockintegrationpropspropertyintegrationhttpmethod"></a>
+##### `cacheNamespace`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.cacheNamespace" id="almacdkopenapixmockintegrationpropspropertycachenamespace"></a>
 
 ```typescript
-public readonly integrationHttpMethod: string;
+public readonly cacheNamespace: string;
 ```
 
 - *Type:* `string`
 
-The integration's HTTP method type.
-
-Required unless you use a MOCK integration.
+An API-specific tag group of related cached parameters.
 
 ---
 
-##### `options`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.options" id="almacdkopenapixmockintegrationpropspropertyoptions"></a>
+##### `connectionType`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.connectionType" id="almacdkopenapixmockintegrationpropspropertyconnectiontype"></a>
 
 ```typescript
-public readonly options: IntegrationOptions;
+public readonly connectionType: ConnectionType;
 ```
 
-- *Type:* [`aws-cdk-lib.aws_apigateway.IntegrationOptions`](#aws-cdk-lib.aws_apigateway.IntegrationOptions)
+- *Type:* [`aws-cdk-lib.aws_apigateway.ConnectionType`](#aws-cdk-lib.aws_apigateway.ConnectionType)
+- *Default:* ConnectionType.VPC_LINK if `vpcLink` property is configured; ConnectionType.Internet otherwise.
 
-Integration options.
+The type of network connection to the integration endpoint.
 
 ---
 
-##### `uri`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.uri" id="almacdkopenapixmockintegrationpropspropertyuri"></a>
+##### `contentHandling`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.contentHandling" id="almacdkopenapixmockintegrationpropspropertycontenthandling"></a>
 
 ```typescript
-public readonly uri: any;
+public readonly contentHandling: ContentHandling;
 ```
 
-- *Type:* `any`
+- *Type:* [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling)
+- *Default:* none if this property isn't defined, the request payload is passed through from the method request to the integration request without modification, provided that the `passthroughBehaviors` property is configured to support payload pass-through.
 
-The Uniform Resource Identifier (URI) for the integration.
+Specifies how to handle request payload content type conversions.
 
-If you specify HTTP for the `type` property, specify the API endpoint URL. - If you specify MOCK for the `type` property, don't specify this property. - If you specify AWS for the `type` property, specify an AWS service that    follows this form: `arn:partition:apigateway:region:subdomain.service|service:path|action/service_api.`    For example, a Lambda function URI follows this form:    arn:partition:apigateway:region:lambda:path/path. The path is usually in the    form /2015-03-31/functions/LambdaFunctionARN/invocations.
+---
 
-> https://docs.aws.amazon.com/apigateway/api-reference/resource/integration/#uri
+##### `credentialsPassthrough`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.credentialsPassthrough" id="almacdkopenapixmockintegrationpropspropertycredentialspassthrough"></a>
+
+```typescript
+public readonly credentialsPassthrough: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* Caller identity is not passed through
+
+Requires that the caller's identity be passed through from the request.
+
+---
+
+##### `credentialsRole`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.credentialsRole" id="almacdkopenapixmockintegrationpropspropertycredentialsrole"></a>
+
+```typescript
+public readonly credentialsRole: IRole;
+```
+
+- *Type:* [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole)
+- *Default:* A role is not assumed
+
+An IAM role that API Gateway assumes.
+
+Mutually exclusive with `credentialsPassThrough`.
+
+---
+
+##### `integrationResponses`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.integrationResponses" id="almacdkopenapixmockintegrationpropspropertyintegrationresponses"></a>
+
+```typescript
+public readonly integrationResponses: IntegrationResponse[];
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.IntegrationResponse`](#aws-cdk-lib.aws_apigateway.IntegrationResponse)[]
+
+The response that API Gateway provides after a method's backend completes processing a request.
+
+API Gateway intercepts the response from the backend so that you can control how API Gateway surfaces backend responses. For example, you can map the backend status codes to codes that you define.
+
+---
+
+##### `passthroughBehavior`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.passthroughBehavior" id="almacdkopenapixmockintegrationpropspropertypassthroughbehavior"></a>
+
+```typescript
+public readonly passthroughBehavior: PassthroughBehavior;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior)
+
+Specifies the pass-through behavior for incoming requests based on the Content-Type header in the request, and the available mapping templates specified as the requestTemplates property on the Integration resource.
+
+There are three valid values: WHEN_NO_MATCH, WHEN_NO_TEMPLATES, and NEVER.
+
+---
+
+##### `requestParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.requestParameters" id="almacdkopenapixmockintegrationpropspropertyrequestparameters"></a>
+
+```typescript
+public readonly requestParameters: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: `string`}
+
+The request parameters that API Gateway sends with the backend request.
+
+Specify request parameters as key-value pairs (string-to-string mappings), with a destination as the key and a source as the value.  Specify the destination by using the following pattern integration.request.location.name, where location is querystring, path, or header, and name is a valid, unique parameter name.  The source must be an existing method request parameter or a static value. You must enclose static values in single quotation marks and pre-encode these values based on their destination in the request.
+
+---
+
+##### `requestTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.requestTemplates" id="almacdkopenapixmockintegrationpropspropertyrequesttemplates"></a>
+
+```typescript
+public readonly requestTemplates: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: `string`}
+
+A map of Apache Velocity templates that are applied on the request payload.
+
+The template that API Gateway uses is based on the value of the Content-Type header that's sent by the client. The content type value is the key, and the template is the value (specified as a string), such as the following snippet:  ```    { "application/json": "{ \"statusCode\": 200 }" } ```
+
+> http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
+
+---
+
+##### `timeout`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.timeout" id="almacdkopenapixmockintegrationpropspropertytimeout"></a>
+
+```typescript
+public readonly timeout: Duration;
+```
+
+- *Type:* [`aws-cdk-lib.Duration`](#aws-cdk-lib.Duration)
+- *Default:* Duration.seconds(29)
+
+The maximum amount of time an integration will run before it returns without a response.
+
+Must be between 50 milliseconds and 29 seconds.
+
+---
+
+##### `vpcLink`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegrationProps.property.vpcLink" id="almacdkopenapixmockintegrationpropspropertyvpclink"></a>
+
+```typescript
+public readonly vpcLink: IVpcLink;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.IVpcLink`](#aws-cdk-lib.aws_apigateway.IVpcLink)
+
+The VpcLink used for the integration.
+
+Required if connectionType is VPC_LINK
 
 ---
 
@@ -4544,13 +4665,13 @@ Defines Mock integration.
 ```typescript
 import { MockIntegration } from '@alma-cdk/openapix'
 
-new MockIntegration(_: Construct, props?: MockIntegrationProps)
+new MockIntegration(_: Construct, props: MockIntegrationProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`_`](#almacdkopenapixmockintegrationparameter)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
-| [`props`](#almacdkopenapixmockintegrationparameterprops) | [`@alma-cdk/openapix.MockIntegrationProps`](#@alma-cdk/openapix.MockIntegrationProps) | *No description.* |
+| [`props`](#almacdkopenapixmockintegrationparameterprops)<span title="Required">*</span> | [`@alma-cdk/openapix.MockIntegrationProps`](#@alma-cdk/openapix.MockIntegrationProps) | *No description.* |
 
 ---
 
@@ -4560,7 +4681,7 @@ new MockIntegration(_: Construct, props?: MockIntegrationProps)
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegration.parameter.props" id="almacdkopenapixmockintegrationparameterprops"></a>
+##### `props`<sup>Required</sup> <a name="@alma-cdk/openapix.MockIntegration.parameter.props" id="almacdkopenapixmockintegrationparameterprops"></a>
 
 - *Type:* [`@alma-cdk/openapix.MockIntegrationProps`](#@alma-cdk/openapix.MockIntegrationProps)
 
