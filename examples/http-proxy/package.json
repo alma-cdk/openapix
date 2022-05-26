@@ -11,7 +11,7 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@alma-cdk/openapix": "0.0.28",
+    "@alma-cdk/openapix": "^0.0.33",
     "@types/jest": "^27.5.0",
     "@types/node": "10.17.27",
     "@types/prettier": "2.6.0",
