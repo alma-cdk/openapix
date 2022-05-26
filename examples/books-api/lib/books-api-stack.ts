@@ -10,12 +10,10 @@ export class BooksApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const pk = 'item';
-
     const table = new dynamodb.Table(this, 'table', {
       partitionKey: {
         type: dynamodb.AttributeType.STRING,
-        name: pk,
+        name: 'item',
       }
     });
 
@@ -36,12 +34,11 @@ export class BooksApiStack extends Stack {
               credentialsRole: role,
               requestTemplates: {
                 'application/json': JSON.stringify({
-                  "TableName": table.tableName,
+                  TableName: table.tableName,
                 }),
               },
               integrationResponses: [
                 {
-                  selectionPattern: 'default',
                   statusCode: '200',
                   responseTemplates: {
                     'application/json': readFileSync(__dirname+'/list-books.vtl', 'utf-8'),
@@ -59,9 +56,9 @@ export class BooksApiStack extends Stack {
               credentialsRole: role,
               requestTemplates: {
                 'application/json': JSON.stringify({
-                  "TableName": table.tableName,
-                  "Key": {
-                    [pk]: {
+                  TableName: table.tableName,
+                  Key: {
+                    item: {
                       "S": "$input.params('isbn')"
                     }
                   }
@@ -69,7 +66,6 @@ export class BooksApiStack extends Stack {
               },
               integrationResponses: [
                 {
-                  selectionPattern: 'default',
                   statusCode: '200',
                   responseTemplates: {
                     'application/json': readFileSync(__dirname+'/get-book.vtl', 'utf-8'),
@@ -80,6 +76,6 @@ export class BooksApiStack extends Stack {
           }),
         },
       },
-    })
+    });
   }
 }

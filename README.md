@@ -130,51 +130,65 @@ See [`/examples/http-proxy`](https://github.com/alma-cdk/openapix/tree/main/exam
 
 ## AWS Service Integration
 
-🚧 Work-in-Progress
+Given [`books-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/books-api/schema/books-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
 
 ```ts
-const pkName = 'item';
-const table = new dynamodb.Table(this, 'table', {
-  partitionKey: {
-    type: dynamodb.AttributeType.STRING,
-    name: pkName,
-  }
-});
-
-const role = new iam.Role(this, "role", {
-  assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-});
-
-table.grantReadData(role);
-
-new openapix.Api(this, 'MyApi', {
-  upload: false, // by default add as inline Body, set to true to use as BodyS3Location
-  source: './schema.yaml',
+new openapix.Api(this, 'BooksApi', {
+  source: path.join(__dirname, '../schema/books-api.yaml'),
   paths: {
-
-    // Direct integration to AWS Service
     '/': {
+      get: new openapix.AwsIntegration(this, {
+        service: 'dynamodb',
+        action: 'Scan',
+        options: {
+          credentialsRole: role, // role must have access to DynamoDB table
+          requestTemplates: {
+            'application/json': JSON.stringify({
+              TableName: table.tableName,
+            }),
+          },
+          integrationResponses: [
+            {
+              statusCode: '200',
+              responseTemplates: {
+                // See /examples/http-proxy/list-books.vtl
+                'application/json': readFileSync(__dirname+'/list-books.vtl', 'utf-8'),
+              },
+            }
+          ],
+        },
+      }),
+    },
+    '/{isbn}': {
       get: new openapix.AwsIntegration(this, {
         service: 'dynamodb',
         action: 'GetItem',
         options: {
-          credentialsRole: role,
+          credentialsRole: role, // role must have access to DynamoDB table
           requestTemplates: {
             'application/json': JSON.stringify({
-              "TableName": table.tableName,
-              "Key": {
-                [pkName]: {
-                  "S": "$input.params('item')"
+              TableName: table.tableName,
+              Key: {
+                item: {
+                  "S": "$input.params('isbn')"
                 }
               }
             }),
           },
+          integrationResponses: [
+            {
+              statusCode: '200',
+              responseTemplates: {
+                // See /examples/http-proxy/get-book.vtl
+                'application/json': readFileSync(__dirname+'/get-book.vtl', 'utf-8'),
+              },
+            }
+          ],
         },
       }),
     },
-
   },
-})
+});
 ```
 
 <br/>
