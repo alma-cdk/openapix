@@ -1,4 +1,4 @@
-import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
+import { IntegrationProps, IntegrationResponse } from 'aws-cdk-lib/aws-apigateway';
 import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponses } from '../x-amazon-apigateway';
 
 /** Interface implemented by all integrations. */
@@ -87,14 +87,44 @@ export abstract class Integration implements IBaseIntegration {
   private resolveResponses(props: IntegrationProps): XAmazonApigatewayIntegrationResponses | undefined {
     const responses: XAmazonApigatewayIntegrationResponses = {};
     props.options?.integrationResponses?.forEach(resp => {
-      if (typeof resp.selectionPattern !== 'string') return;
-      responses[resp.selectionPattern] = {
+
+      const selectionPattern = this.resolveSelectionPattern(props.options!.integrationResponses!, resp);
+
+      if (typeof selectionPattern === 'undefined') {
+        throw new Error('You must provide a selectionPattern when multiple integration responses defined');
+      }
+
+      responses[selectionPattern] = {
         statusCode: resp.statusCode,
         responseParameters: resp.responseParameters,
         responseTemplates: resp.responseTemplates,
+        contentHandling: resp.contentHandling,
+
       };
     });
     return responses;
+  }
+
+  /**
+   * Decide selection pattern.
+   *
+   * @see https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html#selectionpattern
+   * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-responses.html
+   *
+   * @default
+   * resp.statusCode
+   */
+  private resolveSelectionPattern(responses: IntegrationResponse[], resp: IntegrationResponse): string | undefined {
+
+    if (typeof resp?.selectionPattern === 'string') {
+      return resp.selectionPattern;
+    }
+
+    if (responses.length === 1) {
+      return 'default';
+    }
+
+    return undefined;
   }
 
 }
