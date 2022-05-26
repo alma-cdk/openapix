@@ -10,7 +10,7 @@ export class ApiStack extends Stack {
     const baseUrl = 'https://jsonplaceholder.typicode.com/todos';
 
     new openapix.Api(this, 'TodoApi', {
-      source: path.join(__dirname, '..', '/schema/todo-api.yaml'),
+      source: path.join(__dirname, '../schema/todo-api.yaml'),
 
       validators: {
         'all': {

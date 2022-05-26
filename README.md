@@ -41,6 +41,55 @@ This construct is still versioned with `v0` major version and breaking changes m
 
 ## Getting Started
 
+<br/>
+
+### Lambda Integration
+
+Given the following [`hello-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/hello-api/schema/hello-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
+```yaml
+openapi: 3.0.3
+info:
+  title: Hello API
+  description: Defines an example “Hello World” API
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      operationId: sayHello
+      summary: Say Hello
+      description: Prints out a greeting
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: "World"
+```
+
+You may then define the API Gateway integrations (within your stack):
+```ts
+const greetFn = new NodejsFunction(this, 'greet');
+
+new openapix.Api(this, 'HelloApi', {
+  source: path.join(__dirname, '../schema/hello-api.yaml'),
+  paths: {
+    '/': {
+      get: new openapix.LambdaIntegration(this, greetFn),
+    },
+  },
+})
+```
+
+See [`/examples/hello-api`](https://github.com/alma-cdk/openapix/tree/main/examples/hello-api) for full OpenApi definition (with response models) and an example within a CDK application.
+
+
+
+
+<br/>
+
+## More Complex Example
+
 1. First, let's create some integration points:
     ```ts
     const fn = new lambda.Function(this, "fn", {
@@ -122,10 +171,10 @@ API Gateway REST APIs can perform [request parameter and request body validation
 
 See [`/examples/todo-api`](https://github.com/alma-cdk/openapix/tree/main/examples/todo-api) for complete example within a CDK application.
 
-Given [`todo-api.yaml` OpenApi schema](https://github.com/alma-cdk/openapix/blob/main/examples/todo-api/schema/todo-api.yaml) you may define the API Gateway validators for your integration in CDK:
+Given [`todo-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/todo-api/schema/todo-api.yaml) you may define the API Gateway validators for your integration in CDK:
 ```ts
 new openapix.Api(this, 'MyApi', {
-  source: path.join(__dirname, '..', '/schema/todo-api.yaml'),
+  source: path.join(__dirname, '../schema/todo-api.yaml'),
 
   validators: {
     'all': {

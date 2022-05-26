@@ -8,13 +8,13 @@ export class HelloApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const greet = new NodejsFunction(this, 'greet');
+    const greetFn = new NodejsFunction(this, 'greet');
 
     new openapix.Api(this, 'HelloApi', {
-      source: path.join(__dirname, '..', '/schema/hello-api.yaml'),
+      source: path.join(__dirname, '../schema/hello-api.yaml'),
       paths: {
         '/': {
-          get: new openapix.LambdaIntegration(this, greet),
+          get: new openapix.LambdaIntegration(this, greetFn),
         },
       },
     })

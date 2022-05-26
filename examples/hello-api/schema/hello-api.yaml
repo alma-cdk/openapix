@@ -10,12 +10,12 @@ paths:
       summary: Say Hello
       description: Prints out a greeting
       parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-            default: "World"
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: "World"
       responses:
         "200":
           description: Successful response
