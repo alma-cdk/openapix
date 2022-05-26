@@ -12,15 +12,11 @@ export class HttpProxyStack extends Stack {
 
       paths: {
         '/': {
-          get:  new openapix.HttpIntegration(
-            this,
-            'http://example.com',
-            {
+          get:  new openapix.HttpIntegration(this, 'http://example.com', {
               httpMethod: 'get',
-            }
-          ),
+          }),
         },
       },
-    })
+    });
   }
 }

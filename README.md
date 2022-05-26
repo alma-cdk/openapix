@@ -70,14 +70,17 @@ paths:
 
 You may then define API Gateway HTTP integration (within your stack):
 ```ts
-new openapix.Api(this, 'MyApi', {
-  source: './schema.yaml',
+new openapix.Api(this, 'HttpProxy', {
+  source: path.join(__dirname, '../schema/http-proxy.yaml'),
+
   paths: {
     '/': {
-      any: new openapix.HttpIntegration(this, "https://example.com"),
+      get:  new openapix.HttpIntegration(this, 'http://example.com', {
+          httpMethod: 'get',
+      }),
     },
   },
-})
+});
 ```
 
 See [`/examples/http-proxy`](https://github.com/alma-cdk/openapix/tree/main/examples/http-proxy) for full OpenApi definition (with response models) and an example within a CDK application.
