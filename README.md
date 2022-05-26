@@ -67,7 +67,7 @@ paths:
           default: "World"
 ```
 
-You may then define the API Gateway integrations (within your stack):
+You may then define API Gateway AWS Lambda integration (within your stack):
 ```ts
 const greetFn = new NodejsFunction(this, 'greet');
 
@@ -82,6 +82,12 @@ new openapix.Api(this, 'HelloApi', {
 ```
 
 See [`/examples/hello-api`](https://github.com/alma-cdk/openapix/tree/main/examples/hello-api) for full OpenApi definition (with response models) and an example within a CDK application.
+
+
+<br/>
+
+### AWS Service Integration
+
 
 
 
