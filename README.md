@@ -74,6 +74,24 @@ paths:
         schema:
           type: string
           default: "World"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      description: Response body
+      type: object
+      properties:
+        message:
+          type: string
+          description: Greeting
+          example: Hello World!
 ```
 
 You may then define API Gateway AWS Lambda integration (within your stack):
@@ -331,7 +349,7 @@ In this example we're defining a Congito User Pool based authorizer.
 
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /:
     get:
@@ -369,7 +387,7 @@ In this example we're defining a custom Lambda authorizer. The authorizer functi
 
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /:
     get:
