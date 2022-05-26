@@ -120,6 +120,8 @@ This construct is still versioned with `v0` major version and breaking changes m
 
 API Gateway REST APIs can perform [request parameter and request body validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html). You can provide both default validator and integration specific validator (which will override the default for given integration).
 
+See [`/examples/todo-api`](https://github.com/alma-cdk/openapix/tree/main/examples/todo-api) for more complete example.
+
 ```ts
 new openapix.Api(this, 'MyApi', {
   source: './schema.yaml',
