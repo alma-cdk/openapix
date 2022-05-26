@@ -3,6 +3,8 @@ import { XAmazonApigatewayIntegrationResponse } from './integration-response';
 /**
  * Defines the method's responses and specifies parameter mappings or
  * payload mappings from integration responses to method responses.
+ *
+ * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-responses.html
  */
 export interface XAmazonApigatewayIntegrationResponses {
 
