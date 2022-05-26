@@ -36,6 +36,8 @@
 
 This construct is still versioned with `v0` major version and breaking changes might be introduced if necessary (without a major version bump), though we aim to keep the API as stable as possible (even within `v0` development). We aim to publish `v1.0.0` soon and after that breaking changes will be introduced via major version bumps.
 
+There are also some incomplete or buggy features, such as `AwsIntegration`, `MockIntegration` and `CognitoUserPoolsAuthorizer`.
+
 
 <br/>
 
