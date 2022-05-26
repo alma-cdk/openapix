@@ -54,7 +54,11 @@ export abstract class Integration implements IBaseIntegration {
     this.type = config.type;
   }
 
-  /** Convert CDK integration into API Gateway OpenApi integration extension. */
+  /**
+   * Convert CDK integration into API Gateway OpenApi integration extension.
+   *
+   * TODO add missing fields
+   */
   private mapPropsToIntegration(props: IntegrationProps): XAmazonApigatewayIntegration {
     return {
       type: props.type,
