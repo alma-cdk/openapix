@@ -52,6 +52,39 @@ There are also some incomplete or buggy features, such as CORS and `CognitoUserP
 
 <br/>
 
+## HTTP Integration
+
+Given the following [`http-proxy.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/http-proxy/schema/http-proxy.yaml), _without_ any AWS API Gateway OpenApi extensions:
+```yaml
+openapi: 3.0.3
+info:
+  title: HTTP Proxy
+  description: Proxies requests to example.com
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      summary: proxy
+      description: Proxies example.com
+```
+
+You may then define API Gateway HTTP integration (within your stack):
+```ts
+new openapix.Api(this, 'MyApi', {
+  source: './schema.yaml',
+  paths: {
+    '/': {
+      any: new openapix.HttpIntegration(this, "https://example.com"),
+    },
+  },
+})
+```
+
+See [`/examples/http-proxy`](https://github.com/alma-cdk/openapix/tree/main/examples/http-proxy) for full OpenApi definition (with response models) and an example within a CDK application.
+
+
+<br/>
+
 ## Lambda Integration
 
 Given the following [`hello-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/hello-api/schema/hello-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
@@ -113,38 +146,7 @@ See [`/examples/hello-api`](https://github.com/alma-cdk/openapix/tree/main/examp
 
 <br/>
 
-## HTTP Integration
 
-Given the following [`http-proxy.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/http-proxy/schema/http-proxy.yaml), _without_ any AWS API Gateway OpenApi extensions:
-```yaml
-openapi: 3.0.3
-info:
-  title: HTTP Proxy
-  description: Proxies requests to example.com
-  version: "0.0.1"
-paths:
-  "/":
-    get:
-      summary: proxy
-      description: Proxies example.com
-```
-
-You may then define API Gateway HTTP integration (within your stack):
-```ts
-new openapix.Api(this, 'MyApi', {
-  source: './schema.yaml',
-  paths: {
-    '/': {
-      any: new openapix.HttpIntegration(this, "https://example.com"),
-    },
-  },
-})
-```
-
-See [`/examples/http-proxy`](https://github.com/alma-cdk/openapix/tree/main/examples/http-proxy) for full OpenApi definition (with response models) and an example within a CDK application.
-
-
-<br/>
 
 ## AWS Service Integration
 
