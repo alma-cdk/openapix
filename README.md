@@ -122,7 +122,7 @@ API Gateway REST APIs can perform [request parameter and request body validation
 
 See [`/examples/todo-api`](https://github.com/alma-cdk/openapix/tree/main/examples/todo-api) for more complete example.
 
-Given the [`todo-api.yaml` OpenApi schema](https://github.com/alma-cdk/openapix/blob/main/examples/todo-api/schema/todo-api.yaml) you may define the API Gateway validators for your integration in CDK:
+Given [`todo-api.yaml` OpenApi schema](https://github.com/alma-cdk/openapix/blob/main/examples/todo-api/schema/todo-api.yaml) you may define the API Gateway validators for your integration in CDK:
 ```ts
 new openapix.Api(this, 'MyApi', {
   source: path.join(__dirname, '..', '/schema/todo-api.yaml'),
