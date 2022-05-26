@@ -4450,6 +4450,8 @@ const xAmazonApigatewayIntegrationResponseParameters: XAmazonApigatewayIntegrati
 
 Defines the method's responses and specifies parameter mappings or payload mappings from integration responses to method responses.
 
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-responses.html
+
 #### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
 
 ```typescript
