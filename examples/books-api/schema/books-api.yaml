@@ -1,0 +1,60 @@
+---
+openapi: 3.0.1
+info:
+  title: Books API
+  description: Just for demonstration purposes
+paths:
+  "/":
+    get:
+      operationId: listBooks
+      summary: List all the books
+      responses:
+        "200":
+          description: List of books
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+
+  "/{isbn}":
+    get:
+      operationId: getBook
+      summary: Get a single book by ISBN
+      parameters:
+      - name: isbn
+        in: path
+        required: true
+        description: Identifies a single book by ISBN code
+        example: "9781617296284"
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A Book
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/BookResponse"
+
+
+components:
+  schemas:
+    BookResponse:
+      required:
+      - isbn
+      - name
+      type: object
+      properties:
+        isbn:
+          type: string
+          example: "9781617296284"
+        name:
+          type: string
+          example: "Designing APIs with Swagger and OpenAPI"
+        authors:
+          type: array
+          example: ["Joshua S. Ponelat", "Lukas L. Rosenstock"]
+          items:
+            type: string
