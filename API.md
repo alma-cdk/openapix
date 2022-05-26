@@ -4087,6 +4087,12 @@ Applicable for the authorizer of the `cognito_user_pools` type only.
 
 ### XAmazonApigatewayIntegration <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration" id="almacdkopenapixxamazonapigatewayintegration"></a>
 
+Specifies details of the backend integration used for this method.
+
+This extension is an extended property of the OpenAPI Operation object. The result is an API Gateway integration object.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html
+
 #### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
 
 ```typescript
@@ -4099,16 +4105,21 @@ const xAmazonApigatewayIntegration: XAmazonApigatewayIntegration = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`httpMethod`](#almacdkopenapixxamazonapigatewayintegrationpropertyhttpmethod)<span title="Required">*</span> | `string` | *No description.* |
-| [`type`](#almacdkopenapixxamazonapigatewayintegrationpropertytype)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType) | *No description.* |
-| [`uri`](#almacdkopenapixxamazonapigatewayintegrationpropertyuri)<span title="Required">*</span> | `string` | *No description.* |
-| [`cacheKeyParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertycachekeyparameters) | `any`[] | *No description.* |
-| [`cacheNamespace`](#almacdkopenapixxamazonapigatewayintegrationpropertycachenamespace) | `string` | *No description.* |
-| [`credentials`](#almacdkopenapixxamazonapigatewayintegrationpropertycredentials) | `string` | *No description.* |
-| [`passthroughBehavior`](#almacdkopenapixxamazonapigatewayintegrationpropertypassthroughbehavior) | [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior) | *No description.* |
-| [`requestParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters) | {[ key: string ]: `string`} | *No description.* |
-| [`requestTemplates`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates) | {[ key: string ]: `string`} | *No description.* |
-| [`responses`](#almacdkopenapixxamazonapigatewayintegrationpropertyresponses) | {[ key: string ]: [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse)} | *No description.* |
+| [`httpMethod`](#almacdkopenapixxamazonapigatewayintegrationpropertyhttpmethod)<span title="Required">*</span> | `string` | The HTTP method used in the integration request. |
+| [`type`](#almacdkopenapixxamazonapigatewayintegrationpropertytype)<span title="Required">*</span> | [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType) | The type of integration with the specified backend. |
+| [`uri`](#almacdkopenapixxamazonapigatewayintegrationpropertyuri)<span title="Required">*</span> | `string` | The endpoint URI of the backend. |
+| [`cacheKeyParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertycachekeyparameters) | `string`[] | A list of request parameters whose values are to be cached. |
+| [`cacheNamespace`](#almacdkopenapixxamazonapigatewayintegrationpropertycachenamespace) | `string` | An API-specific tag group of related cached parameters. |
+| [`connectionId`](#almacdkopenapixxamazonapigatewayintegrationpropertyconnectionid) | `string` | The ID of a VpcLink for the private integration. |
+| [`connectionType`](#almacdkopenapixxamazonapigatewayintegrationpropertyconnectiontype) | [`aws-cdk-lib.aws_apigateway.ConnectionType`](#aws-cdk-lib.aws_apigateway.ConnectionType) | The integration connection type. |
+| [`contentHandling`](#almacdkopenapixxamazonapigatewayintegrationpropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Response payload encoding conversion types. |
+| [`credentials`](#almacdkopenapixxamazonapigatewayintegrationpropertycredentials) | `string` | For AWS IAM role-based credentials, specify the ARN of an appropriate IAM role. |
+| [`passthroughBehavior`](#almacdkopenapixxamazonapigatewayintegrationpropertypassthroughbehavior) | [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior) | Specifies how a request payload of unmapped content type is passed through the integration request without modification. |
+| [`requestParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters) | Specifies mappings from method request parameters to integration request parameters. |
+| [`requestTemplates`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates) | Mapping templates for a request payload of specified MIME types. |
+| [`responses`](#almacdkopenapixxamazonapigatewayintegrationpropertyresponses) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses) | Defines the method's responses and specifies desired parameter mappings or payload mappings from integration responses to method responses. |
+| [`timeoutInMillis`](#almacdkopenapixxamazonapigatewayintegrationpropertytimeoutinmillis) | `number` | Integration timeouts between 50 ms and 29,000 ms. |
+| [`tlsConfig`](#almacdkopenapixxamazonapigatewayintegrationpropertytlsconfig) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig) | Specifies the TLS configuration for an integration. |
 
 ---
 
@@ -4119,6 +4130,11 @@ public readonly httpMethod: string;
 ```
 
 - *Type:* `string`
+- *Default:* 'POST'
+
+The HTTP method used in the integration request.
+
+For Lambda function invocations, the value must be POST.
 
 ---
 
@@ -4130,6 +4146,10 @@ public readonly type: IntegrationType;
 
 - *Type:* [`aws-cdk-lib.aws_apigateway.IntegrationType`](#aws-cdk-lib.aws_apigateway.IntegrationType)
 
+The type of integration with the specified backend.
+
+Valid values are: - `http` or `http_proxy`, for integration with an HTTP backend. - `aws_proxy`, for integration with AWS Lambda functions. - `aws`, for integration with AWS Lambda functions or other AWS services, such as Amazon DynamoDB, Amazon Simple Notification Service, or Amazon Simple Queue Service. - `mock`, for integration with API Gateway without invoking any backend.
+
 ---
 
 ##### `uri`<sup>Required</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.uri" id="almacdkopenapixxamazonapigatewayintegrationpropertyuri"></a>
@@ -4140,15 +4160,21 @@ public readonly uri: string;
 
 - *Type:* `string`
 
+The endpoint URI of the backend.
+
+For integrations of the aws type, this is an ARN value. For the HTTP integration, this is the URL of the HTTP endpoint including the https or http scheme.
+
 ---
 
 ##### `cacheKeyParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.cacheKeyParameters" id="almacdkopenapixxamazonapigatewayintegrationpropertycachekeyparameters"></a>
 
 ```typescript
-public readonly cacheKeyParameters: any[];
+public readonly cacheKeyParameters: string[];
 ```
 
-- *Type:* `any`[]
+- *Type:* `string`[]
+
+A list of request parameters whose values are to be cached.
 
 ---
 
@@ -4160,6 +4186,48 @@ public readonly cacheNamespace: string;
 
 - *Type:* `string`
 
+An API-specific tag group of related cached parameters.
+
+---
+
+##### `connectionId`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.connectionId" id="almacdkopenapixxamazonapigatewayintegrationpropertyconnectionid"></a>
+
+```typescript
+public readonly connectionId: string;
+```
+
+- *Type:* `string`
+
+The ID of a VpcLink for the private integration.
+
+---
+
+##### `connectionType`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.connectionType" id="almacdkopenapixxamazonapigatewayintegrationpropertyconnectiontype"></a>
+
+```typescript
+public readonly connectionType: ConnectionType;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.ConnectionType`](#aws-cdk-lib.aws_apigateway.ConnectionType)
+
+The integration connection type.
+
+The valid value is "VPC_LINK" for private integration or "INTERNET", otherwise.
+
+---
+
+##### `contentHandling`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.contentHandling" id="almacdkopenapixxamazonapigatewayintegrationpropertycontenthandling"></a>
+
+```typescript
+public readonly contentHandling: ContentHandling;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling)
+
+Response payload encoding conversion types.
+
+Valid values are 1) CONVERT_TO_TEXT, for converting a binary payload into a base64-encoded string or converting a text payload into a utf-8-encoded string or passing through the text payload natively without modification, and 2) CONVERT_TO_BINARY, for converting a text payload into a base64-decoded blob or passing through a binary payload natively without modification.
+
 ---
 
 ##### `credentials`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.credentials" id="almacdkopenapixxamazonapigatewayintegrationpropertycredentials"></a>
@@ -4169,6 +4237,12 @@ public readonly credentials: string;
 ```
 
 - *Type:* `string`
+
+For AWS IAM role-based credentials, specify the ARN of an appropriate IAM role.
+
+If unspecified, credentials default to resource-based permissions that must be added manually to allow the API to access the resource. For more information, see Granting Permissions Using a Resource Policy.  Note: When using IAM credentials, make sure that AWS STS Regional endpoints are enabled for the Region where this API is deployed for best performance.
+
+> https://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html#intro-permission-model-access-policy
 
 ---
 
@@ -4180,39 +4254,109 @@ public readonly passthroughBehavior: PassthroughBehavior;
 
 - *Type:* [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior)
 
+Specifies how a request payload of unmapped content type is passed through the integration request without modification.
+
+Supported values are when_no_templates, when_no_match, and never
+
 ---
 
 ##### `requestParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.requestParameters" id="almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters"></a>
 
 ```typescript
-public readonly requestParameters: {[ key: string ]: string};
+public readonly requestParameters: XAmazonApigatewayIntegrationRequestParameters;
 ```
 
-- *Type:* {[ key: string ]: `string`}
+- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters)
+
+Specifies mappings from method request parameters to integration request parameters.
+
+Supported request parameters are querystring, path, header, and body.
 
 ---
 
 ##### `requestTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.requestTemplates" id="almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates"></a>
 
 ```typescript
-public readonly requestTemplates: {[ key: string ]: string};
+public readonly requestTemplates: XAmazonApigatewayIntegrationRequestTemplates;
 ```
 
-- *Type:* {[ key: string ]: `string`}
+- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates)
+
+Mapping templates for a request payload of specified MIME types.
 
 ---
 
 ##### `responses`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.responses" id="almacdkopenapixxamazonapigatewayintegrationpropertyresponses"></a>
 
 ```typescript
-public readonly responses: {[ key: string ]: XAmazonApigatewayIntegrationResponse};
+public readonly responses: XAmazonApigatewayIntegrationResponses;
 ```
 
-- *Type:* {[ key: string ]: [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse)}
+- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses)
+
+Defines the method's responses and specifies desired parameter mappings or payload mappings from integration responses to method responses.
 
 ---
 
+##### `timeoutInMillis`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.timeoutInMillis" id="almacdkopenapixxamazonapigatewayintegrationpropertytimeoutinmillis"></a>
+
+```typescript
+public readonly timeoutInMillis: number;
+```
+
+- *Type:* `number`
+
+Integration timeouts between 50 ms and 29,000 ms.
+
+---
+
+##### `tlsConfig`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.tlsConfig" id="almacdkopenapixxamazonapigatewayintegrationpropertytlsconfig"></a>
+
+```typescript
+public readonly tlsConfig: XAmazonApigatewayIntegrationTlsConfig;
+```
+
+- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig)
+
+Specifies the TLS configuration for an integration.
+
+---
+
+### XAmazonApigatewayIntegrationRequestParameters <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters" id="almacdkopenapixxamazonapigatewayintegrationrequestparameters"></a>
+
+Specifies mappings from named method request parameters to integration request parameters.
+
+The method request parameters must be defined before being referenced.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-requestParameters.html
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { XAmazonApigatewayIntegrationRequestParameters } from '@alma-cdk/openapix'
+
+const xAmazonApigatewayIntegrationRequestParameters: XAmazonApigatewayIntegrationRequestParameters = { ... }
+```
+
+
+### XAmazonApigatewayIntegrationRequestTemplates <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates" id="almacdkopenapixxamazonapigatewayintegrationrequesttemplates"></a>
+
+Specifies mapping templates for a request payload of the specified MIME types.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { XAmazonApigatewayIntegrationRequestTemplates } from '@alma-cdk/openapix'
+
+const xAmazonApigatewayIntegrationRequestTemplates: XAmazonApigatewayIntegrationRequestTemplates = { ... }
+```
+
+
 ### XAmazonApigatewayIntegrationResponse <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse" id="almacdkopenapixxamazonapigatewayintegrationresponse"></a>
+
+Defines a response and specifies parameter mappings or payload mappings from the integration response to the method response.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-response.html
 
 #### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
 
@@ -4226,9 +4370,10 @@ const xAmazonApigatewayIntegrationResponse: XAmazonApigatewayIntegrationResponse
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`statusCode`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertystatuscode)<span title="Required">*</span> | `string` | *No description.* |
-| [`responseParameters`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters) | {[ key: string ]: `string`} | *No description.* |
-| [`responseTemplates`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates) | {[ key: string ]: `string`} | *No description.* |
+| [`statusCode`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertystatuscode)<span title="Required">*</span> | `string` | HTTP status code for the method response. |
+| [`contentHandling`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Response payload encoding conversion types. |
+| [`responseParameters`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters) | Specifies parameter mappings for the response. |
+| [`responseTemplates`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates) | Specifies MIME type-specific mapping templates for the response’s payload. |
 
 ---
 
@@ -4240,25 +4385,126 @@ public readonly statusCode: string;
 
 - *Type:* `string`
 
+HTTP status code for the method response.
+
+This must correspond to a matching response in the OpenAPI Operation responses field.
+
+---
+
+##### `contentHandling`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.contentHandling" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertycontenthandling"></a>
+
+```typescript
+public readonly contentHandling: ContentHandling;
+```
+
+- *Type:* [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling)
+
+Response payload encoding conversion types.
+
+Valid values are 1) CONVERT_TO_TEXT, for converting a binary payload into a base64-encoded string or converting a text payload into a utf-8-encoded string or passing through the text payload natively without modification, and 2) CONVERT_TO_BINARY, for converting a text payload into a base64-decoded blob or passing through a binary payload natively without modification.
+
 ---
 
 ##### `responseParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.responseParameters" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters"></a>
 
 ```typescript
-public readonly responseParameters: {[ key: string ]: string};
+public readonly responseParameters: XAmazonApigatewayIntegrationResponseParameters;
 ```
 
-- *Type:* {[ key: string ]: `string`}
+- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters)
+
+Specifies parameter mappings for the response.
+
+Only the header and body parameters of the integration response can be mapped to the header parameters of the method.
 
 ---
 
 ##### `responseTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.responseTemplates" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates"></a>
 
 ```typescript
-public readonly responseTemplates: {[ key: string ]: string};
+public readonly responseTemplates: XAmazonApigatewayIntegrationResponseTemplates;
 ```
 
-- *Type:* {[ key: string ]: `string`}
+- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates)
+
+Specifies MIME type-specific mapping templates for the response’s payload.
+
+---
+
+### XAmazonApigatewayIntegrationResponseParameters <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters" id="almacdkopenapixxamazonapigatewayintegrationresponseparameters"></a>
+
+Specifies mappings from integration method response parameters to method response parameters.
+
+You can map header, body, or static values to the header type of the method response.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { XAmazonApigatewayIntegrationResponseParameters } from '@alma-cdk/openapix'
+
+const xAmazonApigatewayIntegrationResponseParameters: XAmazonApigatewayIntegrationResponseParameters = { ... }
+```
+
+
+### XAmazonApigatewayIntegrationResponses <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses" id="almacdkopenapixxamazonapigatewayintegrationresponses"></a>
+
+Defines the method's responses and specifies parameter mappings or payload mappings from integration responses to method responses.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { XAmazonApigatewayIntegrationResponses } from '@alma-cdk/openapix'
+
+const xAmazonApigatewayIntegrationResponses: XAmazonApigatewayIntegrationResponses = { ... }
+```
+
+
+### XAmazonApigatewayIntegrationResponseTemplates <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates" id="almacdkopenapixxamazonapigatewayintegrationresponsetemplates"></a>
+
+Specifies a mapping template to transform the integration response body to the method response body for a given MIME type.
+
+> https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.html#models-mappings-mappings
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { XAmazonApigatewayIntegrationResponseTemplates } from '@alma-cdk/openapix'
+
+const xAmazonApigatewayIntegrationResponseTemplates: XAmazonApigatewayIntegrationResponseTemplates = { ... }
+```
+
+
+### XAmazonApigatewayIntegrationTlsConfig <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig" id="almacdkopenapixxamazonapigatewayintegrationtlsconfig"></a>
+
+Specifies the TLS configuration for an integration.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { XAmazonApigatewayIntegrationTlsConfig } from '@alma-cdk/openapix'
+
+const xAmazonApigatewayIntegrationTlsConfig: XAmazonApigatewayIntegrationTlsConfig = { ... }
+```
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`insecureSkipVerification`](#almacdkopenapixxamazonapigatewayintegrationtlsconfigpropertyinsecureskipverification)<span title="Required">*</span> | `boolean` | Specifies whether or not API Gateway skips verification that the certificate for an integration endpoint is issued by a supported c ertificate authority. |
+
+---
+
+##### `insecureSkipVerification`<sup>Required</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig.property.insecureSkipVerification" id="almacdkopenapixxamazonapigatewayintegrationtlsconfigpropertyinsecureskipverification"></a>
+
+```typescript
+public readonly insecureSkipVerification: boolean;
+```
+
+- *Type:* `boolean`
+
+Specifies whether or not API Gateway skips verification that the certificate for an integration endpoint is issued by a supported c ertificate authority.
+
+This isn’t recommended, but it enables you to use certificates that are signed by private certificate authorities, or certificates that are self-signed. If enabled, API Gateway still performs basic certificate validation, which includes checking the certificate's expiration date, hostname, and presence of a root certificate authority. Supported only for HTTP and HTTP_PROXY integrations.
 
 ---
 
