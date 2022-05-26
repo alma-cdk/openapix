@@ -1,5 +1,5 @@
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from '../x-amazon-apigateway';
+import { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponses } from '../x-amazon-apigateway';
 
 /** Interface implemented by all integrations. */
 export interface IBaseIntegration {
@@ -56,32 +56,46 @@ export abstract class Integration implements IBaseIntegration {
 
   /**
    * Convert CDK integration into API Gateway OpenApi integration extension.
-   *
-   * TODO add missing fields
    */
   private mapPropsToIntegration(props: IntegrationProps): XAmazonApigatewayIntegration {
     return {
-      type: props.type,
-      uri: props.uri,
-      httpMethod: props.integrationHttpMethod || 'POST',
-      credentials: props.options?.credentialsRole?.roleArn,
-      requestTemplates: props.options?.requestTemplates,
-      requestParameters: props.options?.requestParameters,
+      cacheKeyParameters: props.options?.cacheKeyParameters,
       cacheNamespace: props.options?.cacheNamespace,
+      connectionType: props.options?.connectionType,
+      connectionId: props.options?.vpcLink?.vpcLinkId,
+      credentials: props.options?.credentialsRole?.roleArn,
+      contentHandling: props.options?.contentHandling,
+      httpMethod: props.integrationHttpMethod || 'POST',
       passthroughBehavior: props.options?.passthroughBehavior,
-      responses: (function() {
-        const responses: Record<string, XAmazonApigatewayIntegrationResponse> = {};
-        props.options?.integrationResponses?.forEach(resp => {
-          if (typeof resp.selectionPattern !== 'string') return;
-          responses[resp.selectionPattern] = {
-            statusCode: resp.statusCode,
-            responseParameters: resp.responseParameters,
-            responseTemplates: resp.responseTemplates,
-          };
-        });
-        return responses;
-      }()),
+      requestParameters: props.options?.requestParameters,
+      requestTemplates: props.options?.requestTemplates,
+      responses: this.resolveResponses(props),
+      timeoutInMillis: this.resolveTimeout(props),
+      type: props.type,
+      //tlsConfig: props.options?.
+      uri: props.uri,
     };
   }
+
+  private resolveTimeout(props: IntegrationProps): number | undefined {
+    if (typeof props.options?.timeout !== 'undefined') {
+      return props.options.timeout.toMilliseconds();
+    }
+    return undefined;
+  }
+
+  private resolveResponses(props: IntegrationProps): XAmazonApigatewayIntegrationResponses | undefined {
+    const responses: XAmazonApigatewayIntegrationResponses = {};
+    props.options?.integrationResponses?.forEach(resp => {
+      if (typeof resp.selectionPattern !== 'string') return;
+      responses[resp.selectionPattern] = {
+        statusCode: resp.statusCode,
+        responseParameters: resp.responseParameters,
+        responseTemplates: resp.responseTemplates,
+      };
+    });
+    return responses;
+  }
+
 }
 
