@@ -36,7 +36,7 @@
 
 This construct is still versioned with `v0` major version and breaking changes might be introduced if necessary (without a major version bump), though we aim to keep the API as stable as possible (even within `v0` development). We aim to publish `v1.0.0` soon and after that breaking changes will be introduced via major version bumps.
 
-There are also some incomplete or buggy features, such as `AwsIntegration`, `MockIntegration` and `CognitoUserPoolsAuthorizer`.
+There are also some incomplete or buggy features, such as CORS and `CognitoUserPoolsAuthorizer`.
 
 
 <br/>
@@ -151,7 +151,7 @@ new openapix.Api(this, 'BooksApi', {
             {
               statusCode: '200',
               responseTemplates: {
-                // See /examples/http-proxy/list-books.vtl
+                // See /examples/http-proxy/lib/list-books.vtl
                 'application/json': readFileSync(__dirname+'/list-books.vtl', 'utf-8'),
               },
             }
@@ -179,7 +179,7 @@ new openapix.Api(this, 'BooksApi', {
             {
               statusCode: '200',
               responseTemplates: {
-                // See /examples/http-proxy/get-book.vtl
+                // See /examples/http-proxy/lib/get-book.vtl
                 'application/json': readFileSync(__dirname+'/get-book.vtl', 'utf-8'),
               },
             }
@@ -191,13 +191,84 @@ new openapix.Api(this, 'BooksApi', {
 });
 ```
 
+See [`/examples/books-api`](https://github.com/alma-cdk/openapix/tree/main/examples/books-api) for full OpenApi definition (with response models) and an example within a CDK application.
+
 <br/>
 
 ## Mock Integration
 
-🚧 Work-in-Progress
+Given the following [`mock-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/mock-api/schema/mock-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
 
-There is `new openapix.MockIntegration`, but it still has some problems.
+```yaml
+openapi: 3.0.3
+info:
+  title: Hello API
+  description: Defines an example “Hello World” API
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      operationId: sayHello
+      summary: Say Hello
+      description: Prints out a greeting
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: "World"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      description: Response body
+      type: object
+      properties:
+        message:
+          type: string
+          description: Greeting
+          example: Hello World!
+```
+
+You may then define API Gateway HTTP integration (within your stack):
+```ts
+new openapix.Api(this, 'MockApi', {
+  source: path.join(__dirname, '../schema/mock-api.yaml'),
+  paths: {
+    '/': {
+      get: new openapix.MockIntegration(this, {
+        requestTemplates: {
+          "application/json": JSON.stringify({ statusCode: 200 }),
+        },
+        passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
+        requestParameters: {
+          'integration.request.querystring.name': 'method.request.querystring.name',
+        },
+        integrationResponses: [
+          {
+            statusCode: '200',
+            responseTemplates: {
+              // see /examples/mock-api/lib/greet.vtl
+              'application/json': readFileSync(__dirname+'/greet.vtl', 'utf-8'),
+            },
+            responseParameters: {},
+          },
+        ],
+      }),
+    },
+  },
+});
+```
+
+See [`/examples/mock-api`](https://github.com/alma-cdk/openapix/tree/main/examples/mock-api) for full OpenApi definition (with response models) and an example within a CDK application.
 
 <br/>
 

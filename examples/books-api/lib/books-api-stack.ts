@@ -41,6 +41,7 @@ export class BooksApiStack extends Stack {
                 {
                   statusCode: '200',
                   responseTemplates: {
+                    // See /examples/http-proxy/lib/list-books.vtl
                     'application/json': readFileSync(__dirname+'/list-books.vtl', 'utf-8'),
                   },
                 }
@@ -68,6 +69,7 @@ export class BooksApiStack extends Stack {
                 {
                   statusCode: '200',
                   responseTemplates: {
+                    // See /examples/http-proxy/lib/get-book.vtl
                     'application/json': readFileSync(__dirname+'/get-book.vtl', 'utf-8'),
                   },
                 }
