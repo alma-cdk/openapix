@@ -41,9 +41,16 @@ This construct is still versioned with `v0` major version and breaking changes m
 
 ## Getting Started
 
+1. Install `npm i -D @alma-cdk/openapix`
+
+2. Define your API OpenApi Schema Definition in a `.yaml` file<br/>_without_ any `x-amazon-apigateway-` extensions
+
+3. Use `openapix` constructs in CDK to consume the `.yaml` file and then assign API Gateway integrations using CDK
+
+
 <br/>
 
-### Lambda Integration
+## Lambda Integration
 
 Given the following [`hello-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/hello-api/schema/hello-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
 ```yaml
@@ -86,88 +93,95 @@ See [`/examples/hello-api`](https://github.com/alma-cdk/openapix/tree/main/examp
 
 <br/>
 
-### AWS Service Integration
+## HTTP Integration
 
+Given the following [`http-proxy.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/http-proxy/schema/http-proxy.yaml), _without_ any AWS API Gateway OpenApi extensions:
+```yaml
+openapi: 3.0.3
+info:
+  title: HTTP Proxy
+  description: Proxies requests to example.com
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      summary: proxy
+      description: Proxies example.com
+```
 
+You may then define API Gateway HTTP integration (within your stack):
+```ts
+new openapix.Api(this, 'MyApi', {
+  source: './schema.yaml',
+  paths: {
+    '/': {
+      any: new openapix.HttpIntegration(this, "https://example.com"),
+    },
+  },
+})
+```
 
+See [`/examples/http-proxy`](https://github.com/alma-cdk/openapix/tree/main/examples/http-proxy) for full OpenApi definition (with response models) and an example within a CDK application.
 
 
 <br/>
 
-## More Complex Example
+## AWS Service Integration
 
-1. First, let's create some integration points:
-    ```ts
-    const fn = new lambda.Function(this, "fn", {
-      handler: "index.handler",
-      runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromInline('export function handler() { return { statusCode: 200, body: JSON.stringify("hello")} }'),
-    });
+🚧 Work-in-Progress
 
-    const pkName = 'item';
-    const table = new dynamodb.Table(this, 'table', {
-      partitionKey: {
-        type: dynamodb.AttributeType.STRING,
-        name: pkName,
-      }
-    });
+```ts
+const pkName = 'item';
+const table = new dynamodb.Table(this, 'table', {
+  partitionKey: {
+    type: dynamodb.AttributeType.STRING,
+    name: pkName,
+  }
+});
 
-    const role = new iam.Role(this, "role", {
-      assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-    });
+const role = new iam.Role(this, "role", {
+  assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+});
 
-    table.grantReadData(role);
-    ```
+table.grantReadData(role);
 
+new openapix.Api(this, 'MyApi', {
+  upload: false, // by default add as inline Body, set to true to use as BodyS3Location
+  source: './schema.yaml',
+  paths: {
 
-2. Next, let's inject the integrations into an existing OpenAPI schema:
-    ```ts
-    import * as openapix from '@alma-cdk/openapix';
-
-    new openapix.Api(this, 'MyApi', {
-      upload: false, // by default add as inline Body, set to true to use as BodyS3Location
-      source: './schema.yaml',
-      paths: {
-
-        // Mock Integration
-        '/mock': {
-          get: new openapix.MockIntegration(this),
+    // Direct integration to AWS Service
+    '/': {
+      get: new openapix.AwsIntegration(this, {
+        service: 'dynamodb',
+        action: 'GetItem',
+        options: {
+          credentialsRole: role,
+          requestTemplates: {
+            'application/json': JSON.stringify({
+              "TableName": table.tableName,
+              "Key": {
+                [pkName]: {
+                  "S": "$input.params('item')"
+                }
+              }
+            }),
+          },
         },
+      }),
+    },
 
-        // AWS Lambda integration
-        '/message': {
-          post: new openapix.LambdaIntegration(this, fn),
-        },
+  },
+})
+```
 
-        // HTTP Proxy integration
-        '/ext': {
-          any: new openapix.HttpIntegration(this, "https://example.com"),
-        },
+<br/>
 
-        // Direct integration to AWS Service
-        '/item': {
-          get: new openapix.AwsIntegration(this, {
-            service: 'dynamodb',
-            action: 'GetItem',
-            options: {
-              credentialsRole: role,
-              requestTemplates: {
-                'application/json': JSON.stringify({
-                  "TableName": table.tableName,
-                  "Key": {
-                    [pkName]: {
-                      "S": "$input.params('item')"
-                    }
-                  }
-                }),
-              },
-            },
-          }),
-        },
+## Mock Integration
 
-      },
-    })
-    ```
+🚧 Work-in-Progress
+
+There is `new openapix.MockIntegration`, but it still has some problems.
 
 <br/>
 

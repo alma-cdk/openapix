@@ -1,0 +1,10 @@
+openapi: 3.0.3
+info:
+  title: HTTP Proxy
+  description: Proxies requests to example.com
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      summary: proxy
+      description: Proxies example.com
