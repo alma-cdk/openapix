@@ -7,7 +7,7 @@ export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const integrationBaseUrl = 'https://jsonplaceholder.typicode.com/todos';
+    const baseUrl = 'https://jsonplaceholder.typicode.com/todos';
 
     new openapix.Api(this, 'TodoApi', {
       source: path.join(__dirname, '..', '/schema/todo-api.yaml'),
@@ -26,20 +26,22 @@ export class ApiStack extends Stack {
 
       paths: {
         '/todos': {
+          // this one uses the default 'all' validator
           post:  new openapix.HttpIntegration(
             this,
-            integrationBaseUrl,
+            baseUrl,
             {
               httpMethod: 'post',
             }
           ),
         },
         '/todos/{todoId}': {
+          // this one has validator override and uses 'params-only' validator
           get: new openapix.HttpIntegration(
             this,
-            `${integrationBaseUrl}/{todoId}`,
+            `${baseUrl}/{todoId}`,
             {
-              validator: 'params-only', // validator override
+              validator: 'params-only',
               options: {
                 requestParameters: {
                   'integration.request.path.todoId': 'method.request.path.todoId',
