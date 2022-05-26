@@ -234,6 +234,8 @@ new openapix.Api(this, 'MyApi', {
 
 ## Authorizers
 
+🚧 Work-in-Progress
+
 There are multiple ways to [control & manages access to API Gateway REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-to-api.html) such as [resource policies](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies.html), [IAM permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html) and [usage plans with API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) but this section focuses on [Cognito User Pools ](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) and [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).
 
 <br/>
@@ -346,6 +348,8 @@ new openapix.Api(this, 'MyApi', {
 <br/>
 
 ## CORS
+
+🚧 Work-in-Progress
 
 Using `openapix.CorsIntegration` creates a Mock integration which responds with correct response headers:
 
