@@ -75,7 +75,7 @@ new openapix.Api(this, 'HttpProxy', {
 
   paths: {
     '/': {
-      get:  new openapix.HttpIntegration(this, 'http://example.com', {
+      get: new openapix.HttpIntegration(this, 'http://example.com', {
           httpMethod: 'get',
       }),
     },
