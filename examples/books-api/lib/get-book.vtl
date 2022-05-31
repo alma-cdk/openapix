@@ -1,0 +1,9 @@
+#set($book = $input.path('$'))
+{
+    "isbn": "$book.Item.item.S",
+    "name": "$book.Item.name.S",
+    "authors": [
+    #foreach($author in $book.Item.authors.L)"$author.S"#if($foreach.hasNext),#end
+    #end
+    ]
+}

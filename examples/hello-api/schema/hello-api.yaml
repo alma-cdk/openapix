@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: Hello API
+  description: Defines an example “Hello World” API
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      operationId: sayHello
+      summary: Say Hello
+      description: Prints out a greeting
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: "World"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      description: Response body
+      type: object
+      properties:
+        message:
+          type: string
+          description: Greeting
+          example: Hello World!

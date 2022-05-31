@@ -1,0 +1,4 @@
+**/*/cdk.context.json
+**/*/package-lock.json
+!**/*/tsconfig.json
+

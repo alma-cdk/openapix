@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Todo API
+  description: >
+    Defines an example API for managing Todo items by partially implementing the [{JSON} Placeholder TODOs](https://jsonplaceholder.typicode.com) API.
+  version: "0.0.1"
+paths:
+  "/todos":
+    post:
+      operationId: newTodo
+      summary: New Todo Item
+      description: Use this when you need to create a new Todo Item.
+      requestBody:
+        description: Request body definition for creating a new Todo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoRequest'
+      responses:
+        "200":
+          description: Success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TodoResponse"
+        "400":
+          description: Invalid Request
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/InvalidRequestResponse"
+
+  "/todos/{todoId}":
+    get:
+      operationId: getTodo
+      summary: Get Todo Item
+      description: Use this when you need to get an existing Todo Item.
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: int
+            example: 1
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TodoResponse"
+
+components:
+  schemas:
+    TodoRequest:
+      description: Request body definition for creating a new Todo
+      type: object
+      required:
+      - title
+      - userId
+      properties:
+        title:
+          type: string
+          description: Title for the new Todo
+          example: Make Coffee
+        userId:
+          type: integer
+          description: To which User (ID) this Todo item belongs to
+          example: 1
+        body:
+          type: string
+          description: Describes the Todo item
+          example: We need Coffee to be able to convert caffeine into code.
+        completed:
+          type: boolean
+          description: Is this Todo completed or not
+          default: false
+          example: false
+    InvalidRequestResponse:
+      description: Shown when request validation failed for creating a new Todo item
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid request body
+    TodoResponse:
+      description: Response body definition for Todo item
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title for the new Todo
+          example: Make Coffee
+        body:
+          type: string
+          description: Describes the Todo item
+          example: We need Coffee to be able to convert caffeine into code.
+        userId:
+          type: integer
+          description: To which User (ID) this Todo item belongs to
+          example: 1
+        completed:
+          type: boolean
+          description: Is this Todo completed or not
+          default: false
+          example: false
+        id:
+          type: integer
+          description: Unique ID for the Todo item
+          example: 201

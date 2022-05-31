@@ -36,83 +36,262 @@
 
 This construct is still versioned with `v0` major version and breaking changes might be introduced if necessary (without a major version bump), though we aim to keep the API as stable as possible (even within `v0` development). We aim to publish `v1.0.0` soon and after that breaking changes will be introduced via major version bumps.
 
+There are also some incomplete or buggy features, such as CORS and `CognitoUserPoolsAuthorizer`.
+
 
 <br/>
 
 ## Getting Started
 
-1. First, let's create some integration points:
-    ```ts
-    const fn = new lambda.Function(this, "fn", {
-      handler: "index.handler",
-      runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromInline('export function handler() { return { statusCode: 200, body: JSON.stringify("hello")} }'),
-    });
+1. Install `npm i -D @alma-cdk/openapix`
 
-    const pkName = 'item';
-    const table = new dynamodb.Table(this, 'table', {
-      partitionKey: {
-        type: dynamodb.AttributeType.STRING,
-        name: pkName,
-      }
-    });
+2. Define your API OpenApi Schema Definition in a `.yaml` file<br/>_without_ any `x-amazon-apigateway-` extensions
 
-    const role = new iam.Role(this, "role", {
-      assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-    });
-
-    table.grantReadData(role);
-    ```
+3. Use `openapix` constructs in CDK to consume the `.yaml` file and then assign API Gateway integrations using CDK
 
 
-2. Next, let's inject the integrations into an existing OpenAPI schema:
-    ```ts
-    import * as openapix from '@alma-cdk/openapix';
+<br/>
 
-    new openapix.Api(this, 'MyApi', {
-      upload: false, // by default add as inline Body, set to true to use as BodyS3Location
-      source: './schema.yaml',
-      paths: {
+## HTTP Integration
 
-        // Mock Integration
-        '/mock': {
-          get: new openapix.MockIntegration(this),
-        },
+Given the following [`http-proxy.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/http-proxy/schema/http-proxy.yaml), _without_ any AWS API Gateway OpenApi extensions:
+```yaml
+openapi: 3.0.3
+info:
+  title: HTTP Proxy
+  description: Proxies requests to example.com
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      summary: proxy
+      description: Proxies example.com
+```
 
-        // AWS Lambda integration
-        '/message': {
-          post: new openapix.LambdaIntegration(this, fn),
-        },
+You may then define API Gateway HTTP integration (within your stack):
+```ts
+new openapix.Api(this, 'HttpProxy', {
+  source: path.join(__dirname, '../schema/http-proxy.yaml'),
 
-        // HTTP Proxy integration
-        '/ext': {
-          any: new openapix.HttpIntegration(this, "https://example.com"),
-        },
+  paths: {
+    '/': {
+      get: new openapix.HttpIntegration(this, 'http://example.com', {
+          httpMethod: 'get',
+      }),
+    },
+  },
+});
+```
 
-        // Direct integration to AWS Service
-        '/item': {
-          get: new openapix.AwsIntegration(this, {
-            service: 'dynamodb',
-            action: 'GetItem',
-            options: {
-              credentialsRole: role,
-              requestTemplates: {
-                'application/json': JSON.stringify({
-                  "TableName": table.tableName,
-                  "Key": {
-                    [pkName]: {
-                      "S": "$input.params('item')"
-                    }
-                  }
-                }),
+See [`/examples/http-proxy`](https://github.com/alma-cdk/openapix/tree/main/examples/http-proxy) for full OpenApi definition (with response models) and an example within a CDK application.
+
+
+<br/>
+
+## Lambda Integration
+
+Given the following [`hello-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/hello-api/schema/hello-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
+```yaml
+openapi: 3.0.3
+info:
+  title: Hello API
+  description: Defines an example “Hello World” API
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      operationId: sayHello
+      summary: Say Hello
+      description: Prints out a greeting
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: "World"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      description: Response body
+      type: object
+      properties:
+        message:
+          type: string
+          description: Greeting
+          example: Hello World!
+```
+
+You may then define API Gateway AWS Lambda integration (within your stack):
+```ts
+const greetFn = new NodejsFunction(this, 'greet');
+
+new openapix.Api(this, 'HelloApi', {
+  source: path.join(__dirname, '../schema/hello-api.yaml'),
+  paths: {
+    '/': {
+      get: new openapix.LambdaIntegration(this, greetFn),
+    },
+  },
+})
+```
+
+See [`/examples/hello-api`](https://github.com/alma-cdk/openapix/tree/main/examples/hello-api) for full OpenApi definition (with response models) and an example within a CDK application.
+
+
+<br/>
+
+
+
+## AWS Service Integration
+
+Given [`books-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/books-api/schema/books-api.yaml), _without_ any AWS API Gateway OpenApi extensions, You may then define API Gateway AWS service integration such as DynamoDB (within your stack):
+
+```ts
+new openapix.Api(this, 'BooksApi', {
+  source: path.join(__dirname, '../schema/books-api.yaml'),
+  paths: {
+    '/': {
+      get: new openapix.AwsIntegration(this, {
+        service: 'dynamodb',
+        action: 'Scan',
+        options: {
+          credentialsRole: role, // role must have access to DynamoDB table
+          requestTemplates: {
+            'application/json': JSON.stringify({
+              TableName: table.tableName,
+            }),
+          },
+          integrationResponses: [
+            {
+              statusCode: '200',
+              responseTemplates: {
+                // See /examples/http-proxy/lib/list-books.vtl
+                'application/json': readFileSync(__dirname+'/list-books.vtl', 'utf-8'),
               },
-            },
-          }),
+            }
+          ],
         },
+      }),
+    },
+    '/{isbn}': {
+      get: new openapix.AwsIntegration(this, {
+        service: 'dynamodb',
+        action: 'GetItem',
+        options: {
+          credentialsRole: role, // role must have access to DynamoDB table
+          requestTemplates: {
+            'application/json': JSON.stringify({
+              TableName: table.tableName,
+              Key: {
+                item: {
+                  "S": "$input.params('isbn')"
+                }
+              }
+            }),
+          },
+          integrationResponses: [
+            {
+              statusCode: '200',
+              responseTemplates: {
+                // See /examples/http-proxy/lib/get-book.vtl
+                'application/json': readFileSync(__dirname+'/get-book.vtl', 'utf-8'),
+              },
+            }
+          ],
+        },
+      }),
+    },
+  },
+});
+```
 
-      },
-    })
-    ```
+See [`/examples/books-api`](https://github.com/alma-cdk/openapix/tree/main/examples/books-api) for full OpenApi definition (with response models) and an example within a CDK application.
+
+<br/>
+
+## Mock Integration
+
+Given the following [`mock-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/mock-api/schema/mock-api.yaml), _without_ any AWS API Gateway OpenApi extensions:
+
+```yaml
+openapi: 3.0.3
+info:
+  title: Hello API
+  description: Defines an example “Hello World” API
+  version: "0.0.1"
+paths:
+  "/":
+    get:
+      operationId: sayHello
+      summary: Say Hello
+      description: Prints out a greeting
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: "World"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      description: Response body
+      type: object
+      properties:
+        message:
+          type: string
+          description: Greeting
+          example: Hello World!
+```
+
+You may then define API Gateway Mock integration (within your stack):
+```ts
+new openapix.Api(this, 'MockApi', {
+  source: path.join(__dirname, '../schema/mock-api.yaml'),
+  paths: {
+    '/': {
+      get: new openapix.MockIntegration(this, {
+        requestTemplates: {
+          "application/json": JSON.stringify({ statusCode: 200 }),
+        },
+        passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
+        requestParameters: {
+          'integration.request.querystring.name': 'method.request.querystring.name',
+        },
+        integrationResponses: [
+          {
+            statusCode: '200',
+            responseTemplates: {
+              // see /examples/mock-api/lib/greet.vtl
+              'application/json': readFileSync(__dirname+'/greet.vtl', 'utf-8'),
+            },
+            responseParameters: {},
+          },
+        ],
+      }),
+    },
+  },
+});
+```
+
+See [`/examples/mock-api`](https://github.com/alma-cdk/openapix/tree/main/examples/mock-api) for full OpenApi definition (with response models) and an example within a CDK application.
 
 <br/>
 
@@ -120,9 +299,12 @@ This construct is still versioned with `v0` major version and breaking changes m
 
 API Gateway REST APIs can perform [request parameter and request body validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html). You can provide both default validator and integration specific validator (which will override the default for given integration).
 
+See [`/examples/todo-api`](https://github.com/alma-cdk/openapix/tree/main/examples/todo-api) for complete example within a CDK application.
+
+Given [`todo-api.yaml` OpenApi schema definition](https://github.com/alma-cdk/openapix/blob/main/examples/todo-api/schema/todo-api.yaml) you may define the API Gateway validators for your integration in CDK:
 ```ts
 new openapix.Api(this, 'MyApi', {
-  source: './schema.yaml',
+  source: path.join(__dirname, '../schema/todo-api.yaml'),
 
   validators: {
     'all': {
@@ -137,9 +319,20 @@ new openapix.Api(this, 'MyApi', {
   },
 
   paths: {
-    '/message': {
-      // Set a method-specific validator by assigning validator into props
-      post: new openapix.LambdaIntegration(this, fn, { validator: 'params-only' }),
+    '/todos': {
+      // this one uses the default 'all' validator
+      post:  new openapix.HttpIntegration(this, baseUrl, { httpMethod: 'post' }),
+    },
+    '/todos/{todoId}': {
+      // this one has validator override and uses 'params-only' validator
+      get: new openapix.HttpIntegration(this, `${baseUrl}/{todoId}`, {
+        validator: 'params-only',
+        options: {
+          requestParameters: {
+            'integration.request.path.todoId': 'method.request.path.todoId',
+          },
+        },
+      }),
     },
   },
 })
@@ -148,6 +341,8 @@ new openapix.Api(this, 'MyApi', {
 <br/>
 
 ## Authorizers
+
+🚧 Work-in-Progress
 
 There are multiple ways to [control & manages access to API Gateway REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-to-api.html) such as [resource policies](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies.html), [IAM permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html) and [usage plans with API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) but this section focuses on [Cognito User Pools ](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) and [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).
 
@@ -159,7 +354,7 @@ In this example we're defining a Congito User Pool based authorizer.
 
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /:
     get:
@@ -197,7 +392,7 @@ In this example we're defining a custom Lambda authorizer. The authorizer functi
 
 Given the following `schema.yaml` OpenApi definition:
 ```yaml
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /:
     get:
@@ -261,6 +456,8 @@ new openapix.Api(this, 'MyApi', {
 <br/>
 
 ## CORS
+
+🚧 Work-in-Progress
 
 Using `openapix.CorsIntegration` creates a Mock integration which responds with correct response headers:
 

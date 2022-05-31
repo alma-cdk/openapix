@@ -1,0 +1,7 @@
+#set ( $name = $input.params('name') )
+#if ( $name == '' )
+#set ( $name = 'World' )
+#end
+{
+    "message": "Hello $name!"
+}

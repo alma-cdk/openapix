@@ -1,4 +1,11 @@
 export { XAmazonApigatewayAuthType } from './authtype';
 export { XAmazonApigatewayAuthorizer } from './authorizer';
 export { XAmazonApigatewayRequestValidator } from './request-validator';
-export { XAmazonApigatewayIntegration, XAmazonApigatewayIntegrationResponse } from './integration';
+export { XAmazonApigatewayIntegration } from './integration';
+export { XAmazonApigatewayIntegrationResponse } from './integration-response';
+export { XAmazonApigatewayIntegrationTlsConfig } from './integration-tls-config';
+export { XAmazonApigatewayIntegrationRequestTemplates } from './integration-request-templates';
+export { XAmazonApigatewayIntegrationRequestParameters } from './integration-request-parameters';
+export { XAmazonApigatewayIntegrationResponses } from './integration-responses';
+export { XAmazonApigatewayIntegrationResponseTemplates } from './integration-response-templates';
+export { XAmazonApigatewayIntegrationResponseParameters } from './integration-response-parameters';
