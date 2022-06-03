@@ -47,6 +47,11 @@ export interface ApiBaseProps {
   readonly paths?: Paths;
 
   /**
+   * Generate MOCK-type integrations for missing path methods.
+   */
+  readonly generateMockIntegrations?: boolean;
+
+  /**
    * Cognito User Pool or Custom Lambda based Authorizer configurations.
    *
    * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html
