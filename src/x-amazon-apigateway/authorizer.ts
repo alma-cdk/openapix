@@ -71,5 +71,4 @@ export interface XAmazonApigatewayAuthorizer {
    * ['arn:aws:cognito-idp:{region}:{account_id}:userpool/{user_pool_id}]
    */
   readonly providerARNs?: string[];
-
 }

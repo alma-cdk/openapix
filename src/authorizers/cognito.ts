@@ -10,7 +10,6 @@ export interface CognitoUserPoolsAuthorizerProps {
   readonly resultsCacheTtl?: Duration;
 }
 
-// implements AuthorizerConfig ... JSII doesn't like
 export class CognitoUserPoolsAuthorizer extends Construct {
 
   public readonly id: Id;

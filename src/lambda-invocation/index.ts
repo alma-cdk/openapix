@@ -21,7 +21,7 @@ export class LambdaInvocation {
     const stack = Stack.of(scope);
     this.partition = stack.partition;
     this.region = stack.region;
-    this.functionArn =fn.functionArn;
+    this.functionArn = fn.functionArn;
     this.uri = this.resolveUri(this.partition, this.region, this.functionArn);
   }
 

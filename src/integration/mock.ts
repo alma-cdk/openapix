@@ -1,5 +1,4 @@
 import { IntegrationOptions, IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
 import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 
 export interface MockIntegrationProps extends IntegrationOptions, ValidatorConfig {}
@@ -15,7 +14,7 @@ export class MockIntegration extends Integration {
    *   'GET': new openapix.MockIntegration(this),
    * },
    */
-  constructor(_: Construct, props: MockIntegrationProps) {
+  constructor(props: MockIntegrationProps = {}) {
 
     const integration: IntegrationProps = {
       type: IntegrationType.MOCK,

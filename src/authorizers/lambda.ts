@@ -23,10 +23,10 @@ export interface LambdaAuthorizerProps {
   readonly resultsCacheTtl?: Duration;
 }
 
-// implements AuthorizerConfig ... JSII doesn't like
 export class LambdaAuthorizer extends Construct {
 
   public readonly id: Id;
+  public readonly fn: IFunction;
   readonly xAmazonApigatewayAuthtype: XAmazonApigatewayAuthType;
   readonly xAmazonApigatewayAuthorizer: XAmazonApigatewayAuthorizer;
 
@@ -36,6 +36,7 @@ export class LambdaAuthorizer extends Construct {
 
     this.id = id;
     this.xAmazonApigatewayAuthtype = authtype;
+    this.fn = fn;
     this.xAmazonApigatewayAuthorizer = {
       type,
       authorizerUri: new LambdaInvocation(scope, fn).uri,

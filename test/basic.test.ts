@@ -345,9 +345,25 @@ test('Handles custom authorizer', () => {
             }`),
   });
 
+  const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromInline(`module.exports = {
+              handler: async (event) => {
+                console.log(event);
+                return {
+                  statusCode: 200,
+                  body: JSON.stringify({
+                    message: 'Hello',
+                  }),
+                };
+              },
+            }`),
+  });
+
   const authorizerName = 'MyLambdaAuthorizer';
 
-  const { document } = new openapix.Api(stack, 'MyApi', {
+  const api = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -355,8 +371,16 @@ test('Handles custom authorizer', () => {
         title: 'TestApi',
         version: '0.0.0',
       },
+      security: [
+        { bearerAuth: [] },
+      ],
       components: {
         securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
           [authorizerName]: {
             type: 'apiKey',
             name: 'code',
@@ -394,9 +418,15 @@ test('Handles custom authorizer', () => {
     }),
 
     authorizers: [
-
       new openapix.LambdaAuthorizer(stack, authorizerName, {
-        fn: testLambda,
+        fn: authorizerLambda,
+        identitySource: apigateway.IdentitySource.queryString('code'),
+        type: 'request',
+        authType: 'custom',
+        resultsCacheTtl: Duration.minutes(5),
+      }),
+      new openapix.LambdaAuthorizer(stack, 'bearerAuth', {
+        fn: authorizerLambda,
         identitySource: apigateway.IdentitySource.queryString('code'),
         type: 'request',
         authType: 'custom',
@@ -411,6 +441,19 @@ test('Handles custom authorizer', () => {
     },
   });
 
-  expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
-  expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
+  const template = Template.fromStack(stack);
+
+  expect(get(api.document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
+  expect(get(api.document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
+  expect(get(api.document, 'paths./foo.get.security[1].bearerAuth')).toEqual([]);
+  template.hasResourceProperties( 'AWS::Lambda::Permission', Match.objectLike({
+    Action: 'lambda:InvokeFunction',
+    FunctionName: {
+      'Fn::GetAtt': [
+        Match.stringLikeRegexp('AuthorizerFunction*'),
+        'Arn',
+      ],
+    },
+    Principal: 'apigateway.amazonaws.com',
+  }));
 });
