@@ -48,8 +48,12 @@ export interface ApiBaseProps {
 
   /**
    * Generate MOCK-type integrations for missing path methods.
+   * @example
+   * {
+   *   'defaultIntegration': new openapix.LambdaIntegration(this, fn),
+   * }
    */
-  readonly generateMockIntegrations?: boolean;
+  readonly defaultIntegration?: Integration;
 
   /**
    * Cognito User Pool or Custom Lambda based Authorizer configurations.

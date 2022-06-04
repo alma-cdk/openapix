@@ -1,7 +1,9 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { Annotations } from 'aws-cdk-lib/assertions';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as openapix from '../src';
+import { MockIntegration } from '../src';
 import { ApiDefinition } from '../src/api/definition';
 
 
@@ -121,7 +123,7 @@ test('Should add errors when wrong path config', () => {
 
   Annotations.fromStack(stack).hasError(
     '*',
-    'Missing integration for path: /foo. Check paths-props in definition.',
+    'Missing integration for path: /foo. Check paths-props in definition, or add a default integration.',
   );
 });
 
@@ -174,25 +176,61 @@ test('Should add mock integrations', () => {
           },
         },
       },
+      '/bar': {
+        get: {
+          operationId: 'get-bar',
+          responses: {
+            200: {
+              content: {
+                'application/json': {
+                  example: [
+                    {
+                      some: 'foo',
+                      thing: 'bar',
+                    },
+                  ],
+                },
+              },
+              description: 'foo',
+            },
+          },
+        },
+      },
     },
   };
 
+  const sampleLambdaFunction = new lambda.Function(stack, 'SampleLambdaFunction', {
+    code: lambda.Code.fromInline('foo'),
+    handler: 'index.handler',
+    runtime: lambda.Runtime.NODEJS_16_X,
+  });
+
   const definition = new ApiDefinition(stack, {
     source: new openapix.Schema(value),
-    generateMockIntegrations: true,
+    paths: {
+      '/foo': {
+        get: new openapix.LambdaIntegration(stack, sampleLambdaFunction),
+      },
+      '/bar': {
+        get: new openapix.LambdaIntegration(stack, sampleLambdaFunction),
+      },
+    },
+    defaultIntegration: new MockIntegration(),
   });
 
   const config = definition.bind(stack);
 
-  const basePath = 'paths./foo';
-
   expect(config.inlineDefinition).toBeDefined();
   expect(config.inlineDefinition).toHaveProperty(
-    `${basePath}.get.x-amazon-apigateway-integration.type`,
+    'paths./foo.get.x-amazon-apigateway-integration.type',
+    'AWS_PROXY',
+  );
+  expect(config.inlineDefinition).toHaveProperty(
+    'paths./foo.put.x-amazon-apigateway-integration.type',
     'MOCK',
   );
   expect(config.inlineDefinition).toHaveProperty(
-    `${basePath}.put.x-amazon-apigateway-integration.type`,
-    'MOCK',
+    'paths./bar.get.x-amazon-apigateway-integration.type',
+    'AWS_PROXY',
   );
 });

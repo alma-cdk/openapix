@@ -2,7 +2,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
-import { Integration, MockIntegration } from '../integration';
+import { Integration } from '../integration';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
@@ -44,7 +44,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     // Configurate integrations
     this.configureValidators(props.validators);
     this.configureAuthorizers(props.authorizers);
-    this.configurePaths(props.paths, props.defaultCors, props.generateMockIntegrations);
+    this.configurePaths(props.paths, props.defaultCors, props.defaultIntegration);
 
     // Finally expose the processed OpenApi v3 document
     this.document = this.schema.toDocument();
@@ -130,7 +130,11 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
    */
-  private configurePaths(paths: Paths = {}, defaultCors?: CorsIntegration, generateMockIntegrations?: boolean): void {
+  private configurePaths(
+    paths: Paths = {},
+    defaultCors?: CorsIntegration,
+    defaultIntegration?: Integration,
+  ): void {
     const schemaPaths = this.schema.get<Record<string, any>>('paths');
     // Check that schema has paths object
     if (!schemaPaths) {
@@ -148,8 +152,8 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
     // Loop through all schema paths
     Object.keys(schemaPaths).map((path: string) => {
-      if (!generateMockIntegrations && !paths[path]) {
-        const message = `Missing integration for path: ${path}. Check paths-props in definition.`;
+      if (!defaultIntegration && !paths[path]) {
+        const message = `Missing integration for path: ${path}. Check paths-props in definition, or add a default integration.`;
         addError(this.scope, message);
         return;
       }
@@ -159,7 +163,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       }
 
       const methods = paths[path];
-      this.configurePathMethods(path, schemaPaths[path], methods, generateMockIntegrations);
+      this.configurePathMethods(path, schemaPaths[path], methods, defaultIntegration);
     });
   }
 
@@ -170,9 +174,10 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     schemaPathName: string,
     schemaPath: Record<string, any>,
     methods: Methods = {},
-    generateMockIntegrations?: boolean,
+    defaultIntegration?: Integration,
   ): void {
     // Loop through given methods to ensure they are defined
+    // and dont have an existing integration
     Object.keys(methods).map((method: string) => {
       const methodName = method.toLowerCase();
       this.ensureMethodExists(schemaPathName, methodName);
@@ -183,7 +188,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     Object.keys(schemaPath).map(schemaPathMethod => {
       const method = methods[schemaPathMethod];
 
-      if (!generateMockIntegrations && !method) {
+      if (!defaultIntegration && !method) {
         const message = `OpenAPI schema has an unhandled path method: ${schemaPathName}/${schemaPathMethod}`;
         addError(this.scope, message);
         return;
@@ -191,8 +196,8 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
       let integration;
       // Generate mock integration if requested
-      if (generateMockIntegrations && !method) {
-        integration = this.generateMockIntegration();
+      if (defaultIntegration && !method) {
+        integration = defaultIntegration;
       } else {
         integration = method;
       }
@@ -276,12 +281,5 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     if (Object.keys(document).length === 0) {
       addError(this.scope, 'JSON definition cannot be empty');
     }
-  }
-
-  /**
-   * Generate mock integration
-   */
-  private generateMockIntegration(): Integration {
-    return new MockIntegration();
   }
 }
