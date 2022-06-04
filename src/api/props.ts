@@ -47,7 +47,7 @@ export interface ApiBaseProps {
   readonly paths?: Paths;
 
   /**
-   * Generate MOCK-type integrations for missing path methods.
+   * Add a default integration for paths without explicitly defined integrations.
    * @example
    * {
    *   'defaultIntegration': new openapix.LambdaIntegration(this, fn),
