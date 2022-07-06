@@ -90,13 +90,11 @@ export class Api extends SpecRestApi {
     return new ServicePrincipal(
       'apigateway.amazonaws.com',
       {
-        conditions: [
-          {
-            ArnLike: {
-              'AWS:SourceArn': `${api.arnForExecuteApi}/*`,
-            },
+        conditions: {
+          ArnLike: {
+            'aws:SourceArn': `${api.arnForExecuteApi}/*`,
           },
-        ],
+        },
       },
     );
   }
