@@ -113,7 +113,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       }
 
       if (typeof defaultCors !== 'undefined') {
-        this.schema.set(`${path}.options`, defaultCors);
+        this.schema.set(`paths.${path}.options`, defaultCors);
       }
 
       const methods = paths[path];
