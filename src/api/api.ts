@@ -92,7 +92,7 @@ export class Api extends SpecRestApi {
       {
         conditions: {
           ArnLike: {
-            'aws:SourceArn': `${api.arnForExecuteApi}/*`,
+            'aws:SourceArn': api.arnForExecuteApi(),
           },
         },
       },
