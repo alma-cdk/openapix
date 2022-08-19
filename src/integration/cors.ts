@@ -33,7 +33,7 @@ export class CorsIntegration extends Integration {
   /** Build Apache Velocity (`.vtl`) template for CORS response. */
   private static buildTemplate(origins: string): string {
     const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
-    const tmpl = template.replace('__DOMAIN__', originsForTmpl);
+    const tmpl = template.replace('__DOMAINS__', originsForTmpl);
     return tmpl;
   }
 

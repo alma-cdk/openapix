@@ -113,7 +113,9 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       }
 
       if (typeof defaultCors !== 'undefined') {
-        this.schema.set(`${path}.options`, defaultCors);
+        this.schema.set(`paths.${path}.options`, {
+          'x-amazon-apigateway-integration': defaultCors.xAmazonApigatwayIntegration,
+        });
       }
 
       const methods = paths[path];
