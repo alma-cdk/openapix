@@ -21,7 +21,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
 
   // Dependencies
   minNodeVersion: nodejsVersion,
-  cdkVersion: '2.24.1',
+  cdkVersion: '2.32.1',
   constructsVersion: '10.0.0',
   peerDeps: [
     'constructs',
