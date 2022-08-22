@@ -87,7 +87,7 @@
       "description": "Only compile",
       "steps": [
         {
-          "exec": "jsii --silence-warnings=reserved-word"
+          "exec": "jsii --silence-warnings=reserved-word --no-fix-peer-dependencies"
         }
       ]
     },
@@ -135,7 +135,7 @@
       "description": "Creates the distribution package",
       "steps": [
         {
-          "exec": "if [ ! -z ${CI} ]; then rsync -a . .repo --exclude .git --exclude node_modules && rm -rf dist && mv .repo dist; else npx projen package-all; fi"
+          "exec": "if [ ! -z ${CI} ]; then mkdir -p dist && rsync -a . dist --exclude .git --exclude node_modules; else npx projen package-all; fi"
         }
       ]
     },
@@ -252,28 +252,61 @@
       },
       "steps": [
         {
-          "exec": "npm update npm-check-updates"
+          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs,projen'"
         },
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
+          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs,projen'"
         },
         {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
+          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs,projen'"
         },
         {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
+          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs,projen'"
         },
         {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
-        },
-        {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
+          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs,projen'"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update"
+          "exec": "npm update @types/jest @types/js-yaml @types/lodash @types/node @types/omit-deep-lodash @types/prettier @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates semver standard-version ts-jest typescript change-case js-yaml lodash omit-deep-lodash semver aws-cdk-lib constructs"
+        },
+        {
+          "exec": "npx projen"
+        },
+        {
+          "spawn": "post-upgrade"
+        }
+      ]
+    },
+    "upgrade-projen": {
+      "name": "upgrade-projen",
+      "description": "upgrade projen",
+      "env": {
+        "CI": "0"
+      },
+      "steps": [
+        {
+          "exec": "npm-check-updates --dep dev --upgrade --target=minor --filter='projen'"
+        },
+        {
+          "exec": "npm-check-updates --dep optional --upgrade --target=minor --filter='projen'"
+        },
+        {
+          "exec": "npm-check-updates --dep peer --upgrade --target=minor --filter='projen'"
+        },
+        {
+          "exec": "npm-check-updates --dep prod --upgrade --target=minor --filter='projen'"
+        },
+        {
+          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --filter='projen'"
+        },
+        {
+          "exec": "npm install"
+        },
+        {
+          "exec": "npm update projen"
         },
         {
           "exec": "npx projen"
@@ -288,7 +321,7 @@
       "description": "Watch & compile in the background",
       "steps": [
         {
-          "exec": "jsii -w --silence-warnings=reserved-word"
+          "exec": "jsii -w --silence-warnings=reserved-word --no-fix-peer-dependencies"
         }
       ]
     }

@@ -1,6 +1,7 @@
 import { EndpointType, IRestApi, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
+import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
@@ -60,13 +61,16 @@ export class Api extends SpecRestApi {
     // Allow the API Gateway to invoke given Lambda function integrations
     this.grantLambdaInvokes(props.paths);
 
+    // Allow the API Gateway to invoke given Lambda authorizer integrations
+    this.grantLambdaAuthorizerInvokes(props.authorizers);
+
     // Expose the processed OpenApi v3 document.
     // Mainly used for testing.
     this.document = apiDefinition.document;
   }
 
 
-  /** Allow Lambda invocations to API Gateway instance principal. */
+  /** Allow Lambda invocations to API Gateway instance principal */
   private grantLambdaInvokes(paths: Paths = {}): void {
 
     const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
@@ -83,6 +87,21 @@ export class Api extends SpecRestApi {
         }
       });
     });
+  }
+
+  /** Allow Lambda authorizer invocations to API Gateway instance principal */
+  private grantLambdaAuthorizerInvokes(authorizers?: AuthorizerConfig[]): void {
+    if (!authorizers) {
+      return;
+    }
+
+    authorizers.forEach(authorizer => {
+      if (authorizer instanceof LambdaAuthorizer) {
+        const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
+        authorizer.fn.grantInvoke(apiGatewayPrincipal);
+      }
+    },
+    );
   }
 
   /** Resolve ARN Service Principal for given API Gateway instance. */

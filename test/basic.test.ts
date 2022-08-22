@@ -411,6 +411,7 @@ test('Handles custom authorizer', () => {
     },
   });
 
+  console.log(JSON.stringify(document, null, 2));
   expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
   expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
 });

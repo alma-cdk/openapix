@@ -27,6 +27,7 @@ export interface LambdaAuthorizerProps {
 export class LambdaAuthorizer extends Construct {
 
   public readonly id: Id;
+  readonly fn: IFunction;
   readonly xAmazonApigatewayAuthtype: XAmazonApigatewayAuthType;
   readonly xAmazonApigatewayAuthorizer: XAmazonApigatewayAuthorizer;
 
@@ -35,6 +36,7 @@ export class LambdaAuthorizer extends Construct {
     super(scope, id);
 
     this.id = id;
+    this.fn = fn;
     this.xAmazonApigatewayAuthtype = authtype;
     this.xAmazonApigatewayAuthorizer = {
       type,
