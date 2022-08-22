@@ -85,18 +85,43 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    */
   private configureAuthorizers(authorizers: AuthorizerConfig[] = []): void {
     authorizers.map(a => {
+      const authorizerComponentSecuritySchemePath = `components.securitySchemes.${a.id}`;
 
-      const path = `components.securitySchemes.${a.id}`;
-
-      if (!this.schema.has(path)) {
+      if (!this.schema.has(authorizerComponentSecuritySchemePath)) {
         addError(this.scope, `Security Scheme ${a.id} not found in OpenAPI Definition`);
         return;
       }
 
-      const authorizer = this.schema.get<AuthorizerExtensionsMutable>(path);
+      /**
+      * if current authorizer is defined for whole api, add security to all paths
+      */
+      const schemaSecurity = this.schema.get('security');
+      // check if security includes authorizer
+      const schemaSecurityIncludesCurrentAuthorizer = Array.isArray(schemaSecurity) && schemaSecurity.some(s => Object.keys(s).includes(a.id));
+      if (schemaSecurityIncludesCurrentAuthorizer) {
+        // loop schema paths
+        Object.keys(this.schema.get('paths')).forEach(path => {
+          // loop methods
+          Object.keys(this.schema.get(`paths.${path}`)).forEach(method => {
+            // check if method has security
+            const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
+            if (methodSecurity && Array.isArray(methodSecurity)) {
+              // check if security includes authorizer
+              const methodSecurityIncludesCurrentAuthorizer = methodSecurity.some(s => Object.keys(s).includes(a.id));
+              if (!methodSecurityIncludesCurrentAuthorizer) {
+                this.schema.set(`paths.${path}.${method}.security`, [...methodSecurity, { [a.id]: [] }]);
+              }
+            } else {
+              this.schema.set(`paths.${path}.${method}.security`, [{ [a.id]: [] }]);
+            }
+          });
+        });
+      }
+
+      const authorizer = this.schema.get<AuthorizerExtensionsMutable>(authorizerComponentSecuritySchemePath);
       authorizer['x-amazon-apigateway-authtype'] = a.xAmazonApigatewayAuthtype;
       authorizer['x-amazon-apigateway-authorizer'] = a.xAmazonApigatewayAuthorizer;
-      this.schema.set(path, authorizer);
+      this.schema.set(authorizerComponentSecuritySchemePath, authorizer);
     });
   }
 

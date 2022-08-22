@@ -184,9 +184,20 @@ new LambdaAuthorizer(scope: Construct, id: string, props: LambdaAuthorizerProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| [`fn`](#almacdkopenapixlambdaauthorizerpropertyfn)<span title="Required">*</span> | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
 | [`id`](#almacdkopenapixlambdaauthorizerpropertyid)<span title="Required">*</span> | `string` | *No description.* |
 | [`xAmazonApigatewayAuthorizer`](#almacdkopenapixlambdaauthorizerpropertyxamazonapigatewayauthorizer)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayAuthorizer`](#@alma-cdk/openapix.XAmazonApigatewayAuthorizer) | *No description.* |
 | [`xAmazonApigatewayAuthtype`](#almacdkopenapixlambdaauthorizerpropertyxamazonapigatewayauthtype)<span title="Required">*</span> | `string` | *No description.* |
+
+---
+
+##### `fn`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaAuthorizer.property.fn" id="almacdkopenapixlambdaauthorizerpropertyfn"></a>
+
+```typescript
+public readonly fn: IFunction;
+```
+
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
 
 ---
 

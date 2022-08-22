@@ -355,6 +355,11 @@ test('Handles custom authorizer', () => {
         title: 'TestApi',
         version: '0.0.0',
       },
+      security: [
+        {
+          [authorizerName]: [],
+        },
+      ],
       components: {
         securitySchemes: {
           [authorizerName]: {
@@ -390,11 +395,30 @@ test('Handles custom authorizer', () => {
             },
           },
         },
+        '/bar': {
+          get: {
+            operationId: 'get-bar',
+            responses: {
+              200: {
+                content: {
+                  'application/json': {
+                    example: [
+                      {
+                        some: 'bar',
+                        thing: 'baz',
+                      },
+                    ],
+                  },
+                },
+                description: 'bar',
+              },
+            },
+          },
+        },
       },
     }),
 
     authorizers: [
-
       new openapix.LambdaAuthorizer(stack, authorizerName, {
         fn: testLambda,
         identitySource: apigateway.IdentitySource.queryString('code'),
@@ -411,7 +435,7 @@ test('Handles custom authorizer', () => {
     },
   });
 
-  console.log(JSON.stringify(document, null, 2));
   expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
   expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
+  expect(get(document, 'paths./bar.get.security[0].MyLambdaAuthorizer')).toEqual([]);
 });
