@@ -47,6 +47,8 @@ new Api(scope: Construct, id: string, props: ApiProps)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`document`](#almacdkopenapixapipropertydocument)<span title="Required">*</span> | [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument) | The final OpenApi v3 document used to generate the AWS API Gateway. |
+| [`invokeRole`](#almacdkopenapixapipropertyinvokerole)<span title="Required">*</span> | [`aws-cdk-lib.aws_iam.Role`](#aws-cdk-lib.aws_iam.Role) | Function invoke role. |
+| [`invokeRolePolicyStatement`](#almacdkopenapixapipropertyinvokerolepolicystatement)<span title="Required">*</span> | [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement) | Function invoke policy statement. |
 
 ---
 
@@ -59,6 +61,30 @@ public readonly document: IDocument;
 - *Type:* [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument)
 
 The final OpenApi v3 document used to generate the AWS API Gateway.
+
+---
+
+##### `invokeRole`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.property.invokeRole" id="almacdkopenapixapipropertyinvokerole"></a>
+
+```typescript
+public readonly invokeRole: Role;
+```
+
+- *Type:* [`aws-cdk-lib.aws_iam.Role`](#aws-cdk-lib.aws_iam.Role)
+
+Function invoke role.
+
+---
+
+##### `invokeRolePolicyStatement`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.property.invokeRolePolicyStatement" id="almacdkopenapixapipropertyinvokerolepolicystatement"></a>
+
+```typescript
+public readonly invokeRolePolicyStatement: PolicyStatement;
+```
+
+- *Type:* [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement)
+
+Function invoke policy statement.
 
 ---
 
@@ -178,6 +204,25 @@ new LambdaAuthorizer(scope: Construct, id: string, props: LambdaAuthorizerProps)
 
 ---
 
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`grantFunctionInvoke`](#almacdkopenapixlambdaauthorizergrantfunctioninvoke) | *No description.* |
+
+---
+
+##### `grantFunctionInvoke` <a name="@alma-cdk/openapix.LambdaAuthorizer.grantFunctionInvoke" id="almacdkopenapixlambdaauthorizergrantfunctioninvoke"></a>
+
+```typescript
+public grantFunctionInvoke(policyStatement: PolicyStatement)
+```
+
+###### `policyStatement`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaAuthorizer.parameter.policyStatement" id="almacdkopenapixlambdaauthorizerparameterpolicystatement"></a>
+
+- *Type:* [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement)
+
+---
 
 
 #### Properties <a name="Properties" id="properties"></a>
@@ -254,6 +299,7 @@ const apiBaseProps: ApiBaseProps = { ... }
 | [`authorizers`](#almacdkopenapixapibasepropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
+| [`invokeRole`](#almacdkopenapixapibasepropspropertyinvokerole) | [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole) | Lambda function invoke role. |
 | [`paths`](#almacdkopenapixapibasepropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
@@ -313,6 +359,19 @@ public readonly injections: {[ key: string ]: any};
 - *Type:* {[ key: string ]: `any`}
 
 Inject any OpenApi v3 data to given schema definition object paths.
+
+---
+
+##### `invokeRole`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.invokeRole" id="almacdkopenapixapibasepropspropertyinvokerole"></a>
+
+```typescript
+public readonly invokeRole: IRole;
+```
+
+- *Type:* [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole)
+- *Default:* No role, role is generated automatically
+
+Lambda function invoke role.
 
 ---
 
@@ -403,6 +462,7 @@ const apiProps: ApiProps = { ... }
 | [`authorizers`](#almacdkopenapixapipropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
+| [`invokeRole`](#almacdkopenapixapipropspropertyinvokerole) | [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole) | Lambda function invoke role. |
 | [`paths`](#almacdkopenapixapipropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
@@ -463,6 +523,19 @@ public readonly injections: {[ key: string ]: any};
 - *Type:* {[ key: string ]: `any`}
 
 Inject any OpenApi v3 data to given schema definition object paths.
+
+---
+
+##### `invokeRole`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.invokeRole" id="almacdkopenapixapipropspropertyinvokerole"></a>
+
+```typescript
+public readonly invokeRole: IRole;
+```
+
+- *Type:* [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole)
+- *Default:* No role, role is generated automatically
+
+Lambda function invoke role.
 
 ---
 
@@ -4816,7 +4889,7 @@ new Integration(props: IntegrationProps, config: IntegrationConfig)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`type`](#almacdkopenapixintegrationpropertytype)<span title="Required">*</span> | [`@alma-cdk/openapix.InternalIntegrationType`](#@alma-cdk/openapix.InternalIntegrationType) | Identifier to enable internal type checks. |
-| [`xAmazonApigatwayIntegration`](#almacdkopenapixintegrationpropertyxamazonapigatwayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
+| [`xAmazonApigatewayIntegration`](#almacdkopenapixintegrationpropertyxamazonapigatewayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
 | [`validator`](#almacdkopenapixintegrationpropertyvalidator) | `string` | *No description.* |
 
 ---
@@ -4833,10 +4906,10 @@ Identifier to enable internal type checks.
 
 ---
 
-##### `xAmazonApigatwayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.Integration.property.xAmazonApigatwayIntegration" id="almacdkopenapixintegrationpropertyxamazonapigatwayintegration"></a>
+##### `xAmazonApigatewayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.Integration.property.xAmazonApigatewayIntegration" id="almacdkopenapixintegrationpropertyxamazonapigatewayintegration"></a>
 
 ```typescript
-public readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+public readonly xAmazonApigatewayIntegration: XAmazonApigatewayIntegration;
 ```
 
 - *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration)
@@ -4896,23 +4969,40 @@ new LambdaIntegration(scope: Construct, fn: IFunction, props?: LambdaIntegration
 
 | **Name** | **Description** |
 | --- | --- |
-| [`grantFunctionInvoke`](#almacdkopenapixlambdaintegrationgrantfunctioninvoke) | Allow Lambda invoke action to be performed by given identity. |
+| [`grantFunctionInvoke`](#almacdkopenapixlambdaintegrationgrantfunctioninvoke) | *No description.* |
 
 ---
 
 ##### `grantFunctionInvoke` <a name="@alma-cdk/openapix.LambdaIntegration.grantFunctionInvoke" id="almacdkopenapixlambdaintegrationgrantfunctioninvoke"></a>
 
 ```typescript
-public grantFunctionInvoke(identity: IGrantable)
+public grantFunctionInvoke(policyStatement: PolicyStatement)
 ```
 
-###### `identity`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.identity" id="almacdkopenapixlambdaintegrationparameteridentity"></a>
+###### `policyStatement`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.policyStatement" id="almacdkopenapixlambdaintegrationparameterpolicystatement"></a>
 
-- *Type:* [`aws-cdk-lib.aws_iam.IGrantable`](#aws-cdk-lib.aws_iam.IGrantable)
+- *Type:* [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement)
 
 ---
 
 
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`fn`](#almacdkopenapixlambdaintegrationpropertyfn)<span title="Required">*</span> | [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction) | *No description.* |
+
+---
+
+##### `fn`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.property.fn" id="almacdkopenapixlambdaintegrationpropertyfn"></a>
+
+```typescript
+public readonly fn: IFunction;
+```
+
+- *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
+
+---
 
 
 ### MockIntegration <a name="@alma-cdk/openapix.MockIntegration" id="almacdkopenapixmockintegration"></a>
@@ -5192,7 +5282,7 @@ Interface implemented by all integrations.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`type`](#almacdkopenapixibaseintegrationpropertytype)<span title="Required">*</span> | [`@alma-cdk/openapix.InternalIntegrationType`](#@alma-cdk/openapix.InternalIntegrationType) | Identifier to enable internal type checks. |
-| [`xAmazonApigatwayIntegration`](#almacdkopenapixibaseintegrationpropertyxamazonapigatwayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
+| [`xAmazonApigatewayIntegration`](#almacdkopenapixibaseintegrationpropertyxamazonapigatewayintegration)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration) | *No description.* |
 | [`validator`](#almacdkopenapixibaseintegrationpropertyvalidator) | `string` | *No description.* |
 
 ---
@@ -5209,10 +5299,10 @@ Identifier to enable internal type checks.
 
 ---
 
-##### `xAmazonApigatwayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.IBaseIntegration.property.xAmazonApigatwayIntegration" id="almacdkopenapixibaseintegrationpropertyxamazonapigatwayintegration"></a>
+##### `xAmazonApigatewayIntegration`<sup>Required</sup> <a name="@alma-cdk/openapix.IBaseIntegration.property.xAmazonApigatewayIntegration" id="almacdkopenapixibaseintegrationpropertyxamazonapigatewayintegration"></a>
 
 ```typescript
-public readonly xAmazonApigatwayIntegration: XAmazonApigatewayIntegration;
+public readonly xAmazonApigatewayIntegration: XAmazonApigatewayIntegration;
 ```
 
 - *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegration`](#@alma-cdk/openapix.XAmazonApigatewayIntegration)

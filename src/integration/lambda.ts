@@ -1,6 +1,6 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { IGrantable } from 'aws-cdk-lib/aws-iam';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 import { LambdaInvocation } from '../lambda-invocation';
@@ -26,7 +26,7 @@ export class LambdaIntegration extends Integration {
     return apigateway.IntegrationType.AWS_PROXY;
   }
 
-  private fn: IFunction;
+  readonly fn: IFunction;
 
   /**
    * Defines an AWS Lambda integration.
@@ -57,9 +57,7 @@ export class LambdaIntegration extends Integration {
     this.fn = fn;
   }
 
-  /** Allow Lambda invoke action to be performed by given identity. */
-  public grantFunctionInvoke(identity: IGrantable): void {
-    this.fn.grantInvoke(identity);
+  public grantFunctionInvoke(policyStatement: PolicyStatement): void {
+    policyStatement.addResources(this.fn.functionArn);
   }
-
 }

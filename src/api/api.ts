@@ -1,5 +1,5 @@
-import { EndpointType, IRestApi, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { EndpointType, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
@@ -18,6 +18,13 @@ export class Api extends SpecRestApi {
    */
   public readonly document: IDocument;
 
+  /**
+   * Function invoke role
+   */
+  public readonly invokeRole: Role;
+
+  /** Function invoke policy statement */
+  public readonly invokeRolePolicyStatement: PolicyStatement;
 
   /**
    * Define a new API Gateway REST API using OpenApi v3 Schema definition.
@@ -50,12 +57,19 @@ export class Api extends SpecRestApi {
       injections: props.injections || {},
       rejections: props.rejections || [],
       rejectionsDeep: props.rejectionsDeep || [],
+      invokeRole: props.invokeRole,
     });
 
     super(scope, id, {
       apiDefinition: apiDefinition,
       endpointTypes: [EndpointType.REGIONAL],
       ...props.restApiProps,
+    });
+
+    this.invokeRole = apiDefinition.invokeRole;
+    this.invokeRolePolicyStatement = apiDefinition.invokeRolePolicyStatement;
+    this.invokeRolePolicyStatement.addCondition('ArnLike', {
+      'aws:SourceArn': this.arnForExecuteApi(),
     });
 
     // Allow the API Gateway to invoke given Lambda function integrations
@@ -72,9 +86,6 @@ export class Api extends SpecRestApi {
 
   /** Allow Lambda invocations to API Gateway instance principal */
   private grantLambdaInvokes(paths: Paths = {}): void {
-
-    const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
-
     // loop through paths
     Object.keys(paths).forEach(path => {
       const methodIntegrations = paths[path];
@@ -83,7 +94,7 @@ export class Api extends SpecRestApi {
       Object.keys(methodIntegrations).forEach(method => {
         const methodIntegration = methodIntegrations[method];
         if (this.isLambdaIntegration(methodIntegration)) {
-          methodIntegration.grantFunctionInvoke(apiGatewayPrincipal);
+          methodIntegration.grantFunctionInvoke(this.invokeRolePolicyStatement);
         }
       });
     });
@@ -97,24 +108,9 @@ export class Api extends SpecRestApi {
 
     authorizers.forEach(authorizer => {
       if (authorizer instanceof LambdaAuthorizer) {
-        const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
-        authorizer.fn.grantInvoke(apiGatewayPrincipal);
+        authorizer.grantFunctionInvoke(this.invokeRolePolicyStatement);
       }
     },
-    );
-  }
-
-  /** Resolve ARN Service Principal for given API Gateway instance. */
-  private getApiGatewayPrincipal(api: IRestApi): ServicePrincipal {
-    return new ServicePrincipal(
-      'apigateway.amazonaws.com',
-      {
-        conditions: {
-          ArnLike: {
-            'aws:SourceArn': api.arnForExecuteApi(),
-          },
-        },
-      },
     );
   }
 

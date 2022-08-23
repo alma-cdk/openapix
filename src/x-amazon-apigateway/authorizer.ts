@@ -30,6 +30,7 @@ export interface XAmazonApigatewayAuthorizer {
 
   /**
    * The credentials required for invoking the authorizer, if any, in the form of an ARN of an IAM execution role.
+   *
    * @example
    * 'arn:aws:iam::123456789012:role/MyRole'
    */

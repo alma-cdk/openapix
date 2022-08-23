@@ -1,4 +1,5 @@
 import { RestApiProps } from 'aws-cdk-lib/aws-apigateway';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { AuthorizerConfig } from '../authorizers/authorizer';
 import { Integration } from '../integration/base';
 import { CorsIntegration } from '../integration/cors';
@@ -132,6 +133,11 @@ export interface ApiBaseProps {
    */
   readonly rejectionsDeep?: string[];
 
+  /**
+   * Lambda function invoke role
+   * @default - No role, role is generated automatically
+   */
+  readonly invokeRole?: IRole;
 }
 
 /** Props to configure `new openapix.Api`. */

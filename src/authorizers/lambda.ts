@@ -1,4 +1,5 @@
 import { Duration } from 'aws-cdk-lib';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 import { LambdaInvocation } from '../lambda-invocation';
@@ -50,6 +51,8 @@ export class LambdaAuthorizer extends Construct {
       }()),
     };
   }
+
+  public grantFunctionInvoke(policyStatement: PolicyStatement): void {
+    policyStatement.addResources(this.fn.functionArn);
+  }
 }
-
-
