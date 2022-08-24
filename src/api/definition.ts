@@ -1,5 +1,5 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { LambdaAuthorizer } from '../authorizers';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
@@ -24,9 +24,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   /** Invoking role for integration and authorizer usage */
   public readonly invokeRole: Role;
 
-  /** Principal for lambda invoke role */
-  public readonly invokeRolePolicyStatement: PolicyStatement;
-
   /** Determines if `s3Location` or `inlineDefinition` is used by `bind()` method. */
   private readonly upload: boolean;
 
@@ -45,12 +42,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     this.schema = this.resolveSource(props.source);
 
     this.invokeRole = new Role(scope, 'InvokeRole', { assumedBy: new ServicePrincipal('apigateway.amazonaws.com') });
-
-    this.invokeRolePolicyStatement = new PolicyStatement({
-      actions: ['lambda:InvokeFunction'],
-    });
-
-    this.invokeRole.addToPolicy(this.invokeRolePolicyStatement);
 
     // Handle injects/rejects
     this.schema.inject(props.injections);
@@ -102,6 +93,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    */
   private configureAuthorizers(authorizers: AuthorizerConfig[] = []): void {
     authorizers.map(a => {
+
       const authorizerComponentSecuritySchemePath = `components.securitySchemes.${a.id}`;
 
       if (!this.schema.has(authorizerComponentSecuritySchemePath)) {
@@ -140,7 +132,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       authorizer['x-amazon-apigateway-authorizer'] = a.xAmazonApigatewayAuthorizer;
       this.schema.set(authorizerComponentSecuritySchemePath, authorizer);
       // If the authorizer is a lambda function, and credentials are not manually set, add credentials to authorizer
-      if (a.xAmazonApigatewayAuthorizer instanceof LambdaAuthorizer && !a.xAmazonApigatewayAuthorizer.authorizerCredentials) {
+      if (!a.xAmazonApigatewayAuthorizer.authorizerCredentials && a instanceof LambdaAuthorizer) {
         this.schema.set(`${authorizerComponentSecuritySchemePath}['x-amazon-apigateway-authorizer']['authorizerCredentials']`, this.invokeRole.roleArn);
       }
     });
@@ -189,8 +181,9 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
 
       this.schema.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonApigatewayIntegration);
+
       // If the integration is a lambda function, and credentials are not manually set, add credentials role to integration
-      if (integration.xAmazonApigatewayIntegration instanceof LambdaIntegration) {
+      if (!integration.xAmazonApigatewayIntegration.credentials && integration instanceof LambdaIntegration) {
         this.schema.set(`${methodPath}['x-amazon-apigateway-integration']['credentials']`, this.invokeRole.roleArn);
       }
     });

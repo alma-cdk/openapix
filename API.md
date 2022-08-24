@@ -48,7 +48,6 @@ new Api(scope: Construct, id: string, props: ApiProps)
 | --- | --- | --- |
 | [`document`](#almacdkopenapixapipropertydocument)<span title="Required">*</span> | [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument) | The final OpenApi v3 document used to generate the AWS API Gateway. |
 | [`invokeRole`](#almacdkopenapixapipropertyinvokerole)<span title="Required">*</span> | [`aws-cdk-lib.aws_iam.Role`](#aws-cdk-lib.aws_iam.Role) | Function invoke role. |
-| [`invokeRolePolicyStatement`](#almacdkopenapixapipropertyinvokerolepolicystatement)<span title="Required">*</span> | [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement) | Function invoke policy statement. |
 
 ---
 
@@ -73,18 +72,6 @@ public readonly invokeRole: Role;
 - *Type:* [`aws-cdk-lib.aws_iam.Role`](#aws-cdk-lib.aws_iam.Role)
 
 Function invoke role.
-
----
-
-##### `invokeRolePolicyStatement`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.property.invokeRolePolicyStatement" id="almacdkopenapixapipropertyinvokerolepolicystatement"></a>
-
-```typescript
-public readonly invokeRolePolicyStatement: PolicyStatement;
-```
-
-- *Type:* [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement)
-
-Function invoke policy statement.
 
 ---
 

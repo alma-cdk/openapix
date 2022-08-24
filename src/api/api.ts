@@ -24,7 +24,7 @@ export class Api extends SpecRestApi {
   public readonly invokeRole: Role;
 
   /** Function invoke policy statement */
-  public readonly invokeRolePolicyStatement: PolicyStatement;
+  private invokeRolePolicyStatement: PolicyStatement | undefined;
 
   /**
    * Define a new API Gateway REST API using OpenApi v3 Schema definition.
@@ -67,10 +67,6 @@ export class Api extends SpecRestApi {
     });
 
     this.invokeRole = apiDefinition.invokeRole;
-    this.invokeRolePolicyStatement = apiDefinition.invokeRolePolicyStatement;
-    this.invokeRolePolicyStatement.addCondition('ArnLike', {
-      'aws:SourceArn': this.arnForExecuteApi(),
-    });
 
     // Allow the API Gateway to invoke given Lambda function integrations
     this.grantLambdaInvokes(props.paths);
@@ -94,7 +90,7 @@ export class Api extends SpecRestApi {
       Object.keys(methodIntegrations).forEach(method => {
         const methodIntegration = methodIntegrations[method];
         if (this.isLambdaIntegration(methodIntegration)) {
-          methodIntegration.grantFunctionInvoke(this.invokeRolePolicyStatement);
+          methodIntegration.grantFunctionInvoke(this.getInvokeRolePolicyStatement());
         }
       });
     });
@@ -108,7 +104,7 @@ export class Api extends SpecRestApi {
 
     authorizers.forEach(authorizer => {
       if (authorizer instanceof LambdaAuthorizer) {
-        authorizer.grantFunctionInvoke(this.invokeRolePolicyStatement);
+        authorizer.grantFunctionInvoke(this.getInvokeRolePolicyStatement());
       }
     },
     );
@@ -117,5 +113,21 @@ export class Api extends SpecRestApi {
   /** Determine if the integration internal type is `LAMBDA`. */
   private isLambdaIntegration(integration: Integration): integration is LambdaIntegration {
     return integration.type === InternalIntegrationType.LAMBDA;
+  }
+
+  /** Get policy statement for lambda invoke role */
+  private getInvokeRolePolicyStatement(): PolicyStatement {
+    // if invoke role policy statement is not defined, create one
+    if (!this.invokeRolePolicyStatement) {
+      this.invokeRolePolicyStatement = new PolicyStatement({
+        actions: ['lambda:InvokeFunction'],
+      });
+      this.invokeRolePolicyStatement.addCondition('ArnLike', {
+        'aws:SourceArn': this.arnForExecuteApi(),
+      });
+      this.invokeRole.addToPolicy(this.invokeRolePolicyStatement);
+    }
+
+    return this.invokeRolePolicyStatement;
   }
 }

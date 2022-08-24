@@ -2,9 +2,12 @@ import * as cdk from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { IdentitySource } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { get, set } from 'lodash';
 import * as openapix from '../src';
+import { LambdaAuthorizer } from '../src';
+import { expectNoErrorAnnotations } from './utils';
 
 test('Validators', () => {
 
@@ -83,6 +86,7 @@ test('Validators', () => {
 
   const expectationBase = Object.assign({}, value);
 
+  expectNoErrorAnnotations(stack);
   expect(document).toMatchObject(
     set(
       set(
@@ -130,12 +134,27 @@ test('Synth', () => {
   });
 
   const path = '/message';
+  const authorizerName = 'TestAuthorizer';
 
   const value = {
     openapi: '3.0.1',
     info: {
       title: 'TestApi',
       version: '0.0.0',
+    },
+    security: [
+      {
+        [authorizerName]: [],
+      },
+    ],
+    components: {
+      securitySchemes: {
+        [authorizerName]: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'Authorization',
+        },
+      },
     },
     paths: {
       [path]: {
@@ -164,6 +183,13 @@ test('Synth', () => {
   const { document } = new openapix.Api(stack, 'Testing', {
     upload: false,
     source: new openapix.Schema(value),
+    authorizers: [new LambdaAuthorizer(stack, authorizerName, {
+      fn,
+      identitySource: IdentitySource.header('Authorization'),
+      resultsCacheTtl: cdk.Duration.seconds(300),
+      type: 'request',
+      authType: 'custom',
+    })],
     paths: {
       [path]: {
         get: new openapix.LambdaIntegration(stack, fn),
@@ -182,6 +208,8 @@ test('Synth', () => {
   );
 
   const template = Template.fromStack(stack);
+
+  expectNoErrorAnnotations(stack);
 
   template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
     EndpointConfiguration: {
@@ -236,7 +264,7 @@ test('Basic usage', () => {
       paths: {},
     }),
   });
-
+  expectNoErrorAnnotations(stack);
   expect(document).toEqual({
     openapi: '3.0.1',
     info: {
@@ -324,6 +352,7 @@ test('Reject deep paths', () => {
     rejectionsDeep: ['example'],
   });
 
+  expectNoErrorAnnotations(stack);
   expect(get(document, 'paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
 });
 
@@ -434,7 +463,7 @@ test('Handles custom authorizer', () => {
       },
     },
   });
-
+  expectNoErrorAnnotations(stack);
   expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
   expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
   expect(get(document, 'paths./bar.get.security[0].MyLambdaAuthorizer')).toEqual([]);
