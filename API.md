@@ -273,7 +273,6 @@ const apiBaseProps: ApiBaseProps = { ... }
 | [`authorizers`](#almacdkopenapixapibasepropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`invokeRole`](#almacdkopenapixapibasepropspropertyinvokerole) | [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole) | Lambda function invoke role. |
 | [`paths`](#almacdkopenapixapibasepropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
@@ -333,19 +332,6 @@ public readonly injections: {[ key: string ]: any};
 - *Type:* {[ key: string ]: `any`}
 
 Inject any OpenApi v3 data to given schema definition object paths.
-
----
-
-##### `invokeRole`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.invokeRole" id="almacdkopenapixapibasepropspropertyinvokerole"></a>
-
-```typescript
-public readonly invokeRole: IRole;
-```
-
-- *Type:* [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole)
-- *Default:* No role, role is generated automatically
-
-Lambda function invoke role.
 
 ---
 
@@ -436,7 +422,6 @@ const apiProps: ApiProps = { ... }
 | [`authorizers`](#almacdkopenapixapipropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`invokeRole`](#almacdkopenapixapipropspropertyinvokerole) | [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole) | Lambda function invoke role. |
 | [`paths`](#almacdkopenapixapipropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
@@ -497,19 +482,6 @@ public readonly injections: {[ key: string ]: any};
 - *Type:* {[ key: string ]: `any`}
 
 Inject any OpenApi v3 data to given schema definition object paths.
-
----
-
-##### `invokeRole`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.invokeRole" id="almacdkopenapixapipropspropertyinvokerole"></a>
-
-```typescript
-public readonly invokeRole: IRole;
-```
-
-- *Type:* [`aws-cdk-lib.aws_iam.IRole`](#aws-cdk-lib.aws_iam.IRole)
-- *Default:* No role, role is generated automatically
-
-Lambda function invoke role.
 
 ---
 
