@@ -34,7 +34,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@types/lodash',
     '@types/js-yaml',
     '@types/omit-deep-lodash',
-    '@types/prettier@v2.6.0',
+    '@types/prettier@2.6.0',
     '@types/semver',
   ],
   bundledDeps: [
