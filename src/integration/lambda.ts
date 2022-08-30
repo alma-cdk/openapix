@@ -1,7 +1,7 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Function, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 import { LambdaInvocation } from '../lambda-invocation';
 import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
@@ -57,7 +57,11 @@ export class LambdaIntegration extends Integration {
     this.fn = fn;
   }
 
-  public grantFunctionInvoke(policyStatement: PolicyStatement): void {
-    policyStatement.addResources(this.fn.functionArn);
+  public grantFunctionInvoke(scope: Construct, id: string, principal: ServicePrincipal): void {
+    const fn = Function.fromFunctionAttributes(scope, id, {
+      functionArn: this.fn.functionArn,
+      sameEnvironment: true,
+    });
+    fn.grantInvoke(principal);
   }
 }

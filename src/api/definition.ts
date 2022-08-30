@@ -1,10 +1,7 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { LambdaAuthorizer } from '../authorizers';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
-import { LambdaIntegration } from '../integration';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
@@ -20,9 +17,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * Mainly useful for testing purposes.
    */
   public readonly document: IDocument;
-
-  /** Invoking role for integration and authorizer usage */
-  public readonly invokeRole: Role;
 
   /** Determines if `s3Location` or `inlineDefinition` is used by `bind()` method. */
   private readonly upload: boolean;
@@ -40,8 +34,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     this.scope = scope;
     this.upload = props.upload === true;
     this.schema = this.resolveSource(props.source);
-
-    this.invokeRole = new Role(scope, 'InvokeRole', { assumedBy: new ServicePrincipal('apigateway.amazonaws.com') });
 
     // Handle injects/rejects
     this.schema.inject(props.injections);
@@ -131,10 +123,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       authorizer['x-amazon-apigateway-authtype'] = a.xAmazonApigatewayAuthtype;
       authorizer['x-amazon-apigateway-authorizer'] = a.xAmazonApigatewayAuthorizer;
       this.schema.set(authorizerComponentSecuritySchemePath, authorizer);
-      // If the authorizer is a lambda function, and credentials are not manually set, add credentials to authorizer
-      if (!a.xAmazonApigatewayAuthorizer.authorizerCredentials && a instanceof LambdaAuthorizer) {
-        this.schema.set(`${authorizerComponentSecuritySchemePath}['x-amazon-apigateway-authorizer']['authorizerCredentials']`, this.invokeRole.roleArn);
-      }
     });
   }
 
@@ -181,11 +169,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
 
       this.schema.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonApigatewayIntegration);
-
-      // If the integration is a lambda function, and credentials are not manually set, add credentials role to integration
-      if (!integration.xAmazonApigatewayIntegration.credentials && integration instanceof LambdaIntegration) {
-        this.schema.set(`${methodPath}['x-amazon-apigateway-integration']['credentials']`, this.invokeRole.roleArn);
-      }
     });
   }
 

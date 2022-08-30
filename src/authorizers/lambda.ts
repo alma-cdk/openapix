@@ -1,6 +1,7 @@
-import { Duration } from 'aws-cdk-lib';
-import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { Duration, Stack } from 'aws-cdk-lib';
+import { IRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Function, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 import { LambdaInvocation } from '../lambda-invocation';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
@@ -52,7 +53,27 @@ export class LambdaAuthorizer extends Construct {
     };
   }
 
-  public grantFunctionInvoke(policyStatement: PolicyStatement): void {
-    policyStatement.addResources(this.fn.functionArn);
+  public grantFunctionInvoke(api: IRestApi): void {
+    const fn = Function.fromFunctionAttributes(this, `ImportFunction${this.id}`,
+      {
+        functionArn: this.fn.functionArn,
+        sameEnvironment: true,
+      });
+
+    const authorizerArn = Stack.of(this).formatArn({
+      service: 'execute-api',
+      resource: api.restApiId,
+      resourceName: 'authorizers/*',
+    });
+
+    fn.grantInvoke(new ServicePrincipal('apigateway.amazonaws.com',
+      {
+        conditions: {
+          ArnLike: {
+            'aws:SourceArn': authorizerArn,
+          },
+        },
+      },
+    ));
   }
 }

@@ -47,7 +47,6 @@ new Api(scope: Construct, id: string, props: ApiProps)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`document`](#almacdkopenapixapipropertydocument)<span title="Required">*</span> | [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument) | The final OpenApi v3 document used to generate the AWS API Gateway. |
-| [`invokeRole`](#almacdkopenapixapipropertyinvokerole)<span title="Required">*</span> | [`aws-cdk-lib.aws_iam.Role`](#aws-cdk-lib.aws_iam.Role) | Function invoke role. |
 
 ---
 
@@ -60,18 +59,6 @@ public readonly document: IDocument;
 - *Type:* [`@alma-cdk/openapix.IDocument`](#@alma-cdk/openapix.IDocument)
 
 The final OpenApi v3 document used to generate the AWS API Gateway.
-
----
-
-##### `invokeRole`<sup>Required</sup> <a name="@alma-cdk/openapix.Api.property.invokeRole" id="almacdkopenapixapipropertyinvokerole"></a>
-
-```typescript
-public readonly invokeRole: Role;
-```
-
-- *Type:* [`aws-cdk-lib.aws_iam.Role`](#aws-cdk-lib.aws_iam.Role)
-
-Function invoke role.
 
 ---
 
@@ -202,12 +189,12 @@ new LambdaAuthorizer(scope: Construct, id: string, props: LambdaAuthorizerProps)
 ##### `grantFunctionInvoke` <a name="@alma-cdk/openapix.LambdaAuthorizer.grantFunctionInvoke" id="almacdkopenapixlambdaauthorizergrantfunctioninvoke"></a>
 
 ```typescript
-public grantFunctionInvoke(policyStatement: PolicyStatement)
+public grantFunctionInvoke(api: IRestApi)
 ```
 
-###### `policyStatement`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaAuthorizer.parameter.policyStatement" id="almacdkopenapixlambdaauthorizerparameterpolicystatement"></a>
+###### `api`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaAuthorizer.parameter.api" id="almacdkopenapixlambdaauthorizerparameterapi"></a>
 
-- *Type:* [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement)
+- *Type:* [`aws-cdk-lib.aws_apigateway.IRestApi`](#aws-cdk-lib.aws_apigateway.IRestApi)
 
 ---
 
@@ -4963,12 +4950,24 @@ new LambdaIntegration(scope: Construct, fn: IFunction, props?: LambdaIntegration
 ##### `grantFunctionInvoke` <a name="@alma-cdk/openapix.LambdaIntegration.grantFunctionInvoke" id="almacdkopenapixlambdaintegrationgrantfunctioninvoke"></a>
 
 ```typescript
-public grantFunctionInvoke(policyStatement: PolicyStatement)
+public grantFunctionInvoke(scope: Construct, id: string, principal: ServicePrincipal)
 ```
 
-###### `policyStatement`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.policyStatement" id="almacdkopenapixlambdaintegrationparameterpolicystatement"></a>
+###### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.scope" id="almacdkopenapixlambdaintegrationparameterscope"></a>
 
-- *Type:* [`aws-cdk-lib.aws_iam.PolicyStatement`](#aws-cdk-lib.aws_iam.PolicyStatement)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
+
+---
+
+###### `id`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.id" id="almacdkopenapixlambdaintegrationparameterid"></a>
+
+- *Type:* `string`
+
+---
+
+###### `principal`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.principal" id="almacdkopenapixlambdaintegrationparameterprincipal"></a>
+
+- *Type:* [`aws-cdk-lib.aws_iam.ServicePrincipal`](#aws-cdk-lib.aws_iam.ServicePrincipal)
 
 ---
 
