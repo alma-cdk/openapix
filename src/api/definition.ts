@@ -2,6 +2,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
+import { Integration } from '../integration';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
@@ -43,7 +44,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     // Configurate integrations
     this.configureValidators(props.validators);
     this.configureAuthorizers(props.authorizers);
-    this.configurePaths(props.paths, props.defaultCors);
+    this.configurePaths(props.paths, props.defaultCors, props.defaultIntegration);
 
     // Finally expose the processed OpenApi v3 document
     this.document = this.schema.toDocument();
@@ -129,11 +130,27 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
    */
-  private configurePaths(paths: Paths = {}, defaultCors?: CorsIntegration): void {
-    Object.keys(paths).map(path => {
+  private configurePaths(paths: Paths = {}, defaultCors?: CorsIntegration, defaultIntegration?: Integration): void {
 
-      if (!this.schema.has(`paths.${path}`)) {
-        const message = `OpenAPI schema is missing path for: ${path}`;
+    const schemaPaths = this.schema.get<Record<string, any>>('paths');
+    // Check that schema has paths object
+    if (!schemaPaths) {
+      addError(this.scope, 'OpenAPI Definition does not have paths object');
+      return;
+    }
+
+    // Loop through paths to ensure all paths are defined in OpenAPI schema
+    Object.keys(paths).forEach(path => {
+      if (!schemaPaths[path]) {
+        const message = `Path ${path} not found in OpenAPI Definition. Check paths-props in definition.`;
+        addError(this.scope, message);
+      }
+    });
+
+    // Loop through all schema paths
+    Object.keys(schemaPaths).map((path: string) => {
+      if (!defaultIntegration && !paths[path]) {
+        const message = `Missing integration for path: ${path}. Check paths-props in definition, or add a default integration.`;
         addError(this.scope, message);
         return;
       }
@@ -145,28 +162,51 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       }
 
       const methods = paths[path];
-      this.configurePathMethods(path, methods);
+      this.configurePathMethods(path, schemaPaths[path], methods, defaultIntegration);
     });
   }
 
   /**
    * Configure `x-amazon-apigateway-integration` for given method.
    */
-  private configurePathMethods(path: string, methods: Methods = {}): void {
-    Object.keys(methods).map(m => {
-      const method = m.toLowerCase();
+  private configurePathMethods(
+    schemaPathName: string,
+    schemaPath: Record<string, any>,
+    methods: Methods = {},
+    defaultIntegration?: Integration,
+  ): void {
+    // Loop through given methods to ensure they are defined
+    // and dont have an existing integration
+    Object.keys(methods).map((method: string) => {
+      const methodName = method.toLowerCase();
+      this.ensureMethodExists(schemaPathName, methodName);
+      this.ensureNoIntegrationAlready(schemaPathName, methodName);
+    });
 
-      this.ensureMethodExists(path, method);
-      this.ensureNoIntegrationAlready(path, method);
+    // Look through all schema path methods
+    Object.keys(schemaPath).map(schemaPathMethod => {
+      const method = methods[schemaPathMethod];
 
-      const integration = methods[method.toLowerCase()]!;
-      const methodPath = `paths['${path}']['${method}']`;
+      if (!defaultIntegration && !method) {
+        const message = `OpenAPI schema has an unhandled path method: ${schemaPathName}/${schemaPathMethod}`;
+        addError(this.scope, message);
+        return;
+      }
+
+      let integration;
+      // Generate mock integration if requested
+      if (defaultIntegration && !method) {
+        integration = defaultIntegration;
+      } else {
+        integration = method;
+      }
+
+      const methodPath = `paths['${schemaPathName}']['${schemaPathMethod}']`;
 
       const validator = integration.validator;
       if (typeof validator === 'string') {
         this.schema.set(`${methodPath}['x-amazon-apigateway-request-validator']`, validator);
       }
-
 
       this.schema.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonApigatewayIntegration);
     });

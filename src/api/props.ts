@@ -47,6 +47,15 @@ export interface ApiBaseProps {
   readonly paths?: Paths;
 
   /**
+   * Add a default integration for paths without explicitly defined integrations.
+   * @example
+   * {
+   *   'defaultIntegration': new openapix.LambdaIntegration(this, fn),
+   * }
+   */
+  readonly defaultIntegration?: Integration;
+
+  /**
    * Cognito User Pool or Custom Lambda based Authorizer configurations.
    *
    * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html

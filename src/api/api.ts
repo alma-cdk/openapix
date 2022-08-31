@@ -49,6 +49,7 @@ export class Api extends SpecRestApi {
       injections: props.injections || {},
       rejections: props.rejections || [],
       rejectionsDeep: props.rejectionsDeep || [],
+      defaultIntegration: props.defaultIntegration,
     });
 
     super(scope, id, {

@@ -272,6 +272,7 @@ const apiBaseProps: ApiBaseProps = { ... }
 | [`source`](#almacdkopenapixapibasepropspropertysource)<span title="Required">*</span> | `string` \| [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema) | OpenApi Schema Definition source configuration. |
 | [`authorizers`](#almacdkopenapixapibasepropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
+| [`defaultIntegration`](#almacdkopenapixapibasepropspropertydefaultintegration) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | Add a default integration for paths without explicitly defined integrations. |
 | [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
 | [`paths`](#almacdkopenapixapibasepropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
@@ -320,6 +321,18 @@ public readonly defaultCors: CorsIntegration;
 Default CORS configuration. Applied to all path integrations.
 
 You can add path specific overrides by adding an `options` method with `new openapix.CorsIntegration(...)` integration.
+
+---
+
+##### `defaultIntegration`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.defaultIntegration" id="almacdkopenapixapibasepropspropertydefaultintegration"></a>
+
+```typescript
+public readonly defaultIntegration: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+Add a default integration for paths without explicitly defined integrations.
 
 ---
 
@@ -421,6 +434,7 @@ const apiProps: ApiProps = { ... }
 | [`source`](#almacdkopenapixapipropspropertysource)<span title="Required">*</span> | `string` \| [`@alma-cdk/openapix.Schema`](#@alma-cdk/openapix.Schema) | OpenApi Schema Definition source configuration. |
 | [`authorizers`](#almacdkopenapixapipropspropertyauthorizers) | [`@alma-cdk/openapix.AuthorizerConfig`](#@alma-cdk/openapix.AuthorizerConfig)[] | Cognito User Pool or Custom Lambda based Authorizer configurations. |
 | [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
+| [`defaultIntegration`](#almacdkopenapixapipropspropertydefaultintegration) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | Add a default integration for paths without explicitly defined integrations. |
 | [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
 | [`paths`](#almacdkopenapixapipropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
@@ -470,6 +484,18 @@ public readonly defaultCors: CorsIntegration;
 Default CORS configuration. Applied to all path integrations.
 
 You can add path specific overrides by adding an `options` method with `new openapix.CorsIntegration(...)` integration.
+
+---
+
+##### `defaultIntegration`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.defaultIntegration" id="almacdkopenapixapipropspropertydefaultintegration"></a>
+
+```typescript
+public readonly defaultIntegration: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+Add a default integration for paths without explicitly defined integrations.
 
 ---
 
@@ -4972,23 +4998,16 @@ Defines Mock integration.
 ```typescript
 import { MockIntegration } from '@alma-cdk/openapix'
 
-new MockIntegration(_: Construct, props: MockIntegrationProps)
+new MockIntegration(props?: MockIntegrationProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`_`](#almacdkopenapixmockintegrationparameter)<span title="Required">*</span> | [`constructs.Construct`](#constructs.Construct) | *No description.* |
-| [`props`](#almacdkopenapixmockintegrationparameterprops)<span title="Required">*</span> | [`@alma-cdk/openapix.MockIntegrationProps`](#@alma-cdk/openapix.MockIntegrationProps) | *No description.* |
+| [`props`](#almacdkopenapixmockintegrationparameterprops) | [`@alma-cdk/openapix.MockIntegrationProps`](#@alma-cdk/openapix.MockIntegrationProps) | *No description.* |
 
 ---
 
-##### `_`<sup>Required</sup> <a name="@alma-cdk/openapix.MockIntegration.parameter._" id="almacdkopenapixmockintegrationparameter"></a>
-
-- *Type:* [`constructs.Construct`](#constructs.Construct)
-
----
-
-##### `props`<sup>Required</sup> <a name="@alma-cdk/openapix.MockIntegration.parameter.props" id="almacdkopenapixmockintegrationparameterprops"></a>
+##### `props`<sup>Optional</sup> <a name="@alma-cdk/openapix.MockIntegration.parameter.props" id="almacdkopenapixmockintegrationparameterprops"></a>
 
 - *Type:* [`@alma-cdk/openapix.MockIntegrationProps`](#@alma-cdk/openapix.MockIntegrationProps)
 
