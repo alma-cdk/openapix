@@ -53,7 +53,17 @@ export class LambdaAuthorizer extends Construct {
     };
   }
 
+  /**
+   * Allow Lambda invoke action to be performed by given identity.
+   *
+   * The ARN format for authorizers is different compared to integrations when granting permissions,
+   * ex. arn:aws:execute-api:us-east-1:123456789012:api-id/authorizers/authorizer-id
+  */
   public grantFunctionInvoke(api: IRestApi): void {
+    /**
+     * if the lambda functions are created in separate stacks, circular dependencies appear
+     * when we grant function invoke permissions directly. This is a hacky way to avoid the issue
+     */
     const fn = Function.fromFunctionAttributes(this, `ImportFunction${this.id}`,
       {
         functionArn: this.fn.functionArn,

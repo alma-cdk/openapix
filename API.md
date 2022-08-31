@@ -182,7 +182,7 @@ new LambdaAuthorizer(scope: Construct, id: string, props: LambdaAuthorizerProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| [`grantFunctionInvoke`](#almacdkopenapixlambdaauthorizergrantfunctioninvoke) | *No description.* |
+| [`grantFunctionInvoke`](#almacdkopenapixlambdaauthorizergrantfunctioninvoke) | Allow Lambda invoke action to be performed by given identity. |
 
 ---
 
@@ -4915,7 +4915,7 @@ new LambdaIntegration(scope: Construct, fn: IFunction, props?: LambdaIntegration
 
 | **Name** | **Description** |
 | --- | --- |
-| [`grantFunctionInvoke`](#almacdkopenapixlambdaintegrationgrantfunctioninvoke) | *No description.* |
+| [`grantFunctionInvoke`](#almacdkopenapixlambdaintegrationgrantfunctioninvoke) | Allow Lambda invoke action to be performed by given identity. |
 
 ---
 

@@ -57,7 +57,12 @@ export class LambdaIntegration extends Integration {
     this.fn = fn;
   }
 
+  /** Allow Lambda invoke action to be performed by given identity. */
   public grantFunctionInvoke(scope: Construct, id: string, principal: ServicePrincipal): void {
+    /**
+     * if the lambda functions are created in separate stacks, circular dependencies appear
+     * when we grant function invoke permissions directly. This is a hacky way to avoid the issue
+     */
     const fn = Function.fromFunctionAttributes(scope, id, {
       functionArn: this.fn.functionArn,
       sameEnvironment: true,
