@@ -18,6 +18,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
   defaultReleaseBranch: 'main',
   packageManager: javascript.NodePackageManager.NPM,
   npmAccess: javascript.NpmAccess.PUBLIC,
+  python: {
+    distName: 'alma-cdk.openapix',
+    module: 'alma_cdk.openapix',
+  },
 
   // Dependencies
   minNodeVersion: nodejsVersion,
