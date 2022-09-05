@@ -13,7 +13,7 @@
 
   <div align="left">
 
-  Generate AWS Api Gateway REST APIs via [OpenAPI](https://www.openapis.org/) (a.k.a. Swagger) Schema Definitions by consuming "clean" OpenAPI schemas and inject `x-amazon-apigateway-` extensions _with type-safety_.
+  Generate AWS Api Gateway REST APIs via [OpenAPI](https://www.openapis.org/) (formely known as “Swagger”) Schema Definitions by consuming "clean" OpenAPI schemas and inject `x-amazon-apigateway-` extensions _with type-safety_.
 
   </div>
   <br/>
