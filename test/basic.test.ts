@@ -2,9 +2,12 @@ import * as cdk from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { IdentitySource } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { get, set } from 'lodash';
 import * as openapix from '../src';
+import { LambdaAuthorizer, MockIntegration } from '../src';
+import { expectNoErrorAnnotations } from './utils';
 
 test('Validators', () => {
 
@@ -83,6 +86,7 @@ test('Validators', () => {
 
   const expectationBase = Object.assign({}, value);
 
+  expectNoErrorAnnotations(stack);
   expect(document).toMatchObject(
     set(
       set(
@@ -130,12 +134,27 @@ test('Synth', () => {
   });
 
   const path = '/message';
+  const authorizerName = 'TestAuthorizer';
 
   const value = {
     openapi: '3.0.1',
     info: {
       title: 'TestApi',
       version: '0.0.0',
+    },
+    security: [
+      {
+        [authorizerName]: [],
+      },
+    ],
+    components: {
+      securitySchemes: {
+        [authorizerName]: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'Authorization',
+        },
+      },
     },
     paths: {
       [path]: {
@@ -164,6 +183,13 @@ test('Synth', () => {
   const { document } = new openapix.Api(stack, 'Testing', {
     upload: false,
     source: new openapix.Schema(value),
+    authorizers: [new LambdaAuthorizer(stack, authorizerName, {
+      fn,
+      identitySource: IdentitySource.header('Authorization'),
+      resultsCacheTtl: cdk.Duration.seconds(300),
+      type: 'request',
+      authType: 'custom',
+    })],
     paths: {
       [path]: {
         get: new openapix.LambdaIntegration(stack, fn),
@@ -182,6 +208,8 @@ test('Synth', () => {
   );
 
   const template = Template.fromStack(stack);
+
+  expectNoErrorAnnotations(stack);
 
   template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
     EndpointConfiguration: {
@@ -236,7 +264,7 @@ test('Basic usage', () => {
       paths: {},
     }),
   });
-
+  expectNoErrorAnnotations(stack);
   expect(document).toEqual({
     openapi: '3.0.1',
     info: {
@@ -290,6 +318,7 @@ test('Inject paths', () => {
 
 test('Reject deep paths', () => {
   const stack = new cdk.Stack();
+
   const { document } = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
@@ -321,9 +350,11 @@ test('Reject deep paths', () => {
         },
       },
     }),
+    defaultIntegration: new MockIntegration(),
     rejectionsDeep: ['example'],
   });
 
+  expectNoErrorAnnotations(stack);
   expect(get(document, 'paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
 });
 
@@ -347,7 +378,23 @@ test('Handles custom authorizer', () => {
 
   const authorizerName = 'MyLambdaAuthorizer';
 
-  const { document } = new openapix.Api(stack, 'MyApi', {
+  const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromInline(`module.exports = {
+              handler: async (event) => {
+                console.log(event);
+                return {
+                  statusCode: 200,
+                  body: JSON.stringify({
+                    message: 'Hello',
+                  }),
+                };
+              },
+            }`),
+  });
+
+  const api = new openapix.Api(stack, 'MyApi', {
     upload: false,
     source: new openapix.Schema({
       openapi: '3.0.1',
@@ -355,12 +402,22 @@ test('Handles custom authorizer', () => {
         title: 'TestApi',
         version: '0.0.0',
       },
+      security: [
+        {
+          otherAuthorizer: [],
+        },
+      ],
       components: {
         securitySchemes: {
           [authorizerName]: {
             type: 'apiKey',
             name: 'code',
             in: 'query',
+          },
+          otherAuthorizer: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
           },
         },
       },
@@ -390,13 +447,39 @@ test('Handles custom authorizer', () => {
             },
           },
         },
+        '/bar': {
+          get: {
+            operationId: 'get-bar',
+            responses: {
+              200: {
+                content: {
+                  'application/json': {
+                    example: [
+                      {
+                        some: 'bar',
+                        thing: 'baz',
+                      },
+                    ],
+                  },
+                },
+                description: 'bar',
+              },
+            },
+          },
+        },
       },
     }),
 
     authorizers: [
-
       new openapix.LambdaAuthorizer(stack, authorizerName, {
-        fn: testLambda,
+        fn: authorizerLambda,
+        identitySource: apigateway.IdentitySource.queryString('code'),
+        type: 'request',
+        authType: 'custom',
+        resultsCacheTtl: Duration.minutes(5),
+      }),
+      new openapix.LambdaAuthorizer(stack, 'otherAuthorizer', {
+        fn: authorizerLambda,
         identitySource: apigateway.IdentitySource.queryString('code'),
         type: 'request',
         authType: 'custom',
@@ -408,9 +491,26 @@ test('Handles custom authorizer', () => {
       '/foo': {
         get: new openapix.LambdaIntegration(stack, testLambda),
       },
+      '/bar': {
+        get: new openapix.LambdaIntegration(stack, testLambda),
+      },
     },
   });
 
-  expect(get(document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
-  expect(get(document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
+  const template = Template.fromStack(stack);
+
+  expectNoErrorAnnotations(stack);
+  expect(get(api.document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
+  expect(get(api.document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
+  expect(get(api.document, 'paths./foo.get.security[1].otherAuthorizer')).toEqual([]);
+  template.hasResourceProperties( 'AWS::Lambda::Permission', Match.objectLike({
+    Action: 'lambda:InvokeFunction',
+    FunctionName: {
+      'Fn::GetAtt': [
+        Match.stringLikeRegexp('AuthorizerFunction*'),
+        'Arn',
+      ],
+    },
+    Principal: 'apigateway.amazonaws.com',
+  }));
 });

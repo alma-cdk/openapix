@@ -1,6 +1,7 @@
-import { EndpointType, IRestApi, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { EndpointType, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
+import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
@@ -16,7 +17,6 @@ export class Api extends SpecRestApi {
    * The final OpenApi v3 document used to generate the AWS API Gateway.
    */
   public readonly document: IDocument;
-
 
   /**
    * Define a new API Gateway REST API using OpenApi v3 Schema definition.
@@ -49,6 +49,7 @@ export class Api extends SpecRestApi {
       injections: props.injections || {},
       rejections: props.rejections || [],
       rejectionsDeep: props.rejectionsDeep || [],
+      defaultIntegration: props.defaultIntegration,
     });
 
     super(scope, id, {
@@ -60,17 +61,17 @@ export class Api extends SpecRestApi {
     // Allow the API Gateway to invoke given Lambda function integrations
     this.grantLambdaInvokes(props.paths);
 
+    // Allow the API Gateway to invoke given Lambda authorizer integrations
+    this.grantLambdaAuthorizerInvokes(props.authorizers);
+
     // Expose the processed OpenApi v3 document.
     // Mainly used for testing.
     this.document = apiDefinition.document;
   }
 
 
-  /** Allow Lambda invocations to API Gateway instance principal. */
+  /** Allow Lambda invocations to API Gateway instance principal */
   private grantLambdaInvokes(paths: Paths = {}): void {
-
-    const apiGatewayPrincipal = this.getApiGatewayPrincipal(this);
-
     // loop through paths
     Object.keys(paths).forEach(path => {
       const methodIntegrations = paths[path];
@@ -78,29 +79,43 @@ export class Api extends SpecRestApi {
       // loop through methods
       Object.keys(methodIntegrations).forEach(method => {
         const methodIntegration = methodIntegrations[method];
-        if (this.isLambdaIntegration(methodIntegration)) {
-          methodIntegration.grantFunctionInvoke(apiGatewayPrincipal);
+        if (this.isLambdaIntegration(methodIntegration) && !methodIntegration.xAmazonApigatewayIntegration.credentials) {
+          methodIntegration.grantFunctionInvoke(this, `ImportForGrant${path}${method}`, this.getApiGatewayPrincipal());
         }
       });
     });
   }
 
-  /** Resolve ARN Service Principal for given API Gateway instance. */
-  private getApiGatewayPrincipal(api: IRestApi): ServicePrincipal {
-    return new ServicePrincipal(
-      'apigateway.amazonaws.com',
-      {
-        conditions: {
-          ArnLike: {
-            'aws:SourceArn': api.arnForExecuteApi(),
-          },
-        },
-      },
+  /** Allow Lambda authorizer invocations to API Gateway instance principal */
+  private grantLambdaAuthorizerInvokes(authorizers?: AuthorizerConfig[]): void {
+    if (!authorizers) {
+      return;
+    }
+
+    authorizers.forEach(authorizer => {
+      if (authorizer instanceof LambdaAuthorizer && !authorizer.xAmazonApigatewayAuthorizer.authorizerCredentials) {
+        authorizer.grantFunctionInvoke(this);
+      }
+    },
     );
   }
 
   /** Determine if the integration internal type is `LAMBDA`. */
   private isLambdaIntegration(integration: Integration): integration is LambdaIntegration {
     return integration.type === InternalIntegrationType.LAMBDA;
+  }
+
+  /** Resolve ARN Service Principal for given API Gateway instance. */
+  private getApiGatewayPrincipal(): ServicePrincipal {
+    return new ServicePrincipal(
+      'apigateway.amazonaws.com',
+      {
+        conditions: {
+          ArnLike: {
+            'aws:SourceArn': this.arnForExecuteApi(),
+          },
+        },
+      },
+    );
   }
 }
