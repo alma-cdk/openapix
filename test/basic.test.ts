@@ -158,6 +158,7 @@ test('Synth', () => {
     },
     paths: {
       [path]: {
+        summary: 'Some desc',
         get: {
           operationId: 'get-message',
           responses: {
@@ -287,6 +288,7 @@ test('Inject paths', () => {
       },
       paths: {
         '/foo': {
+          summary: 'Some desc',
           get: {
             operationId: 'get-foo',
             responses: {
@@ -329,7 +331,9 @@ test('Reject deep paths', () => {
       },
       paths: {
         '/foo': {
+          summary: 'Some desc',
           get: {
+            summary: 'Some desc',
             operationId: 'get-foo',
             responses: {
               200: {

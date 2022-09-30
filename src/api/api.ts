@@ -6,7 +6,7 @@ import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
 import { ApiDefinition } from './definition';
-import { ApiProps, Paths } from './props';
+import { ApiProps, Methods, Paths } from './props';
 
 /**
  * AWS API Gateway REST API defined with OpenApi v3 schema.
@@ -77,8 +77,9 @@ export class Api extends SpecRestApi {
       const methodIntegrations = paths[path];
 
       // loop through methods
-      Object.keys(methodIntegrations).forEach(method => {
-        const methodIntegration = methodIntegrations[method];
+      Object.keys(methodIntegrations).forEach((method) => {
+        const methodIntegration = methodIntegrations[method as keyof Methods];
+        if (!methodIntegration) return;
         if (this.isLambdaIntegration(methodIntegration) && !methodIntegration.xAmazonApigatewayIntegration.credentials) {
           methodIntegration.grantFunctionInvoke(this, `ImportForGrant${path}${method}`, this.getApiGatewayPrincipal());
         }

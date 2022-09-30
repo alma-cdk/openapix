@@ -2283,19 +2283,6 @@ The schema defining the content of the request, response, or parameter.
 
 ---
 
-### Methods <a name="@alma-cdk/openapix.Methods" id="almacdkopenapixmethods"></a>
-
-Methods with integrations.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { Methods } from '@alma-cdk/openapix'
-
-const methods: Methods = { ... }
-```
-
-
 ### MockIntegrationProps <a name="@alma-cdk/openapix.MockIntegrationProps" id="almacdkopenapixmockintegrationprops"></a>
 
 #### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>

@@ -6,7 +6,8 @@ import { Integration } from '../integration';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
-import { ApiBaseProps, Methods, Paths, Validator } from './props';
+import { ApiBaseProps, HTTPMethod, Methods, Paths, Validator } from './props';
+import { getMethodsFromSchemaPath, getSchemaPaths } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 
@@ -102,22 +103,28 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       const schemaSecurityIncludesCurrentAuthorizer = Array.isArray(schemaSecurity) && schemaSecurity.some(s => Object.keys(s).includes(a.id));
       if (schemaSecurityIncludesCurrentAuthorizer) {
         // loop schema paths
-        Object.keys(this.schema.get('paths')).forEach(path => {
-          // loop methods
-          Object.keys(this.schema.get(`paths.${path}`)).forEach(method => {
+        const schemaPaths = getSchemaPaths(this.schema);
+
+        if (schemaPaths !== undefined) {
+          Object.keys(schemaPaths).forEach(path => {
+            // loop methods
+            const schemaPathMethods = getMethodsFromSchemaPath(schemaPaths[path]);
+            Object.keys(schemaPathMethods).forEach(method => {
             // check if method has security
-            const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
-            if (methodSecurity && Array.isArray(methodSecurity)) {
+              const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
+
+              if (methodSecurity && Array.isArray(methodSecurity)) {
               // check if security includes authorizer
-              const methodSecurityIncludesCurrentAuthorizer = methodSecurity.some(s => Object.keys(s).includes(a.id));
-              if (!methodSecurityIncludesCurrentAuthorizer) {
-                this.schema.set(`paths.${path}.${method}.security`, [...methodSecurity, { [a.id]: [] }]);
+                const methodSecurityIncludesCurrentAuthorizer = methodSecurity.some(s => Object.keys(s).includes(a.id));
+                if (!methodSecurityIncludesCurrentAuthorizer) {
+                  this.schema.set(`paths.${path}.${method}.security`, [...methodSecurity, { [a.id]: [] }]);
+                }
+              } else {
+                this.schema.set(`paths.${path}.${method}.security`, [{ [a.id]: [] }]);
               }
-            } else {
-              this.schema.set(`paths.${path}.${method}.security`, [{ [a.id]: [] }]);
-            }
+            });
           });
-        });
+        }
       }
 
       const authorizer = this.schema.get<AuthorizerExtensionsMutable>(authorizerComponentSecuritySchemePath);
@@ -132,9 +139,9 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    */
   private configurePaths(paths: Paths = {}, defaultCors?: CorsIntegration, defaultIntegration?: Integration): void {
 
-    const schemaPaths = this.schema.get<Record<string, any>>('paths');
+    const schemaPaths = getSchemaPaths(this.schema);
     // Check that schema has paths object
-    if (!schemaPaths) {
+    if (schemaPaths === undefined) {
       addError(this.scope, 'OpenAPI Definition does not have paths object');
       return;
     }
@@ -183,9 +190,10 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       this.ensureNoIntegrationAlready(schemaPathName, methodName);
     });
 
+    const schemaPathMethods = getMethodsFromSchemaPath(schemaPath);
     // Look through all schema path methods
-    Object.keys(schemaPath).map(schemaPathMethod => {
-      const method = methods[schemaPathMethod];
+    Object.keys(schemaPathMethods).map((schemaPathMethod) => {
+      const method = methods[schemaPathMethod as HTTPMethod];
 
       if (!defaultIntegration && !method) {
         const message = `OpenAPI schema has an unhandled path method: ${schemaPathName}/${schemaPathMethod}`;
@@ -198,7 +206,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       if (defaultIntegration && !method) {
         integration = defaultIntegration;
       } else {
-        integration = method;
+        integration = method as Integration;
       }
 
       const methodPath = `paths['${schemaPathName}']['${schemaPathMethod}']`;

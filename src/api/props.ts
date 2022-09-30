@@ -152,25 +152,32 @@ export interface ApiProps extends ApiBaseProps {
 /** Paths with methods containing integrations. */
 export interface Paths {
   /**
-   * {
-   *   '/message': {
-   *     post: new openapix.LambdaIntegration(this, fn),
-   *   },
-   * }
-   */
+     * {
+     *   '/message': {
+     *     post: new openapix.LambdaIntegration(this, fn),
+     *   },
+     * }
+     */
   [path: string]: Methods;
 }
 
+export enum HTTPMethod {
+  get = 'get',
+  put = 'put',
+  post = 'post',
+  delete = 'delete',
+  options = 'options',
+  head = 'head',
+  patch = 'patch',
+  trace = 'trace'
+}
+
 /** Methods with integrations. */
-export interface Methods {
+export type Methods = {
   /**
-   *
-   * @example
-   * {
-   *   post: new openapix.LambdaIntegration(this, fn),
-   * }
+   * Integration of an operation on this path.
    */
-  [method: string]: Integration;
+  [key in HTTPMethod]?: Integration;
 }
 
 /** Validator configuration  */
