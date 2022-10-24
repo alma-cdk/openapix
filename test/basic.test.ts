@@ -158,7 +158,19 @@ test('Synth', () => {
     },
     paths: {
       [path]: {
-        get: {
+        'summary': 'Some desc',
+        'description': 'Some longer desc',
+        'servers': [
+          {
+            url: 'https://example.com/api/v1',
+          },
+        ],
+        'x-param': {
+          foo: {
+            bar: 1,
+          },
+        },
+        'get': {
           operationId: 'get-message',
           responses: {
             200: {
@@ -287,6 +299,7 @@ test('Inject paths', () => {
       },
       paths: {
         '/foo': {
+          summary: 'Some desc',
           get: {
             operationId: 'get-foo',
             responses: {
@@ -329,7 +342,9 @@ test('Reject deep paths', () => {
       },
       paths: {
         '/foo': {
+          summary: 'Some desc',
           get: {
+            summary: 'Some desc',
             operationId: 'get-foo',
             responses: {
               200: {
