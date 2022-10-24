@@ -141,7 +141,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
     const schemaPaths = getSchemaPaths(this.schema);
     // Check that schema has paths object
-    if (schemaPaths === undefined) {
+    if (typeof schemaPaths === 'undefined') {
       addError(this.scope, 'OpenAPI Definition does not have paths object');
       return;
     }
