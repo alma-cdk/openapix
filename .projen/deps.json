@@ -100,7 +100,7 @@
     },
     {
       "name": "npm-check-updates",
-      "version": "^15",
+      "version": "^16",
       "type": "build"
     },
     {
@@ -144,6 +144,11 @@
     {
       "name": "semver",
       "type": "bundled"
+    },
+    {
+      "name": "@types/prettier",
+      "version": "2.6.0",
+      "type": "override"
     },
     {
       "name": "aws-cdk-lib",
