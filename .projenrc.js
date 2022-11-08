@@ -22,6 +22,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
     distName: 'alma-cdk.openapix',
     module: 'alma_cdk.openapix',
   },
+  publishToGo: {
+    moduleName: 'github.com/alma-cdk/openapix-go',
+  },
 
   // Dependencies
   minNodeVersion: nodejsVersion,
