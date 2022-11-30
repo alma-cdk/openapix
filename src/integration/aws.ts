@@ -1,5 +1,6 @@
 import { Stack } from 'aws-cdk-lib';
 import { IntegrationProps, IntegrationType, AwsIntegrationProps as CdkAwsIntegrationProps } from 'aws-cdk-lib/aws-apigateway';
+import { parseAwsApiCall } from 'aws-cdk-lib/aws-apigateway/lib/util';
 import { Construct } from 'constructs';
 import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
 
@@ -11,7 +12,8 @@ export class AwsIntegration extends Integration {
   /** Resolves the AWS service integration URI. */
   private static resolveUri(scope: Construct, props: AwsIntegrationProps): string {
     const region = props.region || Stack.of(scope).region;
-    return `arn:aws:apigateway:${region}:${props.service}:action/${props.action}`;
+    const { apiType, apiValue } = parseAwsApiCall(props.path, props.action, props.actionParameters);
+    return `arn:aws:apigateway:${region}:${props.service}:${apiType}/${apiValue}`;
   }
 
   /**
