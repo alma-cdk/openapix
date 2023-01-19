@@ -56,6 +56,7 @@ export class CorsIntegration extends Integration {
     const integration: IntegrationProps = {
       type: IntegrationType.MOCK,
       options: {
+        requestTemplates: { 'application/json': '{"statusCode": 204}' },
         integrationResponses: [
           {
             statusCode: '204',
