@@ -1,8 +1,0 @@
-$input.json("$")
-#set($domains = [__DOMAINS__])
-#set($origin = $input.params("origin"))
-#if($domains.size()==0)
-#set($context.responseOverride.header.Access-Control-Allow-Origin="*")
-#elseif($domains.contains($origin))
-#set($context.responseOverride.header.Access-Control-Allow-Origin="$origin")
-#end
