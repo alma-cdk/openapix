@@ -59,8 +59,8 @@ export class CorsIntegration extends Integration {
           {
             statusCode: '204',
             responseParameters: {
-              'method.response.header.Access-Control-Allow-Methods': methods,
-              'method.response.header.Access-Control-Allow-Headers': headers,
+              'method.response.header.Access-Control-Allow-Methods': `'${methods}'`,
+              'method.response.header.Access-Control-Allow-Headers': `'${headers}'`,
             },
             responseTemplates: {
               'application/json': CorsIntegration.buildTemplate(origins),
