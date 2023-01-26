@@ -228,7 +228,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       const method = methods[schemaPathMethod as HTTPMethod];
 
       // Do not process options method because it has been modified already
-      // and no overrider method is present
+      // and no override method is present
       if (defaultCors && schemaPathMethod === 'options' && !method) {
         return;
       }
