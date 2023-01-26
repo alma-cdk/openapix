@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import { addError } from '../errors/add';
 
 abstract class CorsSettingValue {
-  public static ANY: string = '*';
+  public static readonly ANY: string = '*';
 
 
   public static from(scope: Construct, ...values: string[]): string {
