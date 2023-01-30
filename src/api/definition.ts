@@ -161,15 +161,45 @@ export class ApiDefinition extends apigateway.ApiDefinition {
         addError(this.scope, message);
         return;
       }
-
       if (typeof defaultCors !== 'undefined') {
-        this.schema.set(`paths.${path}.options`, {
-          'x-amazon-apigateway-integration': defaultCors.xAmazonApigatewayIntegration,
-        });
+        this.configureDefaultCors(path, defaultCors);
       }
 
       const methods = paths[path];
-      this.configurePathMethods(path, schemaPaths[path], methods, defaultIntegration);
+      this.configurePathMethods(path, schemaPaths[path], methods, defaultIntegration, defaultCors );
+    });
+  }
+
+  private configureDefaultCors(path: string, defaultCors: CorsIntegration): void {
+    this.schema.set(`paths.${path}.options`, {
+      'summary': 'CORS support',
+      'description': 'Enable CORS by returning correct headers',
+      'consumes': [
+        'application/json',
+      ],
+      'produces': [
+        'application/json',
+      ],
+      'tags': [
+        'CORS',
+      ],
+      'responses': {
+        204: {
+          description: 'Default response for CORS method',
+          headers: {
+            'Access-Control-Allow-Headers': {
+              type: 'string',
+            },
+            'Access-Control-Allow-Methods': {
+              type: 'string',
+            },
+            'Access-Control-Allow-Origin': {
+              type: 'string',
+            },
+          },
+        },
+      },
+      'x-amazon-apigateway-integration': defaultCors.xAmazonApigatewayIntegration,
     });
   }
 
@@ -181,6 +211,8 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     schemaPath: Record<string, any>,
     methods: Methods = {},
     defaultIntegration?: Integration,
+    defaultCors?: CorsIntegration,
+
   ): void {
     // Loop through given methods to ensure they are defined
     // and dont have an existing integration
@@ -195,6 +227,11 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     Object.keys(schemaPathMethods).map((schemaPathMethod) => {
       const method = methods[schemaPathMethod as HTTPMethod];
 
+      // Do not process options method because it has been modified already
+      // and no override method is present
+      if (defaultCors && schemaPathMethod === 'options' && !method) {
+        return;
+      }
       if (!defaultIntegration && !method) {
         const message = `OpenAPI schema has an unhandled path method: ${schemaPathName}/${schemaPathMethod}`;
         addError(this.scope, message);

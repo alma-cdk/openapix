@@ -4727,6 +4727,65 @@ new AwsIntegration(scope: Construct, props: AwsIntegrationProps)
 
 
 
+### CorsHeaders <a name="@alma-cdk/openapix.CorsHeaders" id="almacdkopenapixcorsheaders"></a>
+
+#### Initializers <a name="@alma-cdk/openapix.CorsHeaders.Initializer" id="almacdkopenapixcorsheadersinitializer"></a>
+
+```typescript
+import { CorsHeaders } from '@alma-cdk/openapix'
+
+new CorsHeaders()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="static-functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`from`](#almacdkopenapixcorsheadersfrom) | *No description.* |
+
+---
+
+##### `from` <a name="@alma-cdk/openapix.CorsHeaders.from" id="almacdkopenapixcorsheadersfrom"></a>
+
+```typescript
+import { CorsHeaders } from '@alma-cdk/openapix'
+
+CorsHeaders.from(scope: Construct, values: string)
+```
+
+###### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.CorsHeaders.parameter.scope" id="almacdkopenapixcorsheadersparameterscope"></a>
+
+- *Type:* [`constructs.Construct`](#constructs.Construct)
+
+---
+
+###### `values`<sup>Required</sup> <a name="@alma-cdk/openapix.CorsHeaders.parameter.values" id="almacdkopenapixcorsheadersparametervalues"></a>
+
+- *Type:* `string`
+
+---
+
+
+#### Constants <a name="Constants" id="constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`ANY`](#almacdkopenapixcorsheaderspropertyany)<span title="Required">*</span> | `string` | *No description.* |
+
+---
+
+##### `ANY` <a name="@alma-cdk/openapix.CorsHeaders.property.ANY" id="almacdkopenapixcorsheaderspropertyany"></a>
+
+- *Type:* `string`
+
+---
+
 ### CorsIntegration <a name="@alma-cdk/openapix.CorsIntegration" id="almacdkopenapixcorsintegration"></a>
 
 Defines `OPTIONS` integration used in Cross-Origin Resource Sharing (CORS).
@@ -4763,6 +4822,124 @@ new CorsIntegration(_: Construct, props: CorsIntegrationProps)
 
 
 
+
+### CorsMethods <a name="@alma-cdk/openapix.CorsMethods" id="almacdkopenapixcorsmethods"></a>
+
+#### Initializers <a name="@alma-cdk/openapix.CorsMethods.Initializer" id="almacdkopenapixcorsmethodsinitializer"></a>
+
+```typescript
+import { CorsMethods } from '@alma-cdk/openapix'
+
+new CorsMethods()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="static-functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`from`](#almacdkopenapixcorsmethodsfrom) | *No description.* |
+
+---
+
+##### `from` <a name="@alma-cdk/openapix.CorsMethods.from" id="almacdkopenapixcorsmethodsfrom"></a>
+
+```typescript
+import { CorsMethods } from '@alma-cdk/openapix'
+
+CorsMethods.from(scope: Construct, values: string)
+```
+
+###### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.CorsMethods.parameter.scope" id="almacdkopenapixcorsmethodsparameterscope"></a>
+
+- *Type:* [`constructs.Construct`](#constructs.Construct)
+
+---
+
+###### `values`<sup>Required</sup> <a name="@alma-cdk/openapix.CorsMethods.parameter.values" id="almacdkopenapixcorsmethodsparametervalues"></a>
+
+- *Type:* `string`
+
+---
+
+
+#### Constants <a name="Constants" id="constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`ANY`](#almacdkopenapixcorsmethodspropertyany)<span title="Required">*</span> | `string` | *No description.* |
+
+---
+
+##### `ANY` <a name="@alma-cdk/openapix.CorsMethods.property.ANY" id="almacdkopenapixcorsmethodspropertyany"></a>
+
+- *Type:* `string`
+
+---
+
+### CorsOrigins <a name="@alma-cdk/openapix.CorsOrigins" id="almacdkopenapixcorsorigins"></a>
+
+#### Initializers <a name="@alma-cdk/openapix.CorsOrigins.Initializer" id="almacdkopenapixcorsoriginsinitializer"></a>
+
+```typescript
+import { CorsOrigins } from '@alma-cdk/openapix'
+
+new CorsOrigins()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="static-functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`from`](#almacdkopenapixcorsoriginsfrom) | *No description.* |
+
+---
+
+##### `from` <a name="@alma-cdk/openapix.CorsOrigins.from" id="almacdkopenapixcorsoriginsfrom"></a>
+
+```typescript
+import { CorsOrigins } from '@alma-cdk/openapix'
+
+CorsOrigins.from(scope: Construct, values: string)
+```
+
+###### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.CorsOrigins.parameter.scope" id="almacdkopenapixcorsoriginsparameterscope"></a>
+
+- *Type:* [`constructs.Construct`](#constructs.Construct)
+
+---
+
+###### `values`<sup>Required</sup> <a name="@alma-cdk/openapix.CorsOrigins.parameter.values" id="almacdkopenapixcorsoriginsparametervalues"></a>
+
+- *Type:* `string`
+
+---
+
+
+#### Constants <a name="Constants" id="constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`ANY`](#almacdkopenapixcorsoriginspropertyany)<span title="Required">*</span> | `string` | *No description.* |
+
+---
+
+##### `ANY` <a name="@alma-cdk/openapix.CorsOrigins.property.ANY" id="almacdkopenapixcorsoriginspropertyany"></a>
+
+- *Type:* `string`
+
+---
 
 ### HttpIntegration <a name="@alma-cdk/openapix.HttpIntegration" id="almacdkopenapixhttpintegration"></a>
 

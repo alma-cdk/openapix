@@ -59,6 +59,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '/examples/**/node_modules',
     '/examples/**/cdk.out',
     '/examples/**/.git',
+    '.vscode',
   ],
 
 
