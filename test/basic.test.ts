@@ -521,11 +521,140 @@ test('Handles custom authorizer', () => {
   template.hasResourceProperties( 'AWS::Lambda::Permission', Match.objectLike({
     Action: 'lambda:InvokeFunction',
     FunctionName: {
-      'Fn::GetAtt': [
-        Match.stringLikeRegexp('AuthorizerFunction*'),
-        'Arn',
-      ],
+      Ref: Match.stringLikeRegexp('AuthorizerFunction*'),
     },
     Principal: 'apigateway.amazonaws.com',
   }));
+});
+
+test('Handles cross-stack imports inside cdk-app', () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, 'MainStack');
+  const lambdaStack = new cdk.Stack(app, 'OtherStack');
+  const testLambda = new lambda.Function(lambdaStack, 'TestFunction', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromInline(`module.exports = {
+                handler: async (event) => {
+                  console.log(event);
+                  return {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                      message: 'Hello',
+                    }),
+                  };
+                },
+              }`),
+  });
+
+  const authorizerName = 'MyLambdaAuthorizer';
+
+  const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromInline(`module.exports = {
+                handler: async (event) => {
+                  console.log(event);
+                  return {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                      message: 'Hello',
+                    }),
+                  };
+                },
+              }`),
+  });
+
+  new openapix.Api(stack, 'MyApi', {
+    upload: false,
+    source: new openapix.Schema({
+      openapi: '3.0.1',
+      info: {
+        title: 'TestApi',
+        version: '0.0.0',
+      },
+      security: [
+        {
+          otherAuthorizer: [],
+        },
+      ],
+      components: {
+        securitySchemes: {
+          [authorizerName]: {
+            type: 'apiKey',
+            name: 'code',
+            in: 'query',
+          },
+        },
+      },
+      paths: {
+        '/foo': {
+          get: {
+            operationId: 'get-foo',
+            security: [
+              {
+                [authorizerName]: [],
+              },
+            ],
+            responses: {
+              200: {
+                content: {
+                  'application/json': {
+                    example: [
+                      {
+                        some: 'foo',
+                        thing: 'bar',
+                      },
+                    ],
+                  },
+                },
+                description: 'foo',
+              },
+            },
+          },
+        },
+        '/bar': {
+          get: {
+            operationId: 'get-bar',
+            responses: {
+              200: {
+                content: {
+                  'application/json': {
+                    example: [
+                      {
+                        some: 'bar',
+                        thing: 'baz',
+                      },
+                    ],
+                  },
+                },
+                description: 'bar',
+              },
+            },
+          },
+        },
+      },
+    }),
+
+    authorizers: [
+      new openapix.LambdaAuthorizer(stack, authorizerName, {
+        fn: authorizerLambda,
+        identitySource: apigateway.IdentitySource.queryString('code'),
+        type: 'request',
+        authType: 'custom',
+        resultsCacheTtl: Duration.minutes(5),
+      }),
+    ],
+
+    paths: {
+      '/foo': {
+        get: new openapix.LambdaIntegration(stack, testLambda),
+      },
+      '/bar': {
+        get: new openapix.LambdaIntegration(stack, testLambda),
+      },
+    },
+  });
+
+  expectNoErrorAnnotations(stack);
 });

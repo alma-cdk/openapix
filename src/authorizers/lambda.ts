@@ -1,7 +1,6 @@
 import { Duration, Stack } from 'aws-cdk-lib';
 import { IRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Function, IFunction } from 'aws-cdk-lib/aws-lambda';
+import { CfnPermission, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 import { LambdaInvocation } from '../lambda-invocation';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
@@ -60,30 +59,20 @@ export class LambdaAuthorizer extends Construct {
    * ex. arn:aws:execute-api:us-east-1:123456789012:api-id/authorizers/authorizer-id
   */
   public grantFunctionInvoke(api: IRestApi): void {
-    /**
-     * if the lambda functions are created in separate stacks, circular dependencies appear
-     * when we grant function invoke permissions directly. This is a hacky way to avoid the issue
-     */
-    const fn = Function.fromFunctionAttributes(this, `ImportFunction${this.id}`,
-      {
-        functionArn: this.fn.functionArn,
-        sameEnvironment: true,
-      });
-
     const authorizerArn = Stack.of(this).formatArn({
       service: 'execute-api',
       resource: api.restApiId,
       resourceName: 'authorizers/*',
     });
 
-    fn.grantInvoke(new ServicePrincipal('apigateway.amazonaws.com',
-      {
-        conditions: {
-          ArnLike: {
-            'aws:SourceArn': authorizerArn,
-          },
-        },
-      },
-    ));
+    /**
+     * using Lambda-constructs grant-functions cause circular dependencies if they are defined in different stacks
+     */
+    new CfnPermission(api, `InvokePermissionForAuthorizer${this.fn.node.id}`, {
+      principal: 'apigateway.amazonaws.com',
+      action: 'lambda:InvokeFunction',
+      functionName: this.fn.functionName,
+      sourceArn: authorizerArn,
+    });
   }
 }
