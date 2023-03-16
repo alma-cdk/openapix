@@ -1,5 +1,4 @@
 import { EndpointType, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
@@ -72,18 +71,15 @@ export class Api extends SpecRestApi {
 
   /** Allow Lambda invocations to API Gateway instance principal */
   private grantLambdaInvokes(paths: Paths = {}): void {
-    // loop through paths
-    Object.keys(paths).forEach(path => {
-      const methodIntegrations = paths[path];
+    // get unique integration functions
+    const integrations = [...new Map(Object.values(paths)
+      .reduce((acc: (Integration | undefined)[], val: Methods) => val ? [...acc, ...Object.values(val)] : acc, [])
+      .filter((val): val is LambdaIntegration => !!val && this.isLambdaIntegration(val) && !val.xAmazonApigatewayIntegration.credentials)
+      .map(val => [val.fn.functionArn, val]),
+    ).values()];
 
-      // loop through methods
-      Object.keys(methodIntegrations).forEach((method) => {
-        const methodIntegration = methodIntegrations[method as keyof Methods];
-        if (!methodIntegration) return;
-        if (this.isLambdaIntegration(methodIntegration) && !methodIntegration.xAmazonApigatewayIntegration.credentials) {
-          methodIntegration.grantFunctionInvoke(this, `ImportForGrant${path}${method}`, this.getApiGatewayPrincipal());
-        }
-      });
+    integrations.forEach((integration) => {
+      integration.grantFunctionInvoke(this, this.arnForExecuteApi());
     });
   }
 
@@ -93,30 +89,21 @@ export class Api extends SpecRestApi {
       return;
     }
 
-    authorizers.forEach(authorizer => {
-      if (authorizer instanceof LambdaAuthorizer && !authorizer.xAmazonApigatewayAuthorizer.authorizerCredentials) {
-        authorizer.grantFunctionInvoke(this);
-      }
-    },
-    );
+    // filter duplicate authorizers
+    const uniqueLambdaAuthorizers = [...new Map(Object.values(authorizers)
+      .filter((val): val is LambdaAuthorizer => {
+        return val instanceof LambdaAuthorizer && !val.xAmazonApigatewayAuthorizer.authorizerCredentials;
+      })
+      .map(val => [val.fn.functionArn, val]),
+    ).values()];
+
+    uniqueLambdaAuthorizers.forEach(authorizer => {
+      authorizer.grantFunctionInvoke(this);
+    });
   }
 
   /** Determine if the integration internal type is `LAMBDA`. */
   private isLambdaIntegration(integration: Integration): integration is LambdaIntegration {
     return integration.type === InternalIntegrationType.LAMBDA;
-  }
-
-  /** Resolve ARN Service Principal for given API Gateway instance. */
-  private getApiGatewayPrincipal(): ServicePrincipal {
-    return new ServicePrincipal(
-      'apigateway.amazonaws.com',
-      {
-        conditions: {
-          ArnLike: {
-            'aws:SourceArn': this.arnForExecuteApi(),
-          },
-        },
-      },
-    );
   }
 }

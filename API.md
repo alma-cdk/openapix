@@ -5112,7 +5112,7 @@ new LambdaIntegration(scope: Construct, fn: IFunction, props?: LambdaIntegration
 ##### `grantFunctionInvoke` <a name="@alma-cdk/openapix.LambdaIntegration.grantFunctionInvoke" id="almacdkopenapixlambdaintegrationgrantfunctioninvoke"></a>
 
 ```typescript
-public grantFunctionInvoke(scope: Construct, id: string, principal: ServicePrincipal)
+public grantFunctionInvoke(scope: Construct, executeApiArn: string)
 ```
 
 ###### `scope`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.scope" id="almacdkopenapixlambdaintegrationparameterscope"></a>
@@ -5121,15 +5121,9 @@ public grantFunctionInvoke(scope: Construct, id: string, principal: ServicePrinc
 
 ---
 
-###### `id`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.id" id="almacdkopenapixlambdaintegrationparameterid"></a>
+###### `executeApiArn`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.executeApiArn" id="almacdkopenapixlambdaintegrationparameterexecuteapiarn"></a>
 
 - *Type:* `string`
-
----
-
-###### `principal`<sup>Required</sup> <a name="@alma-cdk/openapix.LambdaIntegration.parameter.principal" id="almacdkopenapixlambdaintegrationparameterprincipal"></a>
-
-- *Type:* [`aws-cdk-lib.aws_iam.ServicePrincipal`](#aws-cdk-lib.aws_iam.ServicePrincipal)
 
 ---
 
