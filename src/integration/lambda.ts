@@ -2,8 +2,8 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
 import { CfnPermission, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
-import { LambdaInvocation } from '../lambda-invocation';
 import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
+import { LambdaInvocation } from '../lambda-invocation';
 
 export interface LambdaIntegrationOptions extends apigateway.LambdaIntegrationOptions, ValidatorConfig {}
 

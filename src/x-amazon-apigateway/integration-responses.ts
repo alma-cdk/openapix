@@ -18,6 +18,8 @@ export interface XAmazonApigatewayIntegrationResponses {
    * The Response status pattern property name refers to a response status code or regular expression
    * describing a group of response status codes. It does not correspond to any identifier of an
    * IntegrationResponse resource in the API Gateway REST API.
+   *
+   * @jsii ignore
    */
   [responseStatusPattern: string]: XAmazonApigatewayIntegrationResponse;
 }

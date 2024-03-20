@@ -1,9 +1,9 @@
 import { Duration } from 'aws-cdk-lib';
 import { IUserPool } from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
+import { Id } from './authorizer';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
 import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
-import { Id } from './authorizer';
 
 export interface CognitoUserPoolsAuthorizerProps {
   readonly cognitoUserPools: IUserPool[];

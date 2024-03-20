@@ -5,9 +5,9 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { IdentitySource } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { get, set } from 'lodash';
+import { expectNoErrorAnnotations } from './utils';
 import * as openapix from '../src';
 import { LambdaAuthorizer, MockIntegration } from '../src';
-import { expectNoErrorAnnotations } from './utils';
 
 test('Validators', () => {
 

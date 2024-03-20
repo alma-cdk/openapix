@@ -1,11 +1,11 @@
 import { EndpointType, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
+import { ApiDefinition } from './definition';
+import { ApiProps, Methods, Paths } from './props';
 import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
 import { IDocument } from '../schema';
-import { ApiDefinition } from './definition';
-import { ApiProps, Methods, Paths } from './props';
 
 /**
  * AWS API Gateway REST API defined with OpenApi v3 schema.

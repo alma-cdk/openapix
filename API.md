@@ -1973,7 +1973,7 @@ public readonly requestTemplates: {[ key: string ]: string};
 
 A map of Apache Velocity templates that are applied on the request payload.
 
-The template that API Gateway uses is based on the value of the Content-Type header that's sent by the client. The content type value is the key, and the template is the value (specified as a string), such as the following snippet:  ```    { "application/json": "{ \"statusCode\": 200 }" } ```
+The template that API Gateway uses is based on the value of the Content-Type header that's sent by the client. The content type value is the key, and the template is the value (specified as a string), such as the following snippet:  ```   { "application/json": "{ \"statusCode\": 200 }" } ```
 
 > http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
 
@@ -2445,7 +2445,7 @@ public readonly requestTemplates: {[ key: string ]: string};
 
 A map of Apache Velocity templates that are applied on the request payload.
 
-The template that API Gateway uses is based on the value of the Content-Type header that's sent by the client. The content type value is the key, and the template is the value (specified as a string), such as the following snippet:  ```    { "application/json": "{ \"statusCode\": 200 }" } ```
+The template that API Gateway uses is based on the value of the Content-Type header that's sent by the client. The content type value is the key, and the template is the value (specified as a string), such as the following snippet:  ```   { "application/json": "{ \"statusCode\": 200 }" } ```
 
 > http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
 

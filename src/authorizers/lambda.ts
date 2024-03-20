@@ -2,10 +2,10 @@ import { Duration, Stack } from 'aws-cdk-lib';
 import { IRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { CfnPermission, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
+import { Id } from './authorizer';
 import { LambdaInvocation } from '../lambda-invocation';
 import { XAmazonApigatewayAuthorizer } from '../x-amazon-apigateway/authorizer';
 import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
-import { Id } from './authorizer';
 
 export interface LambdaAuthorizerProps {
 

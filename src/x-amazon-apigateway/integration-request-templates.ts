@@ -6,6 +6,8 @@ export interface XAmazonApigatewayIntegrationRequestTemplates {
   /**
    * @example
    * 'application/json'
+   *
+   * @jsii ignore
    */
   [mimeType: string]: string;
 }

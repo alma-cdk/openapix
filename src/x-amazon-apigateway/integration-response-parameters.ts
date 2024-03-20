@@ -13,6 +13,8 @@
 export interface XAmazonApigatewayIntegrationResponseParameters {
   /**
    * The named parameter value can be derived from the header and body types of the integration response parameters.
+   *
+   * @jsii ignore
    */
   [parameter: string]: string;
 }

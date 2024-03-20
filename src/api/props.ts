@@ -157,6 +157,8 @@ export interface Paths {
      *     post: new openapix.LambdaIntegration(this, fn),
      *   },
      * }
+     *
+     * @jsii ignore
      */
   [path: string]: Methods;
 }

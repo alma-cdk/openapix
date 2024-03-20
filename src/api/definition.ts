@@ -1,13 +1,13 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
+import { ApiBaseProps, HTTPMethod, Methods, Paths, Validator } from './props';
+import { getMethodsFromSchemaPath, getSchemaPaths } from './utils';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
 import { Integration } from '../integration';
 import { CorsIntegration } from '../integration/cors';
 import { IDocument, Schema } from '../schema';
 import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
-import { ApiBaseProps, HTTPMethod, Methods, Paths, Validator } from './props';
-import { getMethodsFromSchemaPath, getSchemaPaths } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const omitDeep = require('omit-deep-lodash');
 

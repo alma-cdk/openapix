@@ -1,5 +1,5 @@
-import { Schema } from '../schema';
 import { HTTPMethod } from './props';
+import { Schema } from '../schema';
 
 const getSchemaPaths = (schema: Schema) => {
   const paths = schema.get<Record<string, any>>('paths');
