@@ -18,6 +18,8 @@ export interface XAmazonApigatewayIntegrationRequestParameters {
    *
    * For the body parameter, the <param-name> is a JSON path expression
    * without the $. prefix.
+   *
+   * @jsii ignore
    */
   [parameter: string]: string;
 }

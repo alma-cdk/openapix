@@ -1,12 +1,12 @@
-const { awscdk, TextFile, javascript } = require('projen');
-
-const nodejsVersion = '14.17.6';
+import { awscdk, javascript } from 'projen';
 
 const project = new awscdk.AwsCdkConstructLibrary({
+  projenrcTs: true,
+  jsiiVersion: '~5.3.24',
 
   // Metadata
   stability: 'experimental',
-  authorName: 'Alma Media',
+  author: 'Alma Media',
   authorOrganization: true,
   authorAddress: 'opensource@almamedia.dev',
   name: '@alma-cdk/openapix',
@@ -26,25 +26,18 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   packageManager: javascript.NodePackageManager.NPM,
   npmAccess: javascript.NpmAccess.PUBLIC,
-  //   python: {
-  //     distName: 'alma-cdk.openapix',
-  //     module: 'alma_cdk.openapix',
-  //   },
+  publishToPypi: {
+    distName: 'alma-cdk.openapix',
+    module: 'alma_cdk.openapix',
+  },
   publishToGo: {
     moduleName: 'github.com/alma-cdk/openapix-go',
   },
 
   // Dependencies
-  minNodeVersion: nodejsVersion,
-  cdkVersion: '2.32.1',
-  constructsVersion: '10.0.0',
-  peerDeps: [
-    'constructs',
-    'aws-cdk-lib',
-  ],
+  cdkVersion: '2.133.0',
+  constructsVersion: '10.3.0',
   devDeps: [
-    'constructs',
-    'aws-cdk-lib',
     'semver',
     '@types/lodash',
     '@types/js-yaml',
@@ -73,9 +66,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
 
 });
 
-new TextFile(project, '.nvmrc', {
-  lines: [nodejsVersion],
-});
 
 project.addPackageIgnore('/examples/');
 

@@ -98,7 +98,11 @@ export interface LicenseObject extends Extensible {
 /** Holds the relative paths to the individual endpoints and their operations. The path is appended to the URL from the Server Object in order to construct the full URL. The Paths MAY be empty, due to ACL constraints. */
 export interface PathsObject extends Extensible {
 
-  /** A relative path to an individual endpoint. The field name MUST begin with a forward slash (/). The path is appended (no relative URL resolution) to the expanded URL from the Server Object's url field in order to construct the full URL. Path templating is allowed. When matching URLs, concrete (non-templated) paths would be matched before their templated counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use. */
+  /**
+   * A relative path to an individual endpoint. The field name MUST begin with a forward slash (/). The path is appended (no relative URL resolution) to the expanded URL from the Server Object's url field in order to construct the full URL. Path templating is allowed. When matching URLs, concrete (non-templated) paths would be matched before their templated counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use.
+   *
+   * @jsii ignore
+  */
   readonly [path: string]: PathItemObject | ReferenceObject;
 }
 
@@ -202,6 +206,8 @@ export interface ResponsesObject extends Extensible {
    * Use `default` for the documentation of responses other than the ones declared for specific HTTP response codes.
    * Use this field to cover undeclared responses. A Reference Object can link to a response that the OpenAPI Object's
    * components/responses section defines.
+   *
+   * @jsii ignore
    */
   readonly [httpStatusCode: string]: ResponseObject | ReferenceObject;
 }
@@ -368,6 +374,8 @@ export interface CallbackObject extends Extensible {
    * A Path Item Object used to define a callback request and expected responses.
    *
    * The key that identifies the Path Item Object is a runtime expression that can be evaluated in the context of a runtime HTTP request/response to identify the URL to be used for the callback request. A simple example might be $request.body#/url. However, using a runtime expression the complete HTTP message can be accessed. This includes accessing any part of a body that a JSON Pointer RFC6901 can reference.
+   *
+   * @jsii ignore
    */
   readonly [expression: string]: PathItemObject;
 }
@@ -535,7 +543,11 @@ export interface LinkObject extends Extensible {
  */
 export interface SecurityRequirementObject extends Extensible {
 
-  /** Each name MUST correspond to a security scheme which is declared in the Security Schemes under the Components Object. If the security scheme is of type "oauth2" or "openIdConnect", then the value is a list of scope names required for the execution, and the list MAY be empty if authorization does not require a specified scope. For other security scheme types, the array MUST be empty. */
+  /**
+   * Each name MUST correspond to a security scheme which is declared in the Security Schemes under the Components Object. If the security scheme is of type "oauth2" or "openIdConnect", then the value is a list of scope names required for the execution, and the list MAY be empty if authorization does not require a specified scope. For other security scheme types, the array MUST be empty.
+   *
+   * @jsii ignore
+   */
   readonly [name: string]: string[];
 }
 
@@ -580,6 +592,8 @@ export interface ReferenceObject extends Extensible {
    * {
    *   $ref: '../resources/users.yaml',
    * }
+   *
+   * @jsii ignore
    */
   readonly [key: string]: string;
   //readonly $ref: string; can't be done because JSII 8002
@@ -638,6 +652,8 @@ export interface Extensible {
    *   altText: 'Acme Corp',
    *   href: 'http://example.com',
    * }
+   *
+   * @jsii ignore
    */
   readonly [extensionName: string]: any;
 }
