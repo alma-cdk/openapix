@@ -16,12 +16,20 @@ const project = new awscdk.AwsCdkConstructLibrary({
 
   // Publish configuration
   defaultReleaseBranch: 'main',
+  majorVersion: 0,
+  releaseBranches: {
+    beta: {
+      majorVersion: 1,
+      prerelease: 'beta',
+      npmDistTag: 'beta',
+    },
+  },
   packageManager: javascript.NodePackageManager.NPM,
   npmAccess: javascript.NpmAccess.PUBLIC,
-  python: {
-    distName: 'alma-cdk.openapix',
-    module: 'alma_cdk.openapix',
-  },
+  //   python: {
+  //     distName: 'alma-cdk.openapix',
+  //     module: 'alma_cdk.openapix',
+  //   },
   publishToGo: {
     moduleName: 'github.com/alma-cdk/openapix-go',
   },
