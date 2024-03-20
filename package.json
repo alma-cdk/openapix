@@ -19,7 +19,6 @@
     "package-all": "npx projen package-all",
     "package:go": "npx projen package:go",
     "package:js": "npx projen package:js",
-    "package:python": "npx projen package:python",
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
@@ -150,10 +149,6 @@
   "jsii": {
     "outdir": "dist",
     "targets": {
-      "python": {
-        "distName": "alma-cdk.openapix",
-        "module": "alma_cdk.openapix"
-      },
       "go": {
         "moduleName": "github.com/alma-cdk/openapix-go"
       }
