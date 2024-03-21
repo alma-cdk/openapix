@@ -4145,8 +4145,8 @@ const xAmazonApigatewayIntegration: XAmazonApigatewayIntegration = { ... }
 | [`contentHandling`](#almacdkopenapixxamazonapigatewayintegrationpropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Response payload encoding conversion types. |
 | [`credentials`](#almacdkopenapixxamazonapigatewayintegrationpropertycredentials) | `string` | For AWS IAM role-based credentials, specify the ARN of an appropriate IAM role. |
 | [`passthroughBehavior`](#almacdkopenapixxamazonapigatewayintegrationpropertypassthroughbehavior) | [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior) | Specifies how a request payload of unmapped content type is passed through the integration request without modification. |
-| [`requestParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters) | Specifies mappings from method request parameters to integration request parameters. |
-| [`requestTemplates`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates) | Mapping templates for a request payload of specified MIME types. |
+| [`requestParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters) | {[ key: string ]: `string`} | Specifies mappings from method request parameters to integration request parameters. |
+| [`requestTemplates`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates) | {[ key: string ]: `string`} | Mapping templates for a request payload of specified MIME types. |
 | [`responses`](#almacdkopenapixxamazonapigatewayintegrationpropertyresponses) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses) | Defines the method's responses and specifies desired parameter mappings or payload mappings from integration responses to method responses. |
 | [`timeoutInMillis`](#almacdkopenapixxamazonapigatewayintegrationpropertytimeoutinmillis) | `number` | Integration timeouts between 50 ms and 29,000 ms. |
 | [`tlsConfig`](#almacdkopenapixxamazonapigatewayintegrationpropertytlsconfig) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig) | Specifies the TLS configuration for an integration. |
@@ -4293,10 +4293,10 @@ Supported values are when_no_templates, when_no_match, and never
 ##### `requestParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.requestParameters" id="almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters"></a>
 
 ```typescript
-public readonly requestParameters: XAmazonApigatewayIntegrationRequestParameters;
+public readonly requestParameters: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters)
+- *Type:* {[ key: string ]: `string`}
 
 Specifies mappings from method request parameters to integration request parameters.
 
@@ -4307,10 +4307,10 @@ Supported request parameters are querystring, path, header, and body.
 ##### `requestTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.requestTemplates" id="almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates"></a>
 
 ```typescript
-public readonly requestTemplates: XAmazonApigatewayIntegrationRequestTemplates;
+public readonly requestTemplates: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates)
+- *Type:* {[ key: string ]: `string`}
 
 Mapping templates for a request payload of specified MIME types.
 
@@ -4352,36 +4352,6 @@ Specifies the TLS configuration for an integration.
 
 ---
 
-### XAmazonApigatewayIntegrationRequestParameters <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters" id="almacdkopenapixxamazonapigatewayintegrationrequestparameters"></a>
-
-Specifies mappings from named method request parameters to integration request parameters.
-
-The method request parameters must be defined before being referenced.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-requestParameters.html
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationRequestParameters } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationRequestParameters: XAmazonApigatewayIntegrationRequestParameters = { ... }
-```
-
-
-### XAmazonApigatewayIntegrationRequestTemplates <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates" id="almacdkopenapixxamazonapigatewayintegrationrequesttemplates"></a>
-
-Specifies mapping templates for a request payload of the specified MIME types.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationRequestTemplates } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationRequestTemplates: XAmazonApigatewayIntegrationRequestTemplates = { ... }
-```
-
-
 ### XAmazonApigatewayIntegrationResponse <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse" id="almacdkopenapixxamazonapigatewayintegrationresponse"></a>
 
 Defines a response and specifies parameter mappings or payload mappings from the integration response to the method response.
@@ -4402,8 +4372,8 @@ const xAmazonApigatewayIntegrationResponse: XAmazonApigatewayIntegrationResponse
 | --- | --- | --- |
 | [`statusCode`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertystatuscode)<span title="Required">*</span> | `string` | HTTP status code for the method response. |
 | [`contentHandling`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Response payload encoding conversion types. |
-| [`responseParameters`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters) | Specifies parameter mappings for the response. |
-| [`responseTemplates`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates) | Specifies MIME type-specific mapping templates for the response’s payload. |
+| [`responseParameters`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters) | {[ key: string ]: `string`} | Specifies parameter mappings for the response. |
+| [`responseTemplates`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates) | {[ key: string ]: `string`} | Specifies MIME type-specific mapping templates for the response’s payload. |
 
 ---
 
@@ -4438,10 +4408,10 @@ Valid values are 1) CONVERT_TO_TEXT, for converting a binary payload into a base
 ##### `responseParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.responseParameters" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters"></a>
 
 ```typescript
-public readonly responseParameters: XAmazonApigatewayIntegrationResponseParameters;
+public readonly responseParameters: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters)
+- *Type:* {[ key: string ]: `string`}
 
 Specifies parameter mappings for the response.
 
@@ -4452,29 +4422,14 @@ Only the header and body parameters of the integration response can be mapped to
 ##### `responseTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.responseTemplates" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates"></a>
 
 ```typescript
-public readonly responseTemplates: XAmazonApigatewayIntegrationResponseTemplates;
+public readonly responseTemplates: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates)
+- *Type:* {[ key: string ]: `string`}
 
 Specifies MIME type-specific mapping templates for the response’s payload.
 
 ---
-
-### XAmazonApigatewayIntegrationResponseParameters <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters" id="almacdkopenapixxamazonapigatewayintegrationresponseparameters"></a>
-
-Specifies mappings from integration method response parameters to method response parameters.
-
-You can map header, body, or static values to the header type of the method response.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationResponseParameters } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationResponseParameters: XAmazonApigatewayIntegrationResponseParameters = { ... }
-```
-
 
 ### XAmazonApigatewayIntegrationResponses <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses" id="almacdkopenapixxamazonapigatewayintegrationresponses"></a>
 
@@ -4488,21 +4443,6 @@ Defines the method's responses and specifies parameter mappings or payload mappi
 import { XAmazonApigatewayIntegrationResponses } from '@alma-cdk/openapix'
 
 const xAmazonApigatewayIntegrationResponses: XAmazonApigatewayIntegrationResponses = { ... }
-```
-
-
-### XAmazonApigatewayIntegrationResponseTemplates <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates" id="almacdkopenapixxamazonapigatewayintegrationresponsetemplates"></a>
-
-Specifies a mapping template to transform the integration response body to the method response body for a given MIME type.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.html#models-mappings-mappings
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationResponseTemplates } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationResponseTemplates: XAmazonApigatewayIntegrationResponseTemplates = { ... }
 ```
 
 
