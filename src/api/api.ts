@@ -26,12 +26,12 @@ export class Api extends SpecRestApi {
    * new openapix.Api(this, 'MyApi', {
    *   source: './schema.yaml',
    *   paths: {
-   *     '/foo': {
+   *     '/foo': new openapix.Methods({
    *       get: new openapix.MockIntegration(this),
-   *     },
-   *     '/bar': {
+   *     }),
+   *     '/bar': new openapix.Methods({
    *       post: new openapix.LambdaIntegration(this, fn),
-   *     },
+   *     }),
    *   }
    * })
    *

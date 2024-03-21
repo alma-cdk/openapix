@@ -138,7 +138,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
    */
-  private configurePaths(paths?: Paths, defaultCors?: CorsIntegration, defaultIntegration?: Integration): void {
+  private configurePaths(paths: Paths = {}, defaultCors?: CorsIntegration, defaultIntegration?: Integration): void {
 
     const schemaPaths = getSchemaPaths(this.schema);
     // Check that schema has paths object
@@ -148,7 +148,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     }
 
     // Loop through paths to ensure all paths are defined in OpenAPI schema
-    Object.keys(paths || {}).forEach(path => {
+    Object.keys(paths).forEach(path => {
       if (!schemaPaths[path]) {
         const message = `Path ${path} not found in OpenAPI Definition. Check paths-props in definition.`;
         addError(this.scope, message);
@@ -157,7 +157,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
     // Loop through all paths defined in the openapi schema to ensure all path integrations are handled
     Object.keys(schemaPaths).map((path: string) => {
-      if (!defaultIntegration && (!paths || !paths[path])) {
+      if (!defaultIntegration &&!paths[path]) {
         const message = `Missing integration for path: ${path}. Check paths-props in definition, or add a default integration.`;
         addError(this.scope, message);
         return;
@@ -166,7 +166,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
         this.configureDefaultCors(path, defaultCors);
       }
 
-      const methods = paths ? paths[path] : undefined;
+      const methods = paths[path];
       this.configurePathMethods(path, schemaPaths[path], methods, defaultIntegration, defaultCors );
     });
   }

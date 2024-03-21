@@ -23,6 +23,11 @@ export class Methods {
   private readonly methods: IMethodIntegrations;
 
   public constructor(methods: IMethodIntegrations) {
+    // check if the methods are empty
+    if (Object.keys(methods).length === 0) {
+      throw new Error('At least one method must be defined');
+    }
+
     this.methods = methods;
   }
 
