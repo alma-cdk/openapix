@@ -5181,48 +5181,48 @@ public fetchAllIntegrations()
 ##### `fetchIntegration` <a name="@alma-cdk/openapix.Methods.fetchIntegration" id="almacdkopenapixmethodsfetchintegration"></a>
 
 ```typescript
-public fetchIntegration(method: HTTPMethod)
+public fetchIntegration(method: string)
 ```
 
 ###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
 
-- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+- *Type:* `string`
 
 ---
 
 ##### `hasIntegration` <a name="@alma-cdk/openapix.Methods.hasIntegration" id="almacdkopenapixmethodshasintegration"></a>
 
 ```typescript
-public hasIntegration(method: HTTPMethod)
+public hasIntegration(method: string)
 ```
 
 ###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
 
-- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+- *Type:* `string`
 
 ---
 
 ##### `removeIntegration` <a name="@alma-cdk/openapix.Methods.removeIntegration" id="almacdkopenapixmethodsremoveintegration"></a>
 
 ```typescript
-public removeIntegration(method: HTTPMethod)
+public removeIntegration(method: string)
 ```
 
 ###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
 
-- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+- *Type:* `string`
 
 ---
 
 ##### `setIntegration` <a name="@alma-cdk/openapix.Methods.setIntegration" id="almacdkopenapixmethodssetintegration"></a>
 
 ```typescript
-public setIntegration(method: HTTPMethod, integration: Integration)
+public setIntegration(method: string, integration: Integration)
 ```
 
 ###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
 
-- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+- *Type:* `string`
 
 ---
 
@@ -7967,61 +7967,6 @@ Signifies whether the array is wrapped (for example, <books><book/><book/></book
 ---
 
 ## Enums <a name="Enums" id="enums"></a>
-
-### HTTPMethod <a name="HTTPMethod" id="httpmethod"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| [`GET`](#almacdkopenapixhttpmethodget) | *No description.* |
-| [`PUT`](#almacdkopenapixhttpmethodput) | *No description.* |
-| [`POST`](#almacdkopenapixhttpmethodpost) | *No description.* |
-| [`DELETE`](#almacdkopenapixhttpmethoddelete) | *No description.* |
-| [`OPTIONS`](#almacdkopenapixhttpmethodoptions) | *No description.* |
-| [`HEAD`](#almacdkopenapixhttpmethodhead) | *No description.* |
-| [`PATCH`](#almacdkopenapixhttpmethodpatch) | *No description.* |
-| [`TRACE`](#almacdkopenapixhttpmethodtrace) | *No description.* |
-
----
-
-#### `GET` <a name="@alma-cdk/openapix.HTTPMethod.GET" id="almacdkopenapixhttpmethodget"></a>
-
----
-
-
-#### `PUT` <a name="@alma-cdk/openapix.HTTPMethod.PUT" id="almacdkopenapixhttpmethodput"></a>
-
----
-
-
-#### `POST` <a name="@alma-cdk/openapix.HTTPMethod.POST" id="almacdkopenapixhttpmethodpost"></a>
-
----
-
-
-#### `DELETE` <a name="@alma-cdk/openapix.HTTPMethod.DELETE" id="almacdkopenapixhttpmethoddelete"></a>
-
----
-
-
-#### `OPTIONS` <a name="@alma-cdk/openapix.HTTPMethod.OPTIONS" id="almacdkopenapixhttpmethodoptions"></a>
-
----
-
-
-#### `HEAD` <a name="@alma-cdk/openapix.HTTPMethod.HEAD" id="almacdkopenapixhttpmethodhead"></a>
-
----
-
-
-#### `PATCH` <a name="@alma-cdk/openapix.HTTPMethod.PATCH" id="almacdkopenapixhttpmethodpatch"></a>
-
----
-
-
-#### `TRACE` <a name="@alma-cdk/openapix.HTTPMethod.TRACE" id="almacdkopenapixhttpmethodtrace"></a>
-
----
-
 
 ### InternalIntegrationType <a name="InternalIntegrationType" id="internalintegrationtype"></a>
 
