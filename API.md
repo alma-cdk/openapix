@@ -274,7 +274,7 @@ const apiBaseProps: ApiBaseProps = { ... }
 | [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`defaultIntegration`](#almacdkopenapixapibasepropspropertydefaultintegration) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | Add a default integration for paths without explicitly defined integrations. |
 | [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixapibasepropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
+| [`paths`](#almacdkopenapixapibasepropspropertypaths) | {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)} | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
 | [`upload`](#almacdkopenapixapibasepropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
@@ -351,10 +351,10 @@ Inject any OpenApi v3 data to given schema definition object paths.
 ##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.paths" id="almacdkopenapixapibasepropspropertypaths"></a>
 
 ```typescript
-public readonly paths: Paths;
+public readonly paths: {[ key: string ]: Methods};
 ```
 
-- *Type:* [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths)
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)}
 
 Integrations for OpenApi Path definitions.
 
@@ -436,7 +436,7 @@ const apiProps: ApiProps = { ... }
 | [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`defaultIntegration`](#almacdkopenapixapipropspropertydefaultintegration) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | Add a default integration for paths without explicitly defined integrations. |
 | [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixapipropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
+| [`paths`](#almacdkopenapixapipropspropertypaths) | {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)} | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
 | [`upload`](#almacdkopenapixapipropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
@@ -514,10 +514,10 @@ Inject any OpenApi v3 data to given schema definition object paths.
 ##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.paths" id="almacdkopenapixapipropspropertypaths"></a>
 
 ```typescript
-public readonly paths: Paths;
+public readonly paths: {[ key: string ]: Methods};
 ```
 
-- *Type:* [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths)
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)}
 
 Integrations for OpenApi Path definitions.
 
@@ -3105,19 +3105,6 @@ A definition of a TRACE operation on this path.
 
 ---
 
-### Paths <a name="@alma-cdk/openapix.Paths" id="almacdkopenapixpaths"></a>
-
-Paths with methods containing integrations.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { Paths } from '@alma-cdk/openapix'
-
-const paths: Paths = { ... }
-```
-
-
 ### PathsObject <a name="@alma-cdk/openapix.PathsObject" id="almacdkopenapixpathsobject"></a>
 
 Holds the relative paths to the individual endpoints and their operations.
@@ -5147,6 +5134,107 @@ public readonly fn: IFunction;
 ---
 
 
+### Methods <a name="@alma-cdk/openapix.Methods" id="almacdkopenapixmethods"></a>
+
+Methods with integrations.
+
+Has to be a class because of JSII limitations.  Because of JSII5000 all getters are renamed to non-getXxx named methods.
+
+#### Initializers <a name="@alma-cdk/openapix.Methods.Initializer" id="almacdkopenapixmethodsinitializer"></a>
+
+```typescript
+import { Methods } from '@alma-cdk/openapix'
+
+new Methods(methods: IMethodIntegrations)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`methods`](#almacdkopenapixmethodsparametermethods)<span title="Required">*</span> | [`@alma-cdk/openapix.IMethodIntegrations`](#@alma-cdk/openapix.IMethodIntegrations) | *No description.* |
+
+---
+
+##### `methods`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.methods" id="almacdkopenapixmethodsparametermethods"></a>
+
+- *Type:* [`@alma-cdk/openapix.IMethodIntegrations`](#@alma-cdk/openapix.IMethodIntegrations)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`fetchAllIntegrations`](#almacdkopenapixmethodsfetchallintegrations) | Get all integrations. |
+| [`fetchIntegration`](#almacdkopenapixmethodsfetchintegration) | Get an integration for a specific HTTP method. |
+| [`hasIntegration`](#almacdkopenapixmethodshasintegration) | Check if there is an integration for a specific HTTP method. |
+| [`removeIntegration`](#almacdkopenapixmethodsremoveintegration) | Remove integration from a specific HTTP method. |
+| [`setIntegration`](#almacdkopenapixmethodssetintegration) | Add or update an integration for a specific HTTP method. |
+
+---
+
+##### `fetchAllIntegrations` <a name="@alma-cdk/openapix.Methods.fetchAllIntegrations" id="almacdkopenapixmethodsfetchallintegrations"></a>
+
+```typescript
+public fetchAllIntegrations()
+```
+
+##### `fetchIntegration` <a name="@alma-cdk/openapix.Methods.fetchIntegration" id="almacdkopenapixmethodsfetchintegration"></a>
+
+```typescript
+public fetchIntegration(method: HTTPMethod)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+
+---
+
+##### `hasIntegration` <a name="@alma-cdk/openapix.Methods.hasIntegration" id="almacdkopenapixmethodshasintegration"></a>
+
+```typescript
+public hasIntegration(method: HTTPMethod)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+
+---
+
+##### `removeIntegration` <a name="@alma-cdk/openapix.Methods.removeIntegration" id="almacdkopenapixmethodsremoveintegration"></a>
+
+```typescript
+public removeIntegration(method: HTTPMethod)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+
+---
+
+##### `setIntegration` <a name="@alma-cdk/openapix.Methods.setIntegration" id="almacdkopenapixmethodssetintegration"></a>
+
+```typescript
+public setIntegration(method: HTTPMethod, integration: Integration)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* [`@alma-cdk/openapix.HTTPMethod`](#@alma-cdk/openapix.HTTPMethod)
+
+---
+
+###### `integration`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.integration" id="almacdkopenapixmethodsparameterintegration"></a>
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+
+
+
 ### MockIntegration <a name="@alma-cdk/openapix.MockIntegration" id="almacdkopenapixmockintegration"></a>
 
 Defines Mock integration.
@@ -6450,6 +6538,106 @@ public readonly schema: IReferenceObject | ISchemaObject;
 - *Type:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject)
 
 The schema defining the content of the request, response, or parameter.
+
+---
+
+### IMethodIntegrations <a name="@alma-cdk/openapix.IMethodIntegrations" id="almacdkopenapiximethodintegrations"></a>
+
+- *Implemented By:* [`@alma-cdk/openapix.IMethodIntegrations`](#@alma-cdk/openapix.IMethodIntegrations)
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`delete`](#almacdkopenapiximethodintegrationspropertydelete) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`get`](#almacdkopenapiximethodintegrationspropertyget) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`head`](#almacdkopenapiximethodintegrationspropertyhead) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`options`](#almacdkopenapiximethodintegrationspropertyoptions) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`patch`](#almacdkopenapiximethodintegrationspropertypatch) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`post`](#almacdkopenapiximethodintegrationspropertypost) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`put`](#almacdkopenapiximethodintegrationspropertyput) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`trace`](#almacdkopenapiximethodintegrationspropertytrace) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+
+---
+
+##### `delete`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.delete" id="almacdkopenapiximethodintegrationspropertydelete"></a>
+
+```typescript
+public readonly delete: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `get`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.get" id="almacdkopenapiximethodintegrationspropertyget"></a>
+
+```typescript
+public readonly get: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `head`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.head" id="almacdkopenapiximethodintegrationspropertyhead"></a>
+
+```typescript
+public readonly head: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `options`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.options" id="almacdkopenapiximethodintegrationspropertyoptions"></a>
+
+```typescript
+public readonly options: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `patch`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.patch" id="almacdkopenapiximethodintegrationspropertypatch"></a>
+
+```typescript
+public readonly patch: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `post`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.post" id="almacdkopenapiximethodintegrationspropertypost"></a>
+
+```typescript
+public readonly post: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `put`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.put" id="almacdkopenapiximethodintegrationspropertyput"></a>
+
+```typescript
+public readonly put: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `trace`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.trace" id="almacdkopenapiximethodintegrationspropertytrace"></a>
+
+```typescript
+public readonly trace: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
 
 ---
 
@@ -7779,6 +7967,61 @@ Signifies whether the array is wrapped (for example, <books><book/><book/></book
 ---
 
 ## Enums <a name="Enums" id="enums"></a>
+
+### HTTPMethod <a name="HTTPMethod" id="httpmethod"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`GET`](#almacdkopenapixhttpmethodget) | *No description.* |
+| [`PUT`](#almacdkopenapixhttpmethodput) | *No description.* |
+| [`POST`](#almacdkopenapixhttpmethodpost) | *No description.* |
+| [`DELETE`](#almacdkopenapixhttpmethoddelete) | *No description.* |
+| [`OPTIONS`](#almacdkopenapixhttpmethodoptions) | *No description.* |
+| [`HEAD`](#almacdkopenapixhttpmethodhead) | *No description.* |
+| [`PATCH`](#almacdkopenapixhttpmethodpatch) | *No description.* |
+| [`TRACE`](#almacdkopenapixhttpmethodtrace) | *No description.* |
+
+---
+
+#### `GET` <a name="@alma-cdk/openapix.HTTPMethod.GET" id="almacdkopenapixhttpmethodget"></a>
+
+---
+
+
+#### `PUT` <a name="@alma-cdk/openapix.HTTPMethod.PUT" id="almacdkopenapixhttpmethodput"></a>
+
+---
+
+
+#### `POST` <a name="@alma-cdk/openapix.HTTPMethod.POST" id="almacdkopenapixhttpmethodpost"></a>
+
+---
+
+
+#### `DELETE` <a name="@alma-cdk/openapix.HTTPMethod.DELETE" id="almacdkopenapixhttpmethoddelete"></a>
+
+---
+
+
+#### `OPTIONS` <a name="@alma-cdk/openapix.HTTPMethod.OPTIONS" id="almacdkopenapixhttpmethodoptions"></a>
+
+---
+
+
+#### `HEAD` <a name="@alma-cdk/openapix.HTTPMethod.HEAD" id="almacdkopenapixhttpmethodhead"></a>
+
+---
+
+
+#### `PATCH` <a name="@alma-cdk/openapix.HTTPMethod.PATCH" id="almacdkopenapixhttpmethodpatch"></a>
+
+---
+
+
+#### `TRACE` <a name="@alma-cdk/openapix.HTTPMethod.TRACE" id="almacdkopenapixhttpmethodtrace"></a>
+
+---
+
 
 ### InternalIntegrationType <a name="InternalIntegrationType" id="internalintegrationtype"></a>
 

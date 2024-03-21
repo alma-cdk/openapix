@@ -6,6 +6,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { SchemaAsset } from '.';
 import { AwsIntegration, CognitoUserPoolsAuthorizer, LambdaIntegration, Schema } from '../..';
 import { Api } from '../../api';
+import { Methods } from '../../api/classes/Methods';
 
 
 describe('SchemaAsset', () => {
@@ -17,7 +18,7 @@ describe('SchemaAsset', () => {
     const userPool = new cognito.UserPool(stack, 'MyUserPool');
 
     const handler = new lambda.Function(stack, 'MyFunction', {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromInline(`module.exports = {
           handler: async (event) => {
@@ -89,7 +90,7 @@ describe('SchemaAsset', () => {
         }),
       ],
       paths: {
-        '/item': {
+        '/item': new Methods({
           post: new LambdaIntegration(stack, handler),
           get: new AwsIntegration(stack, {
             validator: 'params-only',
@@ -109,7 +110,7 @@ describe('SchemaAsset', () => {
               },
             },
           }),
-        },
+        }),
       },
     });
 

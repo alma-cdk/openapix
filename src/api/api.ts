@@ -1,7 +1,7 @@
 import { EndpointType, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { ApiDefinition } from './definition';
-import { ApiProps, Methods, Paths } from './props';
+import { ApiProps, Paths } from './props';
 import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
 import { Integration, InternalIntegrationType } from '../integration/base';
 import { LambdaIntegration } from '../integration/lambda';
@@ -41,7 +41,7 @@ export class Api extends SpecRestApi {
     const apiDefinition = new ApiDefinition(scope, {
       source: props.source,
       upload: props.upload === true,
-      paths: props.paths || {},
+      paths: props.paths,
       authorizers: props.authorizers || [],
       validators: props.validators || {},
       defaultCors: props.defaultCors,
@@ -70,10 +70,14 @@ export class Api extends SpecRestApi {
 
 
   /** Allow Lambda invocations to API Gateway instance principal */
-  private grantLambdaInvokes(paths: Paths = {}): void {
+  private grantLambdaInvokes(paths?: Paths): void {
+    if (!paths) {
+      return;
+    }
+
     // get unique integration functions
     const integrations = [...new Map(Object.values(paths)
-      .reduce((acc: (Integration | undefined)[], val: Methods) => val ? [...acc, ...Object.values(val)] : acc, [])
+      .reduce((acc: (Integration | undefined)[], val) => val ? [...acc, ...Object.values(val.fetchAllIntegrations())] : acc, [])
       .filter((val): val is LambdaIntegration => !!val && this.isLambdaIntegration(val) && !val.xAmazonApigatewayIntegration.credentials)
       .map(val => [val.fn.functionArn, val]),
     ).values()];
