@@ -40,7 +40,7 @@ export interface ApiBaseProps {
    *
    * @example
    * {
-   *   '/message': new Methods({
+   *   '/message': new openapix.Methods({
    *     post: new openapix.LambdaIntegration(this, fn),
    *   }),
    * }
