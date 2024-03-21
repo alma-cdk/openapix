@@ -62,8 +62,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '/examples/**/.git',
     '.vscode',
   ],
-
-
 });
 
 

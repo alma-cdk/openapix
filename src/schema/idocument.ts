@@ -596,7 +596,6 @@ export interface IReferenceObject extends IExtensible {
    * @jsii ignore
    */
   [key: string]: string;
-  //$ref: string; can't be done because JSII 8002
 }
 
 

@@ -1,4 +1,4 @@
-import { HTTPMethod } from './props';
+import { HTTPMethod, HTTPMethodValue } from './props';
 import { Schema } from '../schema';
 
 const getSchemaPaths = (schema: Schema) => {
@@ -12,13 +12,14 @@ const getSchemaPaths = (schema: Schema) => {
   }, {});
 };
 
-const getMethodsFromSchemaPath = (path: Record<string, any>): {[key in HTTPMethod]?: any} =>
-  Object.keys(path)
-    .reduce((acc: {[key in HTTPMethod]?: any}, pathKey) => {
-      if (pathKey in HTTPMethod) {
-        acc[pathKey as HTTPMethod] = path[pathKey];
-      }
-      return acc;
-    }, {});
+const getMethodsFromSchemaPath = (path: Record<string, any>): {[key in HTTPMethodValue]?: any} => {
+  return Object.entries(HTTPMethod).reduce((acc, [_, methodValue]) => {
+    if (methodValue in path) {
+      // TypeScript knows methodValue is a HTTPMethodValue, so it can be used as a key in acc
+      acc[methodValue] = path[methodValue];
+    }
+    return acc;
+  }, {} as {[key in HTTPMethodValue]?: any});
+};
 
 export { getSchemaPaths, getMethodsFromSchemaPath };

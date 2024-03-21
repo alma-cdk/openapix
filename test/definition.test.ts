@@ -107,9 +107,9 @@ test('Should add errors when wrong path config', () => {
   const definition = new ApiDefinition(stack, {
     source: new openapix.Schema(value),
     paths: {
-      '/notexistingpath': {
+      '/notexistingpath': new openapix.Methods({
         get: new openapix.MockIntegration(),
-      },
+      }),
     },
   });
 
@@ -208,12 +208,12 @@ test('Should add mock integrations', () => {
   const definition = new ApiDefinition(stack, {
     source: new openapix.Schema(value),
     paths: {
-      '/foo': {
+      '/foo': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, sampleLambdaFunction),
-      },
-      '/bar': {
+      }),
+      '/bar': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, sampleLambdaFunction),
-      },
+      }),
     },
     defaultIntegration: new MockIntegration(),
   });
@@ -304,17 +304,17 @@ test('Should add cors integrations', () => {
       methods: '*',
     }),
     paths: {
-      '/foo': {
+      '/foo': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, sampleLambdaFunction),
-      },
-      '/bar': {
+      }),
+      '/bar': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, sampleLambdaFunction),
         options: new CorsIntegration(stack, {
           headers: OVERRIDE_HEADERS,
           origins: '*',
           methods: '*',
         }),
-      },
+      }),
     },
 
   });

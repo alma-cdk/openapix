@@ -1,6 +1,7 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
-import { ApiBaseProps, HTTPMethod, Methods, Paths, Validator } from './props';
+import { Methods } from './classes/Methods';
+import { ApiBaseProps, HTTPMethodValue, Paths, Validator } from './props';
 import { getMethodsFromSchemaPath, getSchemaPaths } from './utils';
 import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
 import { addError } from '../errors/add';
@@ -154,9 +155,9 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       }
     });
 
-    // Loop through all schema paths
+    // Loop through all paths defined in the openapi schema to ensure all path integrations are handled
     Object.keys(schemaPaths).map((path: string) => {
-      if (!defaultIntegration && !paths[path]) {
+      if (!defaultIntegration &&!paths[path]) {
         const message = `Missing integration for path: ${path}. Check paths-props in definition, or add a default integration.`;
         addError(this.scope, message);
         return;
@@ -209,23 +210,25 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   private configurePathMethods(
     schemaPathName: string,
     schemaPath: Record<string, any>,
-    methods: Methods = {},
+    methods?: Methods,
     defaultIntegration?: Integration,
     defaultCors?: CorsIntegration,
 
   ): void {
     // Loop through given methods to ensure they are defined
     // and dont have an existing integration
-    Object.keys(methods).map((method: string) => {
-      const methodName = method.toLowerCase();
-      this.ensureMethodExists(schemaPathName, methodName);
-      this.ensureNoIntegrationAlready(schemaPathName, methodName);
-    });
+    if (methods) {
+      Object.keys(methods.fetchAllIntegrations()).map((method: string) => {
+        const methodName = method.toLowerCase();
+        this.ensureMethodExists(schemaPathName, methodName);
+        this.ensureNoIntegrationAlready(schemaPathName, methodName);
+      });
+    }
 
     const schemaPathMethods = getMethodsFromSchemaPath(schemaPath);
     // Look through all schema path methods
     Object.keys(schemaPathMethods).map((schemaPathMethod) => {
-      const method = methods[schemaPathMethod as HTTPMethod];
+      const method = methods ? methods.fetchIntegration(schemaPathMethod as HTTPMethodValue) : undefined;
 
       // Do not process options method because it has been modified already
       // and no override method is present
@@ -238,13 +241,15 @@ export class ApiDefinition extends apigateway.ApiDefinition {
         return;
       }
 
-      let integration;
+      let integration: Integration;
       // Generate mock integration if requested
       if (defaultIntegration && !method) {
         integration = defaultIntegration;
       } else {
+        // method existence is checked above
         integration = method as Integration;
       }
+
 
       const methodPath = `paths['${schemaPathName}']['${schemaPathMethod}']`;
 

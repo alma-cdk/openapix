@@ -274,7 +274,7 @@ const apiBaseProps: ApiBaseProps = { ... }
 | [`defaultCors`](#almacdkopenapixapibasepropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`defaultIntegration`](#almacdkopenapixapibasepropspropertydefaultintegration) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | Add a default integration for paths without explicitly defined integrations. |
 | [`injections`](#almacdkopenapixapibasepropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixapibasepropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
+| [`paths`](#almacdkopenapixapibasepropspropertypaths) | {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)} | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapibasepropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapibasepropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
 | [`upload`](#almacdkopenapixapibasepropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
@@ -351,10 +351,10 @@ Inject any OpenApi v3 data to given schema definition object paths.
 ##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiBaseProps.property.paths" id="almacdkopenapixapibasepropspropertypaths"></a>
 
 ```typescript
-public readonly paths: Paths;
+public readonly paths: {[ key: string ]: Methods};
 ```
 
-- *Type:* [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths)
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)}
 
 Integrations for OpenApi Path definitions.
 
@@ -436,7 +436,7 @@ const apiProps: ApiProps = { ... }
 | [`defaultCors`](#almacdkopenapixapipropspropertydefaultcors) | [`@alma-cdk/openapix.CorsIntegration`](#@alma-cdk/openapix.CorsIntegration) | Default CORS configuration. Applied to all path integrations. |
 | [`defaultIntegration`](#almacdkopenapixapipropspropertydefaultintegration) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | Add a default integration for paths without explicitly defined integrations. |
 | [`injections`](#almacdkopenapixapipropspropertyinjections) | {[ key: string ]: `any`} | Inject any OpenApi v3 data to given schema definition object paths. |
-| [`paths`](#almacdkopenapixapipropspropertypaths) | [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths) | Integrations for OpenApi Path definitions. |
+| [`paths`](#almacdkopenapixapipropspropertypaths) | {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)} | Integrations for OpenApi Path definitions. |
 | [`rejections`](#almacdkopenapixapipropspropertyrejections) | `string`[] | Reject fields by absolute object path from generated definition. |
 | [`rejectionsDeep`](#almacdkopenapixapipropspropertyrejectionsdeep) | `string`[] | Reject all matching fields from generated definition. |
 | [`upload`](#almacdkopenapixapipropspropertyupload) | `boolean` | Schema Definition location (inline vs. |
@@ -514,10 +514,10 @@ Inject any OpenApi v3 data to given schema definition object paths.
 ##### `paths`<sup>Optional</sup> <a name="@alma-cdk/openapix.ApiProps.property.paths" id="almacdkopenapixapipropspropertypaths"></a>
 
 ```typescript
-public readonly paths: Paths;
+public readonly paths: {[ key: string ]: Methods};
 ```
 
-- *Type:* [`@alma-cdk/openapix.Paths`](#@alma-cdk/openapix.Paths)
+- *Type:* {[ key: string ]: [`@alma-cdk/openapix.Methods`](#@alma-cdk/openapix.Methods)}
 
 Integrations for OpenApi Path definitions.
 
@@ -3105,19 +3105,6 @@ A definition of a TRACE operation on this path.
 
 ---
 
-### Paths <a name="@alma-cdk/openapix.Paths" id="almacdkopenapixpaths"></a>
-
-Paths with methods containing integrations.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { Paths } from '@alma-cdk/openapix'
-
-const paths: Paths = { ... }
-```
-
-
 ### PathsObject <a name="@alma-cdk/openapix.PathsObject" id="almacdkopenapixpathsobject"></a>
 
 Holds the relative paths to the individual endpoints and their operations.
@@ -4158,8 +4145,8 @@ const xAmazonApigatewayIntegration: XAmazonApigatewayIntegration = { ... }
 | [`contentHandling`](#almacdkopenapixxamazonapigatewayintegrationpropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Response payload encoding conversion types. |
 | [`credentials`](#almacdkopenapixxamazonapigatewayintegrationpropertycredentials) | `string` | For AWS IAM role-based credentials, specify the ARN of an appropriate IAM role. |
 | [`passthroughBehavior`](#almacdkopenapixxamazonapigatewayintegrationpropertypassthroughbehavior) | [`aws-cdk-lib.aws_apigateway.PassthroughBehavior`](#aws-cdk-lib.aws_apigateway.PassthroughBehavior) | Specifies how a request payload of unmapped content type is passed through the integration request without modification. |
-| [`requestParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters) | Specifies mappings from method request parameters to integration request parameters. |
-| [`requestTemplates`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates) | Mapping templates for a request payload of specified MIME types. |
+| [`requestParameters`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters) | {[ key: string ]: `string`} | Specifies mappings from method request parameters to integration request parameters. |
+| [`requestTemplates`](#almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates) | {[ key: string ]: `string`} | Mapping templates for a request payload of specified MIME types. |
 | [`responses`](#almacdkopenapixxamazonapigatewayintegrationpropertyresponses) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses) | Defines the method's responses and specifies desired parameter mappings or payload mappings from integration responses to method responses. |
 | [`timeoutInMillis`](#almacdkopenapixxamazonapigatewayintegrationpropertytimeoutinmillis) | `number` | Integration timeouts between 50 ms and 29,000 ms. |
 | [`tlsConfig`](#almacdkopenapixxamazonapigatewayintegrationpropertytlsconfig) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationTlsConfig) | Specifies the TLS configuration for an integration. |
@@ -4306,10 +4293,10 @@ Supported values are when_no_templates, when_no_match, and never
 ##### `requestParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.requestParameters" id="almacdkopenapixxamazonapigatewayintegrationpropertyrequestparameters"></a>
 
 ```typescript
-public readonly requestParameters: XAmazonApigatewayIntegrationRequestParameters;
+public readonly requestParameters: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters)
+- *Type:* {[ key: string ]: `string`}
 
 Specifies mappings from method request parameters to integration request parameters.
 
@@ -4320,10 +4307,10 @@ Supported request parameters are querystring, path, header, and body.
 ##### `requestTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegration.property.requestTemplates" id="almacdkopenapixxamazonapigatewayintegrationpropertyrequesttemplates"></a>
 
 ```typescript
-public readonly requestTemplates: XAmazonApigatewayIntegrationRequestTemplates;
+public readonly requestTemplates: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates)
+- *Type:* {[ key: string ]: `string`}
 
 Mapping templates for a request payload of specified MIME types.
 
@@ -4365,36 +4352,6 @@ Specifies the TLS configuration for an integration.
 
 ---
 
-### XAmazonApigatewayIntegrationRequestParameters <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestParameters" id="almacdkopenapixxamazonapigatewayintegrationrequestparameters"></a>
-
-Specifies mappings from named method request parameters to integration request parameters.
-
-The method request parameters must be defined before being referenced.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-requestParameters.html
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationRequestParameters } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationRequestParameters: XAmazonApigatewayIntegrationRequestParameters = { ... }
-```
-
-
-### XAmazonApigatewayIntegrationRequestTemplates <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationRequestTemplates" id="almacdkopenapixxamazonapigatewayintegrationrequesttemplates"></a>
-
-Specifies mapping templates for a request payload of the specified MIME types.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationRequestTemplates } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationRequestTemplates: XAmazonApigatewayIntegrationRequestTemplates = { ... }
-```
-
-
 ### XAmazonApigatewayIntegrationResponse <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse" id="almacdkopenapixxamazonapigatewayintegrationresponse"></a>
 
 Defines a response and specifies parameter mappings or payload mappings from the integration response to the method response.
@@ -4415,8 +4372,8 @@ const xAmazonApigatewayIntegrationResponse: XAmazonApigatewayIntegrationResponse
 | --- | --- | --- |
 | [`statusCode`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertystatuscode)<span title="Required">*</span> | `string` | HTTP status code for the method response. |
 | [`contentHandling`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertycontenthandling) | [`aws-cdk-lib.aws_apigateway.ContentHandling`](#aws-cdk-lib.aws_apigateway.ContentHandling) | Response payload encoding conversion types. |
-| [`responseParameters`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters) | Specifies parameter mappings for the response. |
-| [`responseTemplates`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates) | [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates) | Specifies MIME type-specific mapping templates for the response’s payload. |
+| [`responseParameters`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters) | {[ key: string ]: `string`} | Specifies parameter mappings for the response. |
+| [`responseTemplates`](#almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates) | {[ key: string ]: `string`} | Specifies MIME type-specific mapping templates for the response’s payload. |
 
 ---
 
@@ -4451,10 +4408,10 @@ Valid values are 1) CONVERT_TO_TEXT, for converting a binary payload into a base
 ##### `responseParameters`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.responseParameters" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponseparameters"></a>
 
 ```typescript
-public readonly responseParameters: XAmazonApigatewayIntegrationResponseParameters;
+public readonly responseParameters: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters)
+- *Type:* {[ key: string ]: `string`}
 
 Specifies parameter mappings for the response.
 
@@ -4465,29 +4422,14 @@ Only the header and body parameters of the integration response can be mapped to
 ##### `responseTemplates`<sup>Optional</sup> <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponse.property.responseTemplates" id="almacdkopenapixxamazonapigatewayintegrationresponsepropertyresponsetemplates"></a>
 
 ```typescript
-public readonly responseTemplates: XAmazonApigatewayIntegrationResponseTemplates;
+public readonly responseTemplates: {[ key: string ]: string};
 ```
 
-- *Type:* [`@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates`](#@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates)
+- *Type:* {[ key: string ]: `string`}
 
 Specifies MIME type-specific mapping templates for the response’s payload.
 
 ---
-
-### XAmazonApigatewayIntegrationResponseParameters <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseParameters" id="almacdkopenapixxamazonapigatewayintegrationresponseparameters"></a>
-
-Specifies mappings from integration method response parameters to method response parameters.
-
-You can map header, body, or static values to the header type of the method response.
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationResponseParameters } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationResponseParameters: XAmazonApigatewayIntegrationResponseParameters = { ... }
-```
-
 
 ### XAmazonApigatewayIntegrationResponses <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponses" id="almacdkopenapixxamazonapigatewayintegrationresponses"></a>
 
@@ -4501,21 +4443,6 @@ Defines the method's responses and specifies parameter mappings or payload mappi
 import { XAmazonApigatewayIntegrationResponses } from '@alma-cdk/openapix'
 
 const xAmazonApigatewayIntegrationResponses: XAmazonApigatewayIntegrationResponses = { ... }
-```
-
-
-### XAmazonApigatewayIntegrationResponseTemplates <a name="@alma-cdk/openapix.XAmazonApigatewayIntegrationResponseTemplates" id="almacdkopenapixxamazonapigatewayintegrationresponsetemplates"></a>
-
-Specifies a mapping template to transform the integration response body to the method response body for a given MIME type.
-
-> https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.html#models-mappings-mappings
-
-#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
-
-```typescript
-import { XAmazonApigatewayIntegrationResponseTemplates } from '@alma-cdk/openapix'
-
-const xAmazonApigatewayIntegrationResponseTemplates: XAmazonApigatewayIntegrationResponseTemplates = { ... }
 ```
 
 
@@ -5145,6 +5072,107 @@ public readonly fn: IFunction;
 - *Type:* [`aws-cdk-lib.aws_lambda.IFunction`](#aws-cdk-lib.aws_lambda.IFunction)
 
 ---
+
+
+### Methods <a name="@alma-cdk/openapix.Methods" id="almacdkopenapixmethods"></a>
+
+Methods with integrations.
+
+Has to be a class because of JSII limitations.  Because of JSII5000 all getters are renamed to non-getXxx named methods.
+
+#### Initializers <a name="@alma-cdk/openapix.Methods.Initializer" id="almacdkopenapixmethodsinitializer"></a>
+
+```typescript
+import { Methods } from '@alma-cdk/openapix'
+
+new Methods(methods: IMethodIntegrations)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`methods`](#almacdkopenapixmethodsparametermethods)<span title="Required">*</span> | [`@alma-cdk/openapix.IMethodIntegrations`](#@alma-cdk/openapix.IMethodIntegrations) | *No description.* |
+
+---
+
+##### `methods`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.methods" id="almacdkopenapixmethodsparametermethods"></a>
+
+- *Type:* [`@alma-cdk/openapix.IMethodIntegrations`](#@alma-cdk/openapix.IMethodIntegrations)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`fetchAllIntegrations`](#almacdkopenapixmethodsfetchallintegrations) | Get all integrations. |
+| [`fetchIntegration`](#almacdkopenapixmethodsfetchintegration) | Get an integration for a specific HTTP method. |
+| [`hasIntegration`](#almacdkopenapixmethodshasintegration) | Check if there is an integration for a specific HTTP method. |
+| [`removeIntegration`](#almacdkopenapixmethodsremoveintegration) | Remove integration from a specific HTTP method. |
+| [`setIntegration`](#almacdkopenapixmethodssetintegration) | Add or update an integration for a specific HTTP method. |
+
+---
+
+##### `fetchAllIntegrations` <a name="@alma-cdk/openapix.Methods.fetchAllIntegrations" id="almacdkopenapixmethodsfetchallintegrations"></a>
+
+```typescript
+public fetchAllIntegrations()
+```
+
+##### `fetchIntegration` <a name="@alma-cdk/openapix.Methods.fetchIntegration" id="almacdkopenapixmethodsfetchintegration"></a>
+
+```typescript
+public fetchIntegration(method: string)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* `string`
+
+---
+
+##### `hasIntegration` <a name="@alma-cdk/openapix.Methods.hasIntegration" id="almacdkopenapixmethodshasintegration"></a>
+
+```typescript
+public hasIntegration(method: string)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* `string`
+
+---
+
+##### `removeIntegration` <a name="@alma-cdk/openapix.Methods.removeIntegration" id="almacdkopenapixmethodsremoveintegration"></a>
+
+```typescript
+public removeIntegration(method: string)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* `string`
+
+---
+
+##### `setIntegration` <a name="@alma-cdk/openapix.Methods.setIntegration" id="almacdkopenapixmethodssetintegration"></a>
+
+```typescript
+public setIntegration(method: string, integration: Integration)
+```
+
+###### `method`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.method" id="almacdkopenapixmethodsparametermethod"></a>
+
+- *Type:* `string`
+
+---
+
+###### `integration`<sup>Required</sup> <a name="@alma-cdk/openapix.Methods.parameter.integration" id="almacdkopenapixmethodsparameterintegration"></a>
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+
 
 
 ### MockIntegration <a name="@alma-cdk/openapix.MockIntegration" id="almacdkopenapixmockintegration"></a>
@@ -6450,6 +6478,106 @@ public readonly schema: IReferenceObject | ISchemaObject;
 - *Type:* [`@alma-cdk/openapix.IReferenceObject`](#@alma-cdk/openapix.IReferenceObject) | [`@alma-cdk/openapix.ISchemaObject`](#@alma-cdk/openapix.ISchemaObject)
 
 The schema defining the content of the request, response, or parameter.
+
+---
+
+### IMethodIntegrations <a name="@alma-cdk/openapix.IMethodIntegrations" id="almacdkopenapiximethodintegrations"></a>
+
+- *Implemented By:* [`@alma-cdk/openapix.IMethodIntegrations`](#@alma-cdk/openapix.IMethodIntegrations)
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`delete`](#almacdkopenapiximethodintegrationspropertydelete) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`get`](#almacdkopenapiximethodintegrationspropertyget) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`head`](#almacdkopenapiximethodintegrationspropertyhead) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`options`](#almacdkopenapiximethodintegrationspropertyoptions) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`patch`](#almacdkopenapiximethodintegrationspropertypatch) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`post`](#almacdkopenapiximethodintegrationspropertypost) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`put`](#almacdkopenapiximethodintegrationspropertyput) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+| [`trace`](#almacdkopenapiximethodintegrationspropertytrace) | [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration) | *No description.* |
+
+---
+
+##### `delete`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.delete" id="almacdkopenapiximethodintegrationspropertydelete"></a>
+
+```typescript
+public readonly delete: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `get`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.get" id="almacdkopenapiximethodintegrationspropertyget"></a>
+
+```typescript
+public readonly get: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `head`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.head" id="almacdkopenapiximethodintegrationspropertyhead"></a>
+
+```typescript
+public readonly head: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `options`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.options" id="almacdkopenapiximethodintegrationspropertyoptions"></a>
+
+```typescript
+public readonly options: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `patch`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.patch" id="almacdkopenapiximethodintegrationspropertypatch"></a>
+
+```typescript
+public readonly patch: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `post`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.post" id="almacdkopenapiximethodintegrationspropertypost"></a>
+
+```typescript
+public readonly post: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `put`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.put" id="almacdkopenapiximethodintegrationspropertyput"></a>
+
+```typescript
+public readonly put: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
+
+---
+
+##### `trace`<sup>Optional</sup> <a name="@alma-cdk/openapix.IMethodIntegrations.property.trace" id="almacdkopenapiximethodintegrationspropertytrace"></a>
+
+```typescript
+public readonly trace: Integration;
+```
+
+- *Type:* [`@alma-cdk/openapix.Integration`](#@alma-cdk/openapix.Integration)
 
 ---
 

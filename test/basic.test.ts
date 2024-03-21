@@ -14,7 +14,7 @@ test('Validators', () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, 'TestStack');
   const fn = new lambda.Function(stack, 'TestFunction', {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`module.exports = {
       handler: async (event) => {
@@ -76,11 +76,11 @@ test('Validators', () => {
       },
     },
     paths: {
-      [path]: {
+      [path]: new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, fn, {
           validator: 'params-only',
         }),
-      },
+      }),
     },
   });
 
@@ -118,7 +118,7 @@ test('Synth', () => {
   const stack = new cdk.Stack(app, 'TestStack');
 
   const fn = new lambda.Function(stack, 'TestFunction', {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`module.exports = {
       handler: async (event) => {
@@ -203,9 +203,9 @@ test('Synth', () => {
       authType: 'custom',
     })],
     paths: {
-      [path]: {
+      [path]: new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, fn),
-      },
+      }),
     },
   });
 
@@ -503,12 +503,12 @@ test('Handles custom authorizer', () => {
     ],
 
     paths: {
-      '/foo': {
+      '/foo': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, testLambda),
-      },
-      '/bar': {
+      }),
+      '/bar': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, testLambda),
-      },
+      }),
     },
   });
 
@@ -647,12 +647,12 @@ test('Handles cross-stack imports inside cdk-app', () => {
     ],
 
     paths: {
-      '/foo': {
+      '/foo': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, testLambda),
-      },
-      '/bar': {
+      }),
+      '/bar': new openapix.Methods({
         get: new openapix.LambdaIntegration(stack, testLambda),
-      },
+      }),
     },
   });
 

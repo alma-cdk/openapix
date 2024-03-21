@@ -1,4 +1,5 @@
 import { RestApiProps } from 'aws-cdk-lib/aws-apigateway';
+import { Methods } from './classes/Methods';
 import { AuthorizerConfig } from '../authorizers/authorizer';
 import { Integration } from '../integration/base';
 import { CorsIntegration } from '../integration/cors';
@@ -39,9 +40,9 @@ export interface ApiBaseProps {
    *
    * @example
    * {
-   *   '/message': {
+   *   '/message': new openapix.Methods({
    *     post: new openapix.LambdaIntegration(this, fn),
-   *   },
+   *   }),
    * }
    */
   readonly paths?: Paths;
@@ -149,38 +150,29 @@ export interface ApiProps extends ApiBaseProps {
   readonly restApiProps?: RestApiProps;
 }
 
-/** Paths with methods containing integrations. */
-export interface Paths {
-  /**
-     * {
-     *   '/message': {
-     *     post: new openapix.LambdaIntegration(this, fn),
-     *   },
-     * }
-     *
-     * @jsii ignore
-     */
-  [path: string]: Methods;
-}
+/** Paths with methods containing integrations.
+ *
+ * @example
+ * {
+ *   '/message': {
+ *     post: new openapix.LambdaIntegration(this, fn),
+ *   },
+ * }
+ */
+export type Paths = Record<string, Methods>;
 
-export enum HTTPMethod {
-  get = 'get',
-  put = 'put',
-  post = 'post',
-  delete = 'delete',
-  options = 'options',
-  head = 'head',
-  patch = 'patch',
-  trace = 'trace'
-}
+export const HTTPMethod = {
+  GET: 'get',
+  PUT: 'put',
+  POST: 'post',
+  DELETE: 'delete',
+  OPTIONS: 'options',
+  HEAD: 'head',
+  PATCH: 'patch',
+  TRACE: 'trace',
+} as const;
 
-/** Methods with integrations. */
-export type Methods = {
-  /**
-   * Integration of an operation on this path.
-   */
-  [key in HTTPMethod]?: Integration;
-}
+export type HTTPMethodValue = typeof HTTPMethod[keyof typeof HTTPMethod];
 
 /** Validator configuration  */
 export interface Validator extends XAmazonApigatewayRequestValidator {

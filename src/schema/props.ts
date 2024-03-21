@@ -596,7 +596,6 @@ export interface ReferenceObject extends Extensible {
    * @jsii ignore
    */
   readonly [key: string]: string;
-  //readonly $ref: string; can't be done because JSII 8002
 }
 
 
