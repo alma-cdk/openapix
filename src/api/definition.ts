@@ -85,54 +85,139 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
   /**
    * Configure Authorizers within OpenApi `components.securitySchemes`.
-   */
+   *
+   * By default, all global security schemes are applied to all operations.
+   * Howerer, as per openapi spec, security schemes can be overridden at operation level.
+   *
+   * AWS allows only one authorizer per endpoint, so multiple default-authorizers will cause an error.
+   *
+   * https://swagger.io/docs/specification/authentication/
+  */
   private configureAuthorizers(authorizers: AuthorizerConfig[] = []): void {
-    authorizers.map(a => {
+    if (!authorizers || authorizers.length === 0) {
+      return;
+    }
 
+    const securitySchemes: { [key: string]: any } = this.schema.get('components.securitySchemes');
+
+    const defaultAuthorizers = authorizers.filter(a => a.defaultAuthorizer === true);
+
+    /**
+     * Verify that only one default authorizer is configured
+     */
+    if (defaultAuthorizers.length > 1) {
+      addError(this.scope, 'Only one default authorizer can be configured');
+      return;
+    }
+
+    if (authorizers.length > 1 && defaultAuthorizers.length === 0 ) {
+      addError(this.scope, 'Multiple authorizers are configured but none is marked as defaultAuthorizer.');
+      return;
+    }
+
+    /**
+     * Verify that the securitySchemes definition is an object
+     */
+    if (securitySchemes === null || typeof securitySchemes !== 'object' || Array.isArray(securitySchemes)) {
+      addError(this.scope, 'securitySchemes must be an object containing security schemes used in all APIs in OpenAPI Definition');
+      return;
+    }
+
+    authorizers.forEach(a => {
       const authorizerComponentSecuritySchemePath = `components.securitySchemes.${a.id}`;
 
+      // verify that the authorizer is found in securitySchemes
       if (!this.schema.has(authorizerComponentSecuritySchemePath)) {
-        addError(this.scope, `Security Scheme ${a.id} not found in OpenAPI Definition`);
+        addError(this.scope, `Authorizer ${a.id} is not found in the securitySchemes field in OpenAPI Definition`);
         return;
       }
 
-      /**
-      * if current authorizer is defined for whole api, add security to all paths
-      */
-      const schemaSecurity = this.schema.get('security');
-      // check if security includes authorizer
-      const schemaSecurityIncludesCurrentAuthorizer = Array.isArray(schemaSecurity) && schemaSecurity.some(s => Object.keys(s).includes(a.id));
-      if (schemaSecurityIncludesCurrentAuthorizer) {
-        // loop schema paths
-        const schemaPaths = getSchemaPaths(this.schema);
-
-        if (schemaPaths !== undefined) {
-          Object.keys(schemaPaths).forEach(path => {
-            // loop methods
-            const schemaPathMethods = getMethodsFromSchemaPath(schemaPaths[path]);
-            Object.keys(schemaPathMethods).forEach(method => {
-            // check if method has security
-              const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
-
-              if (methodSecurity && Array.isArray(methodSecurity)) {
-              // check if security includes authorizer
-                const methodSecurityIncludesCurrentAuthorizer = methodSecurity.some(s => Object.keys(s).includes(a.id));
-                if (!methodSecurityIncludesCurrentAuthorizer) {
-                  this.schema.set(`paths.${path}.${method}.security`, [...methodSecurity, { [a.id]: [] }]);
-                }
-              } else {
-                this.schema.set(`paths.${path}.${method}.security`, [{ [a.id]: [] }]);
-              }
-            });
-          });
-        }
-      }
-
+      // add x-amazon extensions to the authorizer
       const authorizer = this.schema.get<AuthorizerExtensionsMutable>(authorizerComponentSecuritySchemePath);
       authorizer['x-amazon-apigateway-authtype'] = a.xAmazonApigatewayAuthtype;
       authorizer['x-amazon-apigateway-authorizer'] = a.xAmazonApigatewayAuthorizer;
       this.schema.set(authorizerComponentSecuritySchemePath, authorizer);
     });
+
+    const schemaSecurity: { [key: string]: string[] }[] = this.schema.get('security');
+
+    if (!schemaSecurity) {
+      addError(this.scope, 'security keyword not found in OpenAPI Definition. To use authorizers, add security keyword in the root of the OpenAPI definition with authorizer ids.');
+      return;
+    }
+
+    /**
+     * verify that the security is an object
+     */
+    if (!Array.isArray(schemaSecurity)) {
+      addError(this.scope, 'security must be an array containing objects in OpenAPI Definition');
+      return;
+    }
+
+    // if security object has defined a root level authorizer, select the default authorizer or the first authorizer in case only one authorizer is configured without explicit defaultAuthorizer configuration
+    const defaultAuthorizerToBeSelected = defaultAuthorizers[0] || authorizers[0];
+    const defaultAuthorizer = schemaSecurity.some(sec => defaultAuthorizerToBeSelected.id in sec)
+      ? defaultAuthorizerToBeSelected :
+      undefined;
+
+
+    /**
+     * schemes defined in security field must be arrays and keys must be found in securitySchemes
+     */
+    if (schemaSecurity) {
+      schemaSecurity.forEach((security) => {
+        const keys = Object.keys(security);
+        if (keys.length > 1) {
+          addError(this.scope, 'Security objects can have only one key (id)');
+          return;
+        }
+
+        const key = keys[0];
+
+        // verify that the schemes are defined in the securitySchemes
+        const schemeDefined = Object.keys(securitySchemes).some((scheme) => key === scheme);
+        if (!schemeDefined) {
+          addError(this.scope, `Security scheme with key ${key} not found in securitySchemes object in OpenAPI Definition`);
+          return;
+        }
+      });
+    }
+
+    const schemaPaths = getSchemaPaths(this.schema);
+
+    /**
+     * Verify all configured method level securities and add root level auth (default authorizer) if configured
+     */
+    if (schemaPaths !== undefined) {
+      Object.keys(schemaPaths).forEach(path => {
+        // loop methods
+        const schemaPathMethods = getMethodsFromSchemaPath(schemaPaths[path]);
+        Object.keys(schemaPathMethods).forEach(method => {
+          // check if method has security
+          const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
+
+          // if method has a security defined, dont add default authorizer
+          if (methodSecurity && Array.isArray(methodSecurity)) {
+            // throw error if the method level securities are not defined in the global security schemes definition
+            methodSecurity.forEach((methodSecurityEntry) => {
+              // loop through all possible key-array pairs in the method security object
+              Object.keys(methodSecurityEntry).forEach((key) => {
+                if (!Object.keys(securitySchemes).includes(key)) {
+                  addError(this.scope, `Security scheme with key ${key} not found in securitySchemes object in OpenAPI Definition`);
+                  return;
+                }
+              });
+            });
+          } else {
+            if (defaultAuthorizer) {
+              const defaultAuthorizerSecurityField = schemaSecurity.find(sec => Object.keys(sec).some(key => key === defaultAuthorizer.id));
+              // set defaultAuthorizer as the authorizer if nothing is defined
+              this.schema.set(`paths.${path}.${method}.security`, [{ ...defaultAuthorizerSecurityField }]);
+            }
+          }
+        });
+      });
+    }
   }
 
   /**

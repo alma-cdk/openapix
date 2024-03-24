@@ -607,6 +607,7 @@ const authorizerConfig: AuthorizerConfig = { ... }
 | [`xAmazonApigatewayAuthorizer`](#almacdkopenapixauthorizerconfigpropertyxamazonapigatewayauthorizer)<span title="Required">*</span> | [`@alma-cdk/openapix.XAmazonApigatewayAuthorizer`](#@alma-cdk/openapix.XAmazonApigatewayAuthorizer) | *No description.* |
 | [`xAmazonApigatewayAuthtype`](#almacdkopenapixauthorizerconfigpropertyxamazonapigatewayauthtype)<span title="Required">*</span> | `string` | *No description.* |
 | [`id`](#almacdkopenapixauthorizerconfigpropertyid)<span title="Required">*</span> | `string` | *No description.* |
+| [`defaultAuthorizer`](#almacdkopenapixauthorizerconfigpropertydefaultauthorizer) | `boolean` | API Gateway endpoints can have only one authorizer configured. |
 
 ---
 
@@ -637,6 +638,20 @@ public readonly id: string;
 ```
 
 - *Type:* `string`
+
+---
+
+##### `defaultAuthorizer`<sup>Optional</sup> <a name="@alma-cdk/openapix.AuthorizerConfig.property.defaultAuthorizer" id="almacdkopenapixauthorizerconfigpropertydefaultauthorizer"></a>
+
+```typescript
+public readonly defaultAuthorizer: boolean;
+```
+
+- *Type:* `boolean`
+
+API Gateway endpoints can have only one authorizer configured.
+
+If multiple authorizers are configured, select one with `defaultAuthorizer` prop. Multiple authorizers with `defaultAuthorizer` set as true will throw an error.
 
 ---
 

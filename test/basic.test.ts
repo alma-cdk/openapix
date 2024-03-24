@@ -376,7 +376,7 @@ test('Reject deep paths', () => {
 test('Handles custom authorizer', () => {
   const stack = new cdk.Stack();
   const testLambda = new lambda.Function(stack, 'TestFunction', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`module.exports = {
               handler: async (event) => {
@@ -394,7 +394,7 @@ test('Handles custom authorizer', () => {
   const authorizerName = 'MyLambdaAuthorizer';
 
   const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`module.exports = {
               handler: async (event) => {
@@ -499,6 +499,7 @@ test('Handles custom authorizer', () => {
         type: 'request',
         authType: 'custom',
         resultsCacheTtl: Duration.minutes(5),
+        defaultAuthorizer: true,
       }),
     ],
 
@@ -517,7 +518,7 @@ test('Handles custom authorizer', () => {
   expectNoErrorAnnotations(stack);
   expect(get(api.document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
   expect(get(api.document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
-  expect(get(api.document, 'paths./foo.get.security[1].otherAuthorizer')).toEqual([]);
+  expect(get(api.document, 'paths./bar.get.security[0].otherAuthorizer')).toEqual([]);
   template.hasResourceProperties( 'AWS::Lambda::Permission', Match.objectLike({
     Action: 'lambda:InvokeFunction',
     FunctionName: {
@@ -532,7 +533,7 @@ test('Handles cross-stack imports inside cdk-app', () => {
   const stack = new cdk.Stack(app, 'MainStack');
   const lambdaStack = new cdk.Stack(app, 'OtherStack');
   const testLambda = new lambda.Function(lambdaStack, 'TestFunction', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`module.exports = {
                 handler: async (event) => {
@@ -550,7 +551,7 @@ test('Handles cross-stack imports inside cdk-app', () => {
   const authorizerName = 'MyLambdaAuthorizer';
 
   const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`module.exports = {
                 handler: async (event) => {
@@ -575,7 +576,7 @@ test('Handles cross-stack imports inside cdk-app', () => {
       },
       security: [
         {
-          otherAuthorizer: [],
+          [authorizerName]: [],
         },
       ],
       components: {
@@ -658,3 +659,15 @@ test('Handles cross-stack imports inside cdk-app', () => {
 
   expectNoErrorAnnotations(stack);
 });
+
+// todo: test that all authorizers must be configured in securitySchemes
+
+// todo: test that defaultAuthorizer must be chosen if more than 1 authorizer configured
+
+// todo: test that everything fails if multiple defaultAuthorizers are chosen
+
+// todo: test that all method security entry keys are defined in securitySchemes
+
+// todo: test that all schemes with multiple scopes propagate correctly to operations when applied to root security
+
+// todo: what if root security is not defined and we want to use a default authorizer?

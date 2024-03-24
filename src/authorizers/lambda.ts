@@ -22,6 +22,8 @@ export interface LambdaAuthorizerProps {
   readonly authType: string;
 
   readonly resultsCacheTtl?: Duration;
+
+  readonly defaultAuthorizer?: boolean;
 }
 
 // implements AuthorizerConfig ... JSII doesn't like
@@ -31,13 +33,15 @@ export class LambdaAuthorizer extends Construct {
   readonly fn: IFunction;
   readonly xAmazonApigatewayAuthtype: XAmazonApigatewayAuthType;
   readonly xAmazonApigatewayAuthorizer: XAmazonApigatewayAuthorizer;
+  readonly defaultAuthorizer?: boolean;
 
   constructor(scope: Construct, id: Id, props: LambdaAuthorizerProps) {
-    const { fn, identitySource, type, authType: authtype, resultsCacheTtl } = props;
+    const { fn, identitySource, type, authType: authtype, resultsCacheTtl, defaultAuthorizer } = props;
     super(scope, id);
 
     this.id = id;
     this.fn = fn;
+    this.defaultAuthorizer = defaultAuthorizer;
     this.xAmazonApigatewayAuthtype = authtype;
     this.xAmazonApigatewayAuthorizer = {
       type,

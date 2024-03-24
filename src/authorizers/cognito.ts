@@ -8,20 +8,23 @@ import { XAmazonApigatewayAuthType } from '../x-amazon-apigateway/authtype';
 export interface CognitoUserPoolsAuthorizerProps {
   readonly cognitoUserPools: IUserPool[];
   readonly resultsCacheTtl?: Duration;
+  readonly defaultAuthorizer?: boolean;
 }
 
 // implements AuthorizerConfig ... JSII doesn't like
 export class CognitoUserPoolsAuthorizer extends Construct {
 
   public readonly id: Id;
+  public readonly defaultAuthorizer?: boolean;
   readonly xAmazonApigatewayAuthtype: XAmazonApigatewayAuthType;
   readonly xAmazonApigatewayAuthorizer: XAmazonApigatewayAuthorizer;
 
   constructor(scope: Construct, id: Id, props: CognitoUserPoolsAuthorizerProps) {
-    const { cognitoUserPools, resultsCacheTtl } = props;
+    const { cognitoUserPools, resultsCacheTtl, defaultAuthorizer } = props;
     super(scope, id);
 
     this.id = id;
+    this.defaultAuthorizer = defaultAuthorizer;
     this.xAmazonApigatewayAuthtype = 'cognito_user_pools';
     this.xAmazonApigatewayAuthorizer = {
       type: 'cognito_user_pools',
