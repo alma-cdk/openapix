@@ -111,16 +111,16 @@ export class ApiDefinition extends apigateway.ApiDefinition {
             const schemaPathMethods = getMethodsFromSchemaPath(schemaPaths[path]);
             Object.keys(schemaPathMethods).forEach(method => {
             // check if method has security
-              const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
+              const methodSecurity = this.schema.get(`paths['${path}'].${method}.security`);
 
               if (methodSecurity && Array.isArray(methodSecurity)) {
               // check if security includes authorizer
                 const methodSecurityIncludesCurrentAuthorizer = methodSecurity.some(s => Object.keys(s).includes(a.id));
                 if (!methodSecurityIncludesCurrentAuthorizer) {
-                  this.schema.set(`paths.${path}.${method}.security`, [...methodSecurity, { [a.id]: [] }]);
+                  this.schema.set(`paths['${path}'].${method}.security`, [...methodSecurity, { [a.id]: [] }]);
                 }
               } else {
-                this.schema.set(`paths.${path}.${method}.security`, [{ [a.id]: [] }]);
+                this.schema.set(`paths['${path}'].${method}.security`, [{ [a.id]: [] }]);
               }
             });
           });
@@ -171,7 +171,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   }
 
   private configureDefaultCors(path: string, defaultCors: CorsIntegration): void {
-    this.schema.set(`paths.${path}.options`, {
+    this.schema.set(`paths['${path}'].options`, {
       'summary': 'CORS support',
       'description': 'Enable CORS by returning correct headers',
       'consumes': [
@@ -296,7 +296,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * Ensures OpenAPI definition contains a given method for the path.
    */
   private ensureMethodExists(path: string, method: string): void {
-    const value = this.schema.get(`paths[${path}][${method}]`);
+    const value = this.schema.get(`paths['${path}'][${method}]`);
 
     if (typeof value === 'undefined') {
       const message = `OpenAPI schema is missing method ${method} for path: ${path}`;
@@ -309,7 +309,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * `x-amazon-apigateway-integration` configuration for given method for the path.
    */
   private ensureNoIntegrationAlready(path: string, method: string): void {
-    const value = this.schema.get(`paths[${path}][${method}]['x-amazon-apigateway-integration']`);
+    const value = this.schema.get(`paths['${path}'][${method}]['x-amazon-apigateway-integration']`);
     if (typeof value !== 'undefined') {
       const message = `OpenAPI schema already has x-amazon-apigateway-integration configuration for method ${method} in path: ${path}`;
       addError(this.scope, message);
