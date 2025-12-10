@@ -32,9 +32,4 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
       - name: Run tests
-        run: npm run test
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: pnpm run test
