@@ -7,7 +7,7 @@ trustPolicyExclude:
   - semver@5.7.2 || 6.3.1
   # required by @types/node@20.19.25
   - undici-types@6.21.0
-minimumReleaseAge: 10080
+minimumReleaseAge: 10080 ## one week
 onlyBuiltDependencies:
   - "esbuild"
   - "unrs-resolver"
