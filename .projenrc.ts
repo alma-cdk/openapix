@@ -49,7 +49,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@types/omit-deep-lodash',
     '@types/semver',
   ],
-  deps: [
+  bundledDeps: [
     'change-case',
     'lodash',
     'js-yaml',

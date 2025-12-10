@@ -76,6 +76,13 @@
     "omit-deep-lodash": "^1.1.7",
     "semver": "^7.7.3"
   },
+  "bundledDependencies": [
+    "change-case",
+    "js-yaml",
+    "lodash",
+    "omit-deep-lodash",
+    "semver"
+  ],
   "pnpm": {},
   "keywords": [
     "api-gateway",

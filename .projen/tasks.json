@@ -331,7 +331,7 @@
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @stylistic/eslint-plugin @types/jest @types/js-yaml @types/lodash @types/node @types/omit-deep-lodash @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript aws-cdk-lib constructs change-case js-yaml lodash omit-deep-lodash semver"
+          "exec": "pnpm update @stylistic/eslint-plugin @types/jest @types/js-yaml @types/lodash @types/node @types/omit-deep-lodash @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript change-case js-yaml lodash omit-deep-lodash semver aws-cdk-lib constructs"
         },
         {
           "exec": "pnpm exec projen"
