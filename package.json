@@ -6,31 +6,31 @@
     "url": "https://github.com/alma-cdk/openapix.git"
   },
   "scripts": {
-    "build": "npx projen build",
-    "bump": "npx projen bump",
-    "clobber": "npx projen clobber",
-    "compat": "npx projen compat",
-    "compile": "npx projen compile",
-    "default": "npx projen default",
-    "docgen": "npx projen docgen",
-    "eject": "npx projen eject",
-    "eslint": "npx projen eslint",
-    "package": "npx projen package",
-    "package-all": "npx projen package-all",
-    "package:go": "npx projen package:go",
-    "package:js": "npx projen package:js",
-    "package:python": "npx projen package:python",
-    "post-compile": "npx projen post-compile",
-    "post-upgrade": "npx projen post-upgrade",
-    "pre-compile": "npx projen pre-compile",
-    "release": "npx projen release",
-    "release:beta": "npx projen release:beta",
-    "test": "npx projen test",
-    "test:watch": "npx projen test:watch",
-    "unbump": "npx projen unbump",
-    "upgrade": "npx projen upgrade",
-    "watch": "npx projen watch",
-    "projen": "npx projen"
+    "build": "pnpm exec projen build",
+    "bump": "pnpm exec projen bump",
+    "clobber": "pnpm exec projen clobber",
+    "compat": "pnpm exec projen compat",
+    "compile": "pnpm exec projen compile",
+    "default": "pnpm exec projen default",
+    "docgen": "pnpm exec projen docgen",
+    "eject": "pnpm exec projen eject",
+    "eslint": "pnpm exec projen eslint",
+    "package": "pnpm exec projen package",
+    "package-all": "pnpm exec projen package-all",
+    "package:go": "pnpm exec projen package:go",
+    "package:js": "pnpm exec projen package:js",
+    "package:python": "pnpm exec projen package:python",
+    "post-compile": "pnpm exec projen post-compile",
+    "post-upgrade": "pnpm exec projen post-upgrade",
+    "pre-compile": "pnpm exec projen pre-compile",
+    "release": "pnpm exec projen release",
+    "release:beta": "pnpm exec projen release:beta",
+    "test": "pnpm exec projen test",
+    "test:watch": "pnpm exec projen test:watch",
+    "unbump": "pnpm exec projen unbump",
+    "upgrade": "pnpm exec projen upgrade",
+    "watch": "pnpm exec projen watch",
+    "projen": "pnpm exec projen"
   },
   "author": {
     "name": "Alma Media",
@@ -38,44 +38,43 @@
     "organization": true
   },
   "devDependencies": {
-    "@types/jest": "^27",
+    "@stylistic/eslint-plugin": "^2",
+    "@types/jest": "^27.5.2",
     "@types/js-yaml": "^4.0.9",
-    "@types/lodash": "^4.17.0",
-    "@types/node": "^18",
+    "@types/lodash": "^4.17.21",
+    "@types/node": "^20",
     "@types/omit-deep-lodash": "^1.1.3",
-    "@types/prettier": "2.6.0",
-    "@types/semver": "^7.5.8",
-    "@typescript-eslint/eslint-plugin": "^6",
-    "@typescript-eslint/parser": "^6",
-    "aws-cdk-lib": "2.133.0",
+    "@types/semver": "^7.7.1",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
+    "aws-cdk-lib": "2.190.0",
+    "commit-and-tag-version": "^12",
     "constructs": "10.3.0",
-    "eslint": "^8",
+    "eslint": "^9",
     "eslint-import-resolver-typescript": "^2.7.1",
-    "eslint-plugin-import": "^2.29.1",
-    "jest": "^27",
-    "jest-junit": "^15",
-    "jsii": "~5.3.24",
-    "jsii-diff": "^1.95.0",
-    "jsii-docgen": "^4.2.44",
-    "jsii-pacmak": "^1.95.0",
-    "jsii-rosetta": "~5.3.24",
-    "projen": "0.80.11",
-    "semver": "^7.6.0",
-    "standard-version": "^9",
-    "ts-jest": "^27",
+    "eslint-plugin-import": "^2.32.0",
+    "jest": "^27.5.1",
+    "jest-junit": "^16",
+    "jsii": "~5.8.0",
+    "jsii-diff": "^1.120.0",
+    "jsii-docgen": "^10.5.0",
+    "jsii-pacmak": "^1.120.0",
+    "jsii-rosetta": "~5.8.0",
+    "projen": "0.98.22",
+    "ts-jest": "^27.1.5",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.133.0",
+    "aws-cdk-lib": "^2.190.0",
     "constructs": "^10.3.0"
   },
   "dependencies": {
     "change-case": "^4.1.2",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "lodash": "^4.17.21",
     "omit-deep-lodash": "^1.1.7",
-    "semver": "^7.6.0"
+    "semver": "^7.7.3"
   },
   "bundledDependencies": [
     "change-case",
@@ -84,6 +83,7 @@
     "omit-deep-lodash",
     "semver"
   ],
+  "pnpm": {},
   "keywords": [
     "api-gateway",
     "aws",
@@ -95,6 +95,9 @@
     "rest-api",
     "swagger"
   ],
+  "engines": {
+    "node": ">= 20.19.0"
+  },
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "publishConfig": {
@@ -102,9 +105,12 @@
   },
   "version": "0.0.0",
   "jest": {
+    "coverageProvider": "v8",
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
+      "<rootDir>/@(src|test)/**/*(*.)@(spec|test).ts?(x)",
+      "<rootDir>/@(src|test)/**/__tests__/**/*.ts?(x)",
+      "<rootDir>/@(projenrc)/**/*(*.)@(spec|test).ts?(x)",
+      "<rootDir>/@(projenrc)/**/__tests__/**/*.ts?(x)"
     ],
     "clearMocks": true,
     "collectCoverage": true,
@@ -159,5 +165,5 @@
       "rootDir": "src"
     }
   },
-  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"npx projen\"."
+  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"pnpm exec projen\"."
 }

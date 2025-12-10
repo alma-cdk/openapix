@@ -1,10 +1,10 @@
 import { TextFile, awscdk, javascript } from 'projen';
 import { WorkflowSteps } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { NODE_MIN_VERSION, PNPM_VERSION, PROJEN_COMMAND, PROJEN_VERSION } from './config/defaults';
 
 const project = new awscdk.AwsCdkConstructLibrary({
   projenrcTs: true,
-  jsiiVersion: '~5.3.24',
 
   // Metadata
   stability: 'experimental',
@@ -26,8 +26,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
       npmDistTag: 'beta',
     },
   },
-  packageManager: javascript.NodePackageManager.NPM,
+  packageManager: javascript.NodePackageManager.PNPM,
   npmAccess: javascript.NpmAccess.PUBLIC,
+  pnpmVersion: PNPM_VERSION,
+  projenCommand: PROJEN_COMMAND,
+  minNodeVersion: NODE_MIN_VERSION,
+  projenVersion: PROJEN_VERSION,
   publishToPypi: {
     distName: 'alma-cdk.openapix',
     module: 'alma_cdk.openapix',
@@ -37,14 +41,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
 
   // Dependencies
-  cdkVersion: '2.133.0',
+  cdkVersion: '2.190.0',
   constructsVersion: '10.3.0',
   devDeps: [
-    'semver',
     '@types/lodash',
     '@types/js-yaml',
     '@types/omit-deep-lodash',
-    '@types/prettier@2.6.0',
     '@types/semver',
   ],
   bundledDeps: [
@@ -93,16 +95,17 @@ sonarCloudReportWorkflow?.addJob('sonarcloud-report', {
     ...project.renderWorkflowSetup(),
     {
       name: 'Run tests',
-      run: 'npm run test',
+      run: 'pnpm run test',
     },
-    {
-      name: 'SonarCloud Scan',
-      uses: 'SonarSource/sonarcloud-github-action@v2',
-      env: {
-        GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-        SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}',
-      },
-    },
+    // Currently not in use
+    // {
+    //   name: 'SonarCloud Scan',
+    //   uses: 'SonarSource/sonarcloud-github-action@v2',
+    //   env: {
+    //     GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+    //     SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}',
+    //   },
+    // },
   ],
 });
 
@@ -124,7 +127,7 @@ new TextFile(project, 'sonar-project.properties', {
  * .nvmrc file
  */
 new TextFile(project, '.nvmrc', {
-  lines: ['20.11.1'],
+  lines: ['20.19.0'],
 });
 
 project.synth();
