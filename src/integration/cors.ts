@@ -1,6 +1,11 @@
-import { IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
+import { IntegrationProps, IntegrationType } from "aws-cdk-lib/aws-apigateway";
+import { Construct } from "constructs";
+import {
+  Integration,
+  IntegrationConfig,
+  InternalIntegrationType,
+  ValidatorConfig,
+} from "./base";
 
 const template = `
 $input.json("$")
@@ -27,11 +32,13 @@ export interface CorsIntegrationProps extends ValidatorConfig {
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/request-response-data-mappings.html#mapping-response-parameters
  */
 export class CorsIntegration extends Integration {
-
   /** Build Apache Velocity (`.vtl`) template for CORS response. */
   private static buildTemplate(origins: string): string {
-    const originsForTmpl = origins.split(',').map(o => `"${o}"`).join(',');
-    const tmpl = template.replace('__DOMAINS__', originsForTmpl);
+    const originsForTmpl = origins
+      .split(",")
+      .map((o) => `"${o}"`)
+      .join(",");
+    const tmpl = template.replace("__DOMAINS__", originsForTmpl);
     return tmpl;
   }
 
@@ -48,22 +55,21 @@ export class CorsIntegration extends Integration {
    * },
    */
   constructor(_: Construct, props: CorsIntegrationProps) {
-
     const { headers, origins, methods } = props;
 
     const integration: IntegrationProps = {
       type: IntegrationType.MOCK,
       options: {
-        requestTemplates: { 'application/json': '{"statusCode": 204}' },
+        requestTemplates: { "application/json": '{"statusCode": 204}' },
         integrationResponses: [
           {
-            statusCode: '204',
+            statusCode: "204",
             responseParameters: {
-              'method.response.header.Access-Control-Allow-Methods': `'${methods}'`,
-              'method.response.header.Access-Control-Allow-Headers': `'${headers}'`,
+              "method.response.header.Access-Control-Allow-Methods": `'${methods}'`,
+              "method.response.header.Access-Control-Allow-Headers": `'${headers}'`,
             },
             responseTemplates: {
-              'application/json': CorsIntegration.buildTemplate(origins),
+              "application/json": CorsIntegration.buildTemplate(origins),
             },
           },
         ],

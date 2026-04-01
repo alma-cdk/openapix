@@ -1,4 +1,4 @@
-import { XAmazonApigatewayIntegrationResponse } from './integration-response';
+import { XAmazonApigatewayIntegrationResponse } from "./integration-response";
 
 /**
  * Defines the method's responses and specifies parameter mappings or
@@ -7,7 +7,6 @@ import { XAmazonApigatewayIntegrationResponse } from './integration-response';
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-responses.html
  */
 export interface XAmazonApigatewayIntegrationResponses {
-
   /**
    * Either a regular expression used to match the integration response to the method response,
    * or default to catch any response that you haven't configured. For HTTP integrations,
@@ -18,6 +17,8 @@ export interface XAmazonApigatewayIntegrationResponses {
    * The Response status pattern property name refers to a response status code or regular expression
    * describing a group of response status codes. It does not correspond to any identifier of an
    * IntegrationResponse resource in the API Gateway REST API.
+   *
+   * @jsii ignore
    */
   [responseStatusPattern: string]: XAmazonApigatewayIntegrationResponse;
 }

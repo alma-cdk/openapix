@@ -1,11 +1,20 @@
-import { IntegrationOptions, IntegrationProps, IntegrationType } from 'aws-cdk-lib/aws-apigateway';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
+import {
+  IntegrationOptions,
+  IntegrationProps,
+  IntegrationType,
+} from "aws-cdk-lib/aws-apigateway";
+import {
+  Integration,
+  IntegrationConfig,
+  InternalIntegrationType,
+  ValidatorConfig,
+} from "./base";
 
-export interface MockIntegrationProps extends IntegrationOptions, ValidatorConfig {}
+export interface MockIntegrationProps
+  extends IntegrationOptions, ValidatorConfig {}
 
 /** Defines Mock integration. */
 export class MockIntegration extends Integration {
-
   /**
    * Defines Mock integration.
    *
@@ -15,7 +24,6 @@ export class MockIntegration extends Integration {
    * },
    */
   constructor(props: MockIntegrationProps = {}) {
-
     const integration: IntegrationProps = {
       type: IntegrationType.MOCK,
       options: props,

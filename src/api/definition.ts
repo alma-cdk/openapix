@@ -1,19 +1,21 @@
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
-import { AuthorizerConfig, AuthorizerExtensionsMutable } from '../authorizers/authorizer';
-import { addError } from '../errors/add';
-import { Integration } from '../integration';
-import { CorsIntegration } from '../integration/cors';
-import { IDocument, Schema } from '../schema';
-import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
-import { ApiBaseProps, HTTPMethod, Methods, Paths, Validator } from './props';
-import { getMethodsFromSchemaPath, getSchemaPaths } from './utils';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { Construct } from "constructs";
+import { ApiBaseProps, HTTPMethod, Methods, Paths, Validator } from "./props";
+import {
+  AuthorizerConfig,
+  AuthorizerExtensionsMutable,
+} from "../authorizers/authorizer";
+import { addError } from "../errors/add";
+import { Integration } from "../integration";
+import { CorsIntegration } from "../integration/cors";
+import { IDocument, Schema } from "../schema";
+import { getMethodsFromSchemaPath, getSchemaPaths } from "./utils";
+import { XAmazonApigatewayRequestValidator } from "../x-amazon-apigateway/request-validator";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const omitDeep = require('omit-deep-lodash');
+const omitDeep = require("omit-deep-lodash");
 
 /** Represents an OpenAPI v3 definition asset. */
 export class ApiDefinition extends apigateway.ApiDefinition {
-
   /**
    * Exposes the processed OpenApi Schema Object.
    * Mainly useful for testing purposes.
@@ -45,7 +47,11 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     // Configurate integrations
     this.configureValidators(props.validators);
     this.configureAuthorizers(props.authorizers);
-    this.configurePaths(props.paths, props.defaultCors, props.defaultIntegration);
+    this.configurePaths(
+      props.paths,
+      props.defaultCors,
+      props.defaultIntegration,
+    );
 
     // Finally expose the processed OpenApi v3 document
     this.document = this.schema.toDocument();
@@ -53,8 +59,9 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   }
 
   /** Configures API Gateway validators (if any). */
-  private configureValidators(validators: Record<string, Validator> = {}): void {
-
+  private configureValidators(
+    validators: Record<string, Validator> = {},
+  ): void {
     const keys = Object.keys(validators);
 
     // Do not assign x-amazon-apigateway-request-validators object if none provided
@@ -62,74 +69,96 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       return;
     }
 
-    const defaults = keys.filter(k => validators[k].default === true);
+    const defaults = keys.filter((k) => validators[k].default === true);
 
     // Ensure only single validator configured as default
     if (defaults.length > 1) {
-      addError(this.scope, 'You may only configure one default validator');
+      addError(this.scope, "You may only configure one default validator");
       return;
     }
 
     // Configure the default validator if provided
     if (defaults.length === 1) {
       const defaultValidator = defaults[0];
-      this.schema.set('x-amazon-apigateway-request-validator', defaultValidator);
+      this.schema.set(
+        "x-amazon-apigateway-request-validator",
+        defaultValidator,
+      );
     }
 
     // Omit the non-standard "default" field
-    const cleaned = <Record<string, XAmazonApigatewayRequestValidator>>omitDeep(validators, 'default');
+    const cleaned = <Record<string, XAmazonApigatewayRequestValidator>>(
+      omitDeep(validators, "default")
+    );
 
-    this.schema.set('x-amazon-apigateway-request-validators', cleaned);
+    this.schema.set("x-amazon-apigateway-request-validators", cleaned);
   }
 
   /**
    * Configure Authorizers within OpenApi `components.securitySchemes`.
    */
   private configureAuthorizers(authorizers: AuthorizerConfig[] = []): void {
-    authorizers.map(a => {
-
+    authorizers.map((a) => {
       const authorizerComponentSecuritySchemePath = `components.securitySchemes.${a.id}`;
 
       if (!this.schema.has(authorizerComponentSecuritySchemePath)) {
-        addError(this.scope, `Security Scheme ${a.id} not found in OpenAPI Definition`);
+        addError(
+          this.scope,
+          `Security Scheme ${a.id} not found in OpenAPI Definition`,
+        );
         return;
       }
 
       /**
-      * if current authorizer is defined for whole api, add security to all paths
-      */
-      const schemaSecurity = this.schema.get('security');
+       * if current authorizer is defined for whole api, add security to all paths
+       */
+      const schemaSecurity = this.schema.get("security");
       // check if security includes authorizer
-      const schemaSecurityIncludesCurrentAuthorizer = Array.isArray(schemaSecurity) && schemaSecurity.some(s => Object.keys(s).includes(a.id));
+      const schemaSecurityIncludesCurrentAuthorizer =
+        Array.isArray(schemaSecurity) &&
+        schemaSecurity.some((s) => Object.keys(s).includes(a.id));
       if (schemaSecurityIncludesCurrentAuthorizer) {
         // loop schema paths
         const schemaPaths = getSchemaPaths(this.schema);
 
         if (schemaPaths !== undefined) {
-          Object.keys(schemaPaths).forEach(path => {
+          Object.keys(schemaPaths).forEach((path) => {
             // loop methods
-            const schemaPathMethods = getMethodsFromSchemaPath(schemaPaths[path]);
-            Object.keys(schemaPathMethods).forEach(method => {
-            // check if method has security
-              const methodSecurity = this.schema.get(`paths.${path}.${method}.security`);
+            const schemaPathMethods = getMethodsFromSchemaPath(
+              schemaPaths[path],
+            );
+            Object.keys(schemaPathMethods).forEach((method) => {
+              // check if method has security
+              const methodSecurity = this.schema.get(
+                `paths.${path}.${method}.security`,
+              );
 
               if (methodSecurity && Array.isArray(methodSecurity)) {
-              // check if security includes authorizer
-                const methodSecurityIncludesCurrentAuthorizer = methodSecurity.some(s => Object.keys(s).includes(a.id));
+                // check if security includes authorizer
+                const methodSecurityIncludesCurrentAuthorizer =
+                  methodSecurity.some((s) => Object.keys(s).includes(a.id));
                 if (!methodSecurityIncludesCurrentAuthorizer) {
-                  this.schema.set(`paths.${path}.${method}.security`, [...methodSecurity, { [a.id]: [] }]);
+                  this.schema.set(`paths.${path}.${method}.security`, [
+                    ...methodSecurity,
+                    { [a.id]: [] },
+                  ]);
                 }
               } else {
-                this.schema.set(`paths.${path}.${method}.security`, [{ [a.id]: [] }]);
+                this.schema.set(`paths.${path}.${method}.security`, [
+                  { [a.id]: [] },
+                ]);
               }
             });
           });
         }
       }
 
-      const authorizer = this.schema.get<AuthorizerExtensionsMutable>(authorizerComponentSecuritySchemePath);
-      authorizer['x-amazon-apigateway-authtype'] = a.xAmazonApigatewayAuthtype;
-      authorizer['x-amazon-apigateway-authorizer'] = a.xAmazonApigatewayAuthorizer;
+      const authorizer = this.schema.get<AuthorizerExtensionsMutable>(
+        authorizerComponentSecuritySchemePath,
+      );
+      authorizer["x-amazon-apigateway-authtype"] = a.xAmazonApigatewayAuthtype;
+      authorizer["x-amazon-apigateway-authorizer"] =
+        a.xAmazonApigatewayAuthorizer;
       this.schema.set(authorizerComponentSecuritySchemePath, authorizer);
     });
   }
@@ -137,17 +166,20 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   /**
    * Configure all `x-amazon-apigateway-integration` values within OpenApi `paths`.
    */
-  private configurePaths(paths: Paths = {}, defaultCors?: CorsIntegration, defaultIntegration?: Integration): void {
-
+  private configurePaths(
+    paths: Paths = {},
+    defaultCors?: CorsIntegration,
+    defaultIntegration?: Integration,
+  ): void {
     const schemaPaths = getSchemaPaths(this.schema);
     // Check that schema has paths object
-    if (typeof schemaPaths === 'undefined') {
-      addError(this.scope, 'OpenAPI Definition does not have paths object');
+    if (typeof schemaPaths === "undefined") {
+      addError(this.scope, "OpenAPI Definition does not have paths object");
       return;
     }
 
     // Loop through paths to ensure all paths are defined in OpenAPI schema
-    Object.keys(paths).forEach(path => {
+    Object.keys(paths).forEach((path) => {
       if (!schemaPaths[path]) {
         const message = `Path ${path} not found in OpenAPI Definition. Check paths-props in definition.`;
         addError(this.scope, message);
@@ -161,45 +193,49 @@ export class ApiDefinition extends apigateway.ApiDefinition {
         addError(this.scope, message);
         return;
       }
-      if (typeof defaultCors !== 'undefined') {
+      if (typeof defaultCors !== "undefined") {
         this.configureDefaultCors(path, defaultCors);
       }
 
       const methods = paths[path];
-      this.configurePathMethods(path, schemaPaths[path], methods, defaultIntegration, defaultCors );
+      this.configurePathMethods(
+        path,
+        schemaPaths[path],
+        methods,
+        defaultIntegration,
+        defaultCors,
+      );
     });
   }
 
-  private configureDefaultCors(path: string, defaultCors: CorsIntegration): void {
+  private configureDefaultCors(
+    path: string,
+    defaultCors: CorsIntegration,
+  ): void {
     this.schema.set(`paths.${path}.options`, {
-      'summary': 'CORS support',
-      'description': 'Enable CORS by returning correct headers',
-      'consumes': [
-        'application/json',
-      ],
-      'produces': [
-        'application/json',
-      ],
-      'tags': [
-        'CORS',
-      ],
-      'responses': {
+      summary: "CORS support",
+      description: "Enable CORS by returning correct headers",
+      consumes: ["application/json"],
+      produces: ["application/json"],
+      tags: ["CORS"],
+      responses: {
         204: {
-          description: 'Default response for CORS method',
+          description: "Default response for CORS method",
           headers: {
-            'Access-Control-Allow-Headers': {
-              type: 'string',
+            "Access-Control-Allow-Headers": {
+              type: "string",
             },
-            'Access-Control-Allow-Methods': {
-              type: 'string',
+            "Access-Control-Allow-Methods": {
+              type: "string",
             },
-            'Access-Control-Allow-Origin': {
-              type: 'string',
+            "Access-Control-Allow-Origin": {
+              type: "string",
             },
           },
         },
       },
-      'x-amazon-apigateway-integration': defaultCors.xAmazonApigatewayIntegration,
+      "x-amazon-apigateway-integration":
+        defaultCors.xAmazonApigatewayIntegration,
     });
   }
 
@@ -212,7 +248,6 @@ export class ApiDefinition extends apigateway.ApiDefinition {
     methods: Methods = {},
     defaultIntegration?: Integration,
     defaultCors?: CorsIntegration,
-
   ): void {
     // Loop through given methods to ensure they are defined
     // and dont have an existing integration
@@ -229,7 +264,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
       // Do not process options method because it has been modified already
       // and no override method is present
-      if (defaultCors && schemaPathMethod === 'options' && !method) {
+      if (defaultCors && schemaPathMethod === "options" && !method) {
         return;
       }
       if (!defaultIntegration && !method) {
@@ -249,11 +284,17 @@ export class ApiDefinition extends apigateway.ApiDefinition {
       const methodPath = `paths['${schemaPathName}']['${schemaPathMethod}']`;
 
       const validator = integration.validator;
-      if (typeof validator === 'string') {
-        this.schema.set(`${methodPath}['x-amazon-apigateway-request-validator']`, validator);
+      if (typeof validator === "string") {
+        this.schema.set(
+          `${methodPath}['x-amazon-apigateway-request-validator']`,
+          validator,
+        );
       }
 
-      this.schema.set(`${methodPath}['x-amazon-apigateway-integration']`, integration.xAmazonApigatewayIntegration);
+      this.schema.set(
+        `${methodPath}['x-amazon-apigateway-integration']`,
+        integration.xAmazonApigatewayIntegration,
+      );
     });
   }
 
@@ -262,7 +303,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * as an Asset. This method handles that and always returns Asset Source.
    */
   private resolveSource(source: string | Schema): Schema {
-    if (typeof source === 'string') {
+    if (typeof source === "string") {
       return Schema.fromAsset(source);
     }
     return source;
@@ -278,7 +319,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    */
   public bind(_: Construct): apigateway.ApiDefinitionConfig {
     if (this.upload === true) {
-      const asset = this.schema.toAsset(this.scope, 'SchemaAsset');
+      const asset = this.schema.toAsset(this.scope, "SchemaAsset");
       return {
         s3Location: {
           bucket: asset.bucket.bucketArn,
@@ -298,7 +339,7 @@ export class ApiDefinition extends apigateway.ApiDefinition {
   private ensureMethodExists(path: string, method: string): void {
     const value = this.schema.get(`paths[${path}][${method}]`);
 
-    if (typeof value === 'undefined') {
+    if (typeof value === "undefined") {
       const message = `OpenAPI schema is missing method ${method} for path: ${path}`;
       addError(this.scope, message);
     }
@@ -309,8 +350,10 @@ export class ApiDefinition extends apigateway.ApiDefinition {
    * `x-amazon-apigateway-integration` configuration for given method for the path.
    */
   private ensureNoIntegrationAlready(path: string, method: string): void {
-    const value = this.schema.get(`paths[${path}][${method}]['x-amazon-apigateway-integration']`);
-    if (typeof value !== 'undefined') {
+    const value = this.schema.get(
+      `paths[${path}][${method}]['x-amazon-apigateway-integration']`,
+    );
+    if (typeof value !== "undefined") {
       const message = `OpenAPI schema already has x-amazon-apigateway-integration configuration for method ${method} in path: ${path}`;
       addError(this.scope, message);
     }
@@ -318,12 +361,12 @@ export class ApiDefinition extends apigateway.ApiDefinition {
 
   /** Validate final OpenApi v3 document. */
   private validateDocument(document: IDocument) {
-    if (typeof(document) !== 'object') {
-      addError(this.scope, 'definition should be of type object');
+    if (typeof document !== "object") {
+      addError(this.scope, "definition should be of type object");
     }
 
     if (Object.keys(document).length === 0) {
-      addError(this.scope, 'JSON definition cannot be empty');
+      addError(this.scope, "JSON definition cannot be empty");
     }
   }
 }

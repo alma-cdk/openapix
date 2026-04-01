@@ -1,15 +1,27 @@
-import { Stack } from 'aws-cdk-lib';
-import { IntegrationProps, IntegrationType, AwsIntegrationProps as CdkAwsIntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
+import { Stack } from "aws-cdk-lib";
+import {
+  IntegrationProps,
+  IntegrationType,
+  AwsIntegrationProps as CdkAwsIntegrationProps,
+} from "aws-cdk-lib/aws-apigateway";
+import { Construct } from "constructs";
+import {
+  Integration,
+  IntegrationConfig,
+  InternalIntegrationType,
+  ValidatorConfig,
+} from "./base";
 
-export interface AwsIntegrationProps extends CdkAwsIntegrationProps, ValidatorConfig {}
+export interface AwsIntegrationProps
+  extends CdkAwsIntegrationProps, ValidatorConfig {}
 
 /** Defines direct AWS service integration. */
 export class AwsIntegration extends Integration {
-
   /** Resolves the AWS service integration URI. */
-  private static resolveUri(scope: Construct, props: AwsIntegrationProps): string {
+  private static resolveUri(
+    scope: Construct,
+    props: AwsIntegrationProps,
+  ): string {
     const region = props.region || Stack.of(scope).region;
     return `arn:aws:apigateway:${region}:${props.service}:action/${props.action}`;
   }
@@ -39,11 +51,10 @@ export class AwsIntegration extends Integration {
    * },
    */
   constructor(scope: Construct, props: AwsIntegrationProps) {
-
     const integration: IntegrationProps = {
       type: IntegrationType.AWS,
       uri: AwsIntegration.resolveUri(scope, props),
-      integrationHttpMethod: props.integrationHttpMethod || 'POST',
+      integrationHttpMethod: props.integrationHttpMethod || "POST",
       options: props.options,
     };
 
@@ -54,5 +65,4 @@ export class AwsIntegration extends Integration {
 
     super(integration, config);
   }
-
 }

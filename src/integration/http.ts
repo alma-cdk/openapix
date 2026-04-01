@@ -1,13 +1,18 @@
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { IntegrationProps } from "aws-cdk-lib/aws-apigateway";
+import { Construct } from "constructs";
+import {
+  Integration,
+  IntegrationConfig,
+  InternalIntegrationType,
+  ValidatorConfig,
+} from "./base";
 
-export interface HttpIntegrationProps extends apigateway.HttpIntegrationProps, ValidatorConfig {}
+export interface HttpIntegrationProps
+  extends apigateway.HttpIntegrationProps, ValidatorConfig {}
 
 /** Defines a HTTP(S) integration. */
 export class HttpIntegration extends Integration {
-
   /**
    * Selects the integration HTTP method.
    *
@@ -15,15 +20,17 @@ export class HttpIntegration extends Integration {
    * 'GET'
    */
   private static selectIntegrationHttpMethod(httpMethod?: string): string {
-    if (typeof httpMethod === 'string' && httpMethod.length > 0) {
+    if (typeof httpMethod === "string" && httpMethod.length > 0) {
       return httpMethod;
     }
 
-    return 'GET';
+    return "GET";
   }
 
   /** Selects the correct integration type configuration. */
-  private static selectIntegrationType(proxy?: boolean): apigateway.IntegrationType {
+  private static selectIntegrationType(
+    proxy?: boolean,
+  ): apigateway.IntegrationType {
     if (proxy === false) {
       return apigateway.IntegrationType.HTTP;
     }
@@ -40,11 +47,12 @@ export class HttpIntegration extends Integration {
    * },
    */
   constructor(_: Construct, url: string, props?: HttpIntegrationProps) {
-
     const integration: IntegrationProps = {
       type: HttpIntegration.selectIntegrationType(props?.proxy),
       uri: url,
-      integrationHttpMethod: HttpIntegration.selectIntegrationHttpMethod(props?.httpMethod),
+      integrationHttpMethod: HttpIntegration.selectIntegrationHttpMethod(
+        props?.httpMethod,
+      ),
       options: props?.options,
     };
 
@@ -55,6 +63,4 @@ export class HttpIntegration extends Integration {
 
     super(integration, config);
   }
-
-
 }

@@ -1,22 +1,29 @@
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { IntegrationProps } from 'aws-cdk-lib/aws-apigateway';
-import { CfnPermission, IFunction } from 'aws-cdk-lib/aws-lambda';
-import { Construct } from 'constructs';
-import { LambdaInvocation } from '../lambda-invocation';
-import { Integration, IntegrationConfig, InternalIntegrationType, ValidatorConfig } from './base';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { IntegrationProps } from "aws-cdk-lib/aws-apigateway";
+import { CfnPermission, IFunction } from "aws-cdk-lib/aws-lambda";
+import { Construct } from "constructs";
+import { LambdaInvocation } from "../lambda-invocation";
+import {
+  Integration,
+  IntegrationConfig,
+  InternalIntegrationType,
+  ValidatorConfig,
+} from "./base";
 
-export interface LambdaIntegrationOptions extends apigateway.LambdaIntegrationOptions, ValidatorConfig {}
+export interface LambdaIntegrationOptions
+  extends apigateway.LambdaIntegrationOptions, ValidatorConfig {}
 
 /** Defines an AWS Lambda integration. */
 export class LambdaIntegration extends Integration {
-
   /**
    * Selects the Lambda integration type.
    *
    * @default
    * 'AWS_PROXY'
    */
-  private static selectIntegrationType(proxy?: boolean): apigateway.IntegrationType {
+  private static selectIntegrationType(
+    proxy?: boolean,
+  ): apigateway.IntegrationType {
     if (proxy === false) {
       return apigateway.IntegrationType.AWS;
     }
@@ -35,14 +42,17 @@ export class LambdaIntegration extends Integration {
    *    'POST': new openapix.LambdaIntegration(this, fn),
    * },
    */
-  constructor(scope: Construct, fn: IFunction, props?: LambdaIntegrationOptions) {
-
+  constructor(
+    scope: Construct,
+    fn: IFunction,
+    props?: LambdaIntegrationOptions,
+  ) {
     const lambdaInvocation = new LambdaInvocation(scope, fn);
 
     const integration: IntegrationProps = {
       type: LambdaIntegration.selectIntegrationType(props?.proxy),
       uri: lambdaInvocation.uri,
-      integrationHttpMethod: 'POST',
+      integrationHttpMethod: "POST",
       options: props,
     };
 
@@ -62,8 +72,8 @@ export class LambdaIntegration extends Integration {
      * using Lambda-constructs grant-functions cause circular dependencies if they are defined in different stacks
      */
     new CfnPermission(scope, `InvokePermissionFor${this.fn.node.id}`, {
-      principal: 'apigateway.amazonaws.com',
-      action: 'lambda:InvokeFunction',
+      principal: "apigateway.amazonaws.com",
+      action: "lambda:InvokeFunction",
       functionName: this.fn.functionName,
       sourceArn: executeApiArn,
     });

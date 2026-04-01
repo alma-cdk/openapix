@@ -1,9 +1,9 @@
-import { RestApiProps } from 'aws-cdk-lib/aws-apigateway';
-import { AuthorizerConfig } from '../authorizers/authorizer';
-import { Integration } from '../integration/base';
-import { CorsIntegration } from '../integration/cors';
-import { Schema } from '../schema';
-import { XAmazonApigatewayRequestValidator } from '../x-amazon-apigateway/request-validator';
+import { RestApiProps } from "aws-cdk-lib/aws-apigateway";
+import { AuthorizerConfig } from "../authorizers/authorizer";
+import { Integration } from "../integration/base";
+import { CorsIntegration } from "../integration/cors";
+import { Schema } from "../schema";
+import { XAmazonApigatewayRequestValidator } from "../x-amazon-apigateway/request-validator";
 
 /** BaseProps for the `Api` construct without `RestApiProps`. */
 export interface ApiBaseProps {
@@ -144,7 +144,6 @@ export interface ApiBaseProps {
 
 /** Props to configure `new openapix.Api`. */
 export interface ApiProps extends ApiBaseProps {
-
   /** Props to configure the underlying CDK `apigateway.RestApi`. */
   readonly restApiProps?: RestApiProps;
 }
@@ -152,24 +151,26 @@ export interface ApiProps extends ApiBaseProps {
 /** Paths with methods containing integrations. */
 export interface Paths {
   /**
-     * {
-     *   '/message': {
-     *     post: new openapix.LambdaIntegration(this, fn),
-     *   },
-     * }
-     */
+   * {
+   *   '/message': {
+   *     post: new openapix.LambdaIntegration(this, fn),
+   *   },
+   * }
+   *
+   * @jsii ignore
+   */
   [path: string]: Methods;
 }
 
 export enum HTTPMethod {
-  get = 'get',
-  put = 'put',
-  post = 'post',
-  delete = 'delete',
-  options = 'options',
-  head = 'head',
-  patch = 'patch',
-  trace = 'trace'
+  get = "get",
+  put = "put",
+  post = "post",
+  delete = "delete",
+  options = "options",
+  head = "head",
+  patch = "patch",
+  trace = "trace",
 }
 
 /** Methods with integrations. */
@@ -178,7 +179,7 @@ export type Methods = {
    * Integration of an operation on this path.
    */
   [key in HTTPMethod]?: Integration;
-}
+};
 
 /** Validator configuration  */
 export interface Validator extends XAmazonApigatewayRequestValidator {

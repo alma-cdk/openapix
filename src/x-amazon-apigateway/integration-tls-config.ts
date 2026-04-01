@@ -1,10 +1,7 @@
-
-
 /**
  * Specifies the TLS configuration for an integration.
  */
 export interface XAmazonApigatewayIntegrationTlsConfig {
-
   /**
    * Specifies whether or not API Gateway skips verification that the
    * certificate for an integration endpoint is issued by a supported c

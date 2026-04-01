@@ -1,7 +1,6 @@
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayIntegrationResponseParameters } from './integration-response-parameters';
-import { XAmazonApigatewayIntegrationResponseTemplates } from './integration-response-templates';
-
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { XAmazonApigatewayIntegrationResponseParameters } from "./integration-response-parameters";
+import { XAmazonApigatewayIntegrationResponseTemplates } from "./integration-response-templates";
 
 /**
  * Defines a response and specifies parameter mappings or payload mappings
@@ -10,7 +9,6 @@ import { XAmazonApigatewayIntegrationResponseTemplates } from './integration-res
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-response.html
  */
 export interface XAmazonApigatewayIntegrationResponse {
-
   /**
    * HTTP status code for the method response.
    * This must correspond to a matching response in the OpenAPI Operation responses field.
