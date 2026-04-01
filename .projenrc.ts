@@ -31,17 +31,11 @@ const project = new AlmaCdkConstructLibrary({
     "@alma-cdk/construct-library",
     "@types/lodash",
     "@types/js-yaml",
-    "@types/omit-deep-lodash",
     "@types/prettier@2.6.0",
     "@types/semver",
-  ],
-  bundledDeps: [
-    "change-case",
     "lodash",
-    "js-yaml",
-    "omit-deep-lodash",
-    "semver",
   ],
+  bundledDeps: ["change-case", "es-toolkit", "js-yaml", "semver"],
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.34"],
   },
