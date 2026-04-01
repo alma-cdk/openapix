@@ -1,1 +1,1 @@
-export { getValidVersion } from './version';
+export { getValidVersion } from "./version";

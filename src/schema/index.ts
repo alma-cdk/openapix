@@ -1,3 +1,3 @@
-export { Schema } from './schema';
-export * from './props';
-export * from './idocument';
+export { Schema } from "./schema";
+export * from "./props";
+export * from "./idocument";

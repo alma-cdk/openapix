@@ -1,8 +1,8 @@
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { XAmazonApigatewayIntegrationRequestParameters } from './integration-request-parameters';
-import { XAmazonApigatewayIntegrationRequestTemplates } from './integration-request-templates';
-import { XAmazonApigatewayIntegrationResponses } from './integration-responses';
-import { XAmazonApigatewayIntegrationTlsConfig } from './integration-tls-config';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { XAmazonApigatewayIntegrationRequestParameters } from "./integration-request-parameters";
+import { XAmazonApigatewayIntegrationRequestTemplates } from "./integration-request-templates";
+import { XAmazonApigatewayIntegrationResponses } from "./integration-responses";
+import { XAmazonApigatewayIntegrationTlsConfig } from "./integration-tls-config";
 
 /**
  * Specifies details of the backend integration used for this method.
@@ -12,7 +12,6 @@ import { XAmazonApigatewayIntegrationTlsConfig } from './integration-tls-config'
  * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html
  */
 export interface XAmazonApigatewayIntegration {
-
   /**
    * A list of request parameters whose values are to be cached.
    */
@@ -72,10 +71,10 @@ export interface XAmazonApigatewayIntegration {
   readonly httpMethod: string;
 
   /**
-     * Specifies how a request payload of unmapped content type is passed through
-     * the integration request without modification. Supported values are
-     * when_no_templates, when_no_match, and never
-     */
+   * Specifies how a request payload of unmapped content type is passed through
+   * the integration request without modification. Supported values are
+   * when_no_templates, when_no_match, and never
+   */
   readonly passthroughBehavior?: apigateway.PassthroughBehavior;
 
   /**
@@ -125,6 +124,4 @@ export interface XAmazonApigatewayIntegration {
    * For the HTTP integration, this is the URL of the HTTP endpoint including the https or http scheme.
    */
   readonly uri: string;
-
 }
-

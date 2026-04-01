@@ -45,13 +45,10 @@ export interface SchemaProps extends Extensible {
 
   /** Additional external documentation. */
   readonly externalDocs?: ExternalDocumentationObject;
-
 }
-
 
 /** The object provides metadata about the API. The metadata MAY be used by the clients if needed, and MAY be presented in editing or documentation generation tools for convenience. */
 export interface InfoObject extends Extensible {
-
   /** The title of the API. */
   readonly title: string;
 
@@ -73,7 +70,6 @@ export interface InfoObject extends Extensible {
 
 /** The contact information for the exposed API. */
 export interface ContactObject extends Extensible {
-
   /** The identifying name of the contact person/organization. */
   readonly name?: string;
 
@@ -86,7 +82,6 @@ export interface ContactObject extends Extensible {
 
 /** The license information for the exposed API. */
 export interface LicenseObject extends Extensible {
-
   /** The license name used for the API. */
   readonly name: string;
 
@@ -94,17 +89,18 @@ export interface LicenseObject extends Extensible {
   readonly url?: string;
 }
 
-
 /** Holds the relative paths to the individual endpoints and their operations. The path is appended to the URL from the Server Object in order to construct the full URL. The Paths MAY be empty, due to ACL constraints. */
 export interface PathsObject extends Extensible {
-
-  /** A relative path to an individual endpoint. The field name MUST begin with a forward slash (/). The path is appended (no relative URL resolution) to the expanded URL from the Server Object's url field in order to construct the full URL. Path templating is allowed. When matching URLs, concrete (non-templated) paths would be matched before their templated counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use. */
+  /**
+   * A relative path to an individual endpoint. The field name MUST begin with a forward slash (/). The path is appended (no relative URL resolution) to the expanded URL from the Server Object's url field in order to construct the full URL. Path templating is allowed. When matching URLs, concrete (non-templated) paths would be matched before their templated counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use.
+   *
+   * @jsii ignore
+   */
   readonly [path: string]: PathItemObject | ReferenceObject;
 }
 
 /** Describes the operations available on a single path. A Path Item MAY be empty, due to ACL constraints. The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available. */
 export interface PathItemObject extends Extensible {
-
   /** An optional, string summary, intended to apply to all operations in this path. */
   readonly summary?: string;
 
@@ -144,7 +140,6 @@ export interface PathItemObject extends Extensible {
 
 /** Describes a single API operation on a path. */
 export interface OperationObject extends Extensible {
-
   /** The list of possible responses as they are returned from executing this operation. */
   readonly responses: ResponsesObject;
 
@@ -189,7 +184,6 @@ export interface OperationObject extends Extensible {
  * The Responses Object MUST contain at least one response code, and it SHOULD be the response for a successful operation call.
  */
 export interface ResponsesObject extends Extensible {
-
   /**
    * Any HTTP status code can be used as the property name, but only one property per code, to describe the expected
    * response for that HTTP status code. A Reference Object can link to a response that is defined in the OpenAPI
@@ -202,13 +196,14 @@ export interface ResponsesObject extends Extensible {
    * Use `default` for the documentation of responses other than the ones declared for specific HTTP response codes.
    * Use this field to cover undeclared responses. A Reference Object can link to a response that the OpenAPI Object's
    * components/responses section defines.
+   *
+   * @jsii ignore
    */
   readonly [httpStatusCode: string]: ResponseObject | ReferenceObject;
 }
 
 /** Allows referencing an external resource for extended documentation. */
 export interface ExternalDocumentationObject extends Extensible {
-
   /** The URL for the target documentation. Value MUST be in the format of a URL. */
   readonly url: string;
 
@@ -218,7 +213,6 @@ export interface ExternalDocumentationObject extends Extensible {
 
 /** Describes a single request body. */
 export interface RequestBodyObject extends Extensible {
-
   /** The content of the request body. The key is a media type or media type range and the value describes it. For requests that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/* */
   readonly content: Record<string, MediaTypeObject>;
 
@@ -231,7 +225,6 @@ export interface RequestBodyObject extends Extensible {
 
 /** Each Media Type Object provides schema and examples for the media type identified by its key. */
 export interface MediaTypeObject extends Extensible {
-
   /** The schema defining the content of the request, response, or parameter. */
   readonly schema?: SchemaObject | ReferenceObject;
 
@@ -247,7 +240,6 @@ export interface MediaTypeObject extends Extensible {
 
 /** The Schema Object allows the definition of input and output data types. These types can be objects, but also primitives and arrays. This object is an extended subset of the JSON Schema Specification Wright Draft 00. For more information about the properties, see JSON Schema Core and JSON Schema Validation. Unless stated otherwise, the property definitions follow the JSON Schema. */
 export interface SchemaObject extends Extensible {
-
   /** A true value adds "null" to the allowed type specified by the type keyword, only if type is explicitly defined within the same Schema Object. Other Schema Object constraints retain their defined behavior, and therefore may disallow the use of null as a value. A false value leaves the specified or default type unmodified. The default value is false. */
   readonly nullable?: boolean;
 
@@ -271,12 +263,10 @@ export interface SchemaObject extends Extensible {
 
   /** Specifies that a schema is deprecated and SHOULD be transitioned out of usage. Default value is false. */
   readonly deprecated?: boolean;
-
 }
 
 /** When request bodies or response payloads may be one of a number of different schemas, a discriminator object can be used to aid in serialization, deserialization, and validation. The discriminator is a specific object in a schema which is used to inform the consumer of the specification of an alternative schema based on the value associated with it. When using the discriminator, inline schemas will not be considered. */
 export interface DiscriminatorObject extends Extensible {
-
   /** The name of the property in the payload that will hold the discriminator value. */
   readonly propertyName: string;
 
@@ -286,7 +276,6 @@ export interface DiscriminatorObject extends Extensible {
 
 /** A metadata object that allows for more fine-tuned XML model definitions. When using arrays, XML element names are not inferred (for singular/plural forms) and the name property SHOULD be used to add that information. See examples for expected behavior. */
 export interface XmlObject extends Extensible {
-
   /** Replaces the name of the element/attribute used for the described schema property. When defined within items, it will affect the name of the individual XML elements within the list. When defined alongside type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If wrapped is false, it will be ignored. */
   readonly name?: string;
 
@@ -303,10 +292,8 @@ export interface XmlObject extends Extensible {
   readonly wrapped?: boolean;
 }
 
-
 /** Example Object */
 export interface ExampleObject extends Extensible {
-
   /** Short description for the example. */
   readonly summary?: string;
 
@@ -322,7 +309,6 @@ export interface ExampleObject extends Extensible {
 
 /** A single encoding definition applied to a single schema property. */
 export interface EncodingObject extends Extensible {
-
   /** The Content-Type for encoding a specific property. Default value depends on the property type: for string with format being binary – application/octet-stream; for other primitive types – text/plain; for object - application/json; for array – the default is defined based on the inner type. The value can be a specific media type (e.g. application/json), a wildcard media type (e.g. image/*), or a comma-separated list of the two types. */
   readonly contentType?: string;
 
@@ -347,7 +333,6 @@ export interface EncodingObject extends Extensible {
  * 3. All traits that are affected by the location MUST be applicable to a location of header (for example, style).
  */
 export interface HeaderObject extends Extensible {
-
   /** A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich text representation. */
   readonly description?: string;
 
@@ -363,18 +348,18 @@ export interface HeaderObject extends Extensible {
 
 /** A map of possible out-of band callbacks related to the parent operation. Each value in the map is a Path Item Object that describes a set of requests that may be initiated by the API provider and the expected responses. The key value used to identify the path item object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation. */
 export interface CallbackObject extends Extensible {
-
   /**
    * A Path Item Object used to define a callback request and expected responses.
    *
    * The key that identifies the Path Item Object is a runtime expression that can be evaluated in the context of a runtime HTTP request/response to identify the URL to be used for the callback request. A simple example might be $request.body#/url. However, using a runtime expression the complete HTTP message can be accessed. This includes accessing any part of a body that a JSON Pointer RFC6901 can reference.
+   *
+   * @jsii ignore
    */
   readonly [expression: string]: PathItemObject;
 }
 
 /** Holds a set of reusable objects for different aspects of the OAS. All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object. */
 export interface ComponentsObject extends Extensible {
-
   /** An object to hold reusable Schema Objects. */
   readonly schemas?: Record<string, SchemaObject | ReferenceObject>;
 
@@ -394,7 +379,10 @@ export interface ComponentsObject extends Extensible {
   readonly headers?: Record<string, HeaderObject | ReferenceObject>;
 
   /** An object to hold reusable Security Scheme Objects. */
-  readonly securitySchemes?: Record<string, SecuritySchemeObject | ReferenceObject>;
+  readonly securitySchemes?: Record<
+    string,
+    SecuritySchemeObject | ReferenceObject
+  >;
 
   /** An object to hold reusable Link Objects. */
   readonly links?: Record<string, LinkObject | ReferenceObject>;
@@ -405,7 +393,6 @@ export interface ComponentsObject extends Extensible {
 
 /** Describes a single response from an API Operation, including design-time, static links to operations based on the response. */
 export interface ResponseObject extends Extensible {
-
   /** A short description of the response. CommonMark syntax MAY be used for rich text representation. */
   readonly description: string;
 
@@ -421,7 +408,6 @@ export interface ResponseObject extends Extensible {
 
 /** Defines a security scheme that can be used by the operations. Supported schemes are HTTP authentication, an API key (either as a header, a cookie parameter or as a query parameter), OAuth2's common flows (implicit, password, client credentials and authorization code) as defined in RFC6749, and OpenID Connect Discovery. */
 export interface SecuritySchemeObject extends Extensible {
-
   /** The type of the security scheme. Valid values are "apiKey", "http", "oauth2", "openIdConnect". */
   readonly type: string;
 
@@ -460,12 +446,10 @@ export interface SecuritySchemeObject extends Extensible {
    * REQUIRED for openIdConnect.
    */
   readonly openIdConnectUrl?: string;
-
 }
 
 /** Allows configuration of the supported OAuth Flows. */
 export interface OAuthFlowsObject extends Extensible {
-
   /** Configuration for the OAuth Implicit flow */
   readonly implicit?: OAuthFlowObject;
 
@@ -481,7 +465,6 @@ export interface OAuthFlowsObject extends Extensible {
 
 /** Configuration details for a supported OAuth Flow */
 export interface OAuthFlowObject extends Extensible {
-
   /** The available scopes for the OAuth2 security scheme. A map between the scope name and a short description for it. The map MAY be empty. */
   readonly scopes: Record<string, string>;
 
@@ -499,7 +482,6 @@ export interface OAuthFlowObject extends Extensible {
 
   /** The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL. */
   readonly refreshUrl?: string;
-
 }
 
 /**
@@ -508,7 +490,6 @@ export interface OAuthFlowObject extends Extensible {
  * For computing links, and providing instructions to execute them, a runtime expression is used for accessing values in an operation and using them as parameters while invoking the linked operation.
  */
 export interface LinkObject extends Extensible {
-
   /** A relative or absolute URI reference to an OAS operation. This field is mutually exclusive of the operationId field, and MUST point to an Operation Object. Relative operationRef values MAY be used to locate an existing Operation Object in the OpenAPI definition. */
   readonly operationRef?: string;
 
@@ -534,15 +515,16 @@ export interface LinkObject extends Extensible {
  * When a list of Security Requirement Objects is defined on the OpenAPI Object or Operation Object, only one of the Security Requirement Objects in the list needs to be satisfied to authorize the request.
  */
 export interface SecurityRequirementObject extends Extensible {
-
-  /** Each name MUST correspond to a security scheme which is declared in the Security Schemes under the Components Object. If the security scheme is of type "oauth2" or "openIdConnect", then the value is a list of scope names required for the execution, and the list MAY be empty if authorization does not require a specified scope. For other security scheme types, the array MUST be empty. */
+  /**
+   * Each name MUST correspond to a security scheme which is declared in the Security Schemes under the Components Object. If the security scheme is of type "oauth2" or "openIdConnect", then the value is a list of scope names required for the execution, and the list MAY be empty if authorization does not require a specified scope. For other security scheme types, the array MUST be empty.
+   *
+   * @jsii ignore
+   */
   readonly [name: string]: string[];
 }
 
-
 /** Describes a single operation parameter. A unique parameter is defined by a combination of a name and location. */
 export interface ParameterObject extends Extensible {
-
   /**
    * The name of the parameter. Parameter names are case sensitive.
    *
@@ -570,7 +552,6 @@ export interface ParameterObject extends Extensible {
 
 /** A simple object to allow referencing other components in the specification, internally and externally. */
 export interface ReferenceObject extends Extensible {
-
   /**
    * The reference string.
    *
@@ -580,15 +561,15 @@ export interface ReferenceObject extends Extensible {
    * {
    *   $ref: '../resources/users.yaml',
    * }
+   *
+   * @jsii ignore
    */
   readonly [key: string]: string;
   //readonly $ref: string; can't be done because JSII 8002
 }
 
-
 /** An object representing a Server. */
 export interface ServerObject extends Extensible {
-
   /** REQUIRED. A URL to the target host. This URL supports Server Variables and MAY be relative, to indicate that the host location is relative to the location where the OpenAPI document is being served. Variable substitutions will be made when a variable is named in {brackets}. */
   readonly url: string;
 
@@ -601,7 +582,6 @@ export interface ServerObject extends Extensible {
 
 /** An object representing a Server Variable for server URL template substitution. */
 export interface ServerVariableObject extends Extensible {
-
   /** The default value to use for substitution, which SHALL be sent if an alternate value is not supplied. Note this behavior is different than the Schema Object's treatment of default values, because in those cases parameter values are optional. If the enum is defined, the value SHOULD exist in the enum's values. */
   readonly default: string;
 
@@ -610,12 +590,10 @@ export interface ServerVariableObject extends Extensible {
 
   /** An optional description for the server variable. CommonMark syntax MAY be used for rich text representation. */
   readonly description?: string;
-
 }
 
 /** Adds metadata to a single tag that is used by the Operation Object. It is not mandatory to have a Tag Object per tag defined in the Operation Object instances. */
 export interface TagObject extends Extensible {
-
   /** The name of the tag. */
   readonly name: string;
 
@@ -624,7 +602,6 @@ export interface TagObject extends Extensible {
 
   /** Additional external documentation for this tag. */
   readonly externalDocs?: ExternalDocumentationObject;
-
 }
 
 /** Allow Open Api Extensions via `x-` prefixed values. */
@@ -638,6 +615,8 @@ export interface Extensible {
    *   altText: 'Acme Corp',
    *   href: 'http://example.com',
    * }
+   *
+   * @jsii ignore
    */
   readonly [extensionName: string]: any;
 }

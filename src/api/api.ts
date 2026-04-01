@@ -1,17 +1,16 @@
-import { EndpointType, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
-import { AuthorizerConfig, LambdaAuthorizer } from '../authorizers';
-import { Integration, InternalIntegrationType } from '../integration/base';
-import { LambdaIntegration } from '../integration/lambda';
-import { IDocument } from '../schema';
-import { ApiDefinition } from './definition';
-import { ApiProps, Methods, Paths } from './props';
+import { EndpointType, SpecRestApi } from "aws-cdk-lib/aws-apigateway";
+import { Construct } from "constructs";
+import { AuthorizerConfig, LambdaAuthorizer } from "../authorizers";
+import { Integration, InternalIntegrationType } from "../integration/base";
+import { LambdaIntegration } from "../integration/lambda";
+import { IDocument } from "../schema";
+import { ApiDefinition } from "./definition";
+import { ApiProps, Methods, Paths } from "./props";
 
 /**
  * AWS API Gateway REST API defined with OpenApi v3 schema.
  */
 export class Api extends SpecRestApi {
-
   /**
    * The final OpenApi v3 document used to generate the AWS API Gateway.
    */
@@ -37,7 +36,6 @@ export class Api extends SpecRestApi {
    *
    */
   constructor(scope: Construct, id: string, props: ApiProps) {
-
     const apiDefinition = new ApiDefinition(scope, {
       source: props.source,
       upload: props.upload === true,
@@ -68,15 +66,26 @@ export class Api extends SpecRestApi {
     this.document = apiDefinition.document;
   }
 
-
   /** Allow Lambda invocations to API Gateway instance principal */
   private grantLambdaInvokes(paths: Paths = {}): void {
     // get unique integration functions
-    const integrations = [...new Map(Object.values(paths)
-      .reduce((acc: (Integration | undefined)[], val: Methods) => val ? [...acc, ...Object.values(val)] : acc, [])
-      .filter((val): val is LambdaIntegration => !!val && this.isLambdaIntegration(val) && !val.xAmazonApigatewayIntegration.credentials)
-      .map(val => [val.fn.functionArn, val]),
-    ).values()];
+    const integrations = [
+      ...new Map(
+        Object.values(paths)
+          .reduce(
+            (acc: (Integration | undefined)[], val: Methods) =>
+              val ? [...acc, ...Object.values(val)] : acc,
+            [],
+          )
+          .filter(
+            (val): val is LambdaIntegration =>
+              !!val &&
+              this.isLambdaIntegration(val) &&
+              !val.xAmazonApigatewayIntegration.credentials,
+          )
+          .map((val) => [val.fn.functionArn, val]),
+      ).values(),
+    ];
 
     integrations.forEach((integration) => {
       integration.grantFunctionInvoke(this, this.arnForExecuteApi());
@@ -90,20 +99,28 @@ export class Api extends SpecRestApi {
     }
 
     // filter duplicate authorizers
-    const uniqueLambdaAuthorizers = [...new Map(Object.values(authorizers)
-      .filter((val): val is LambdaAuthorizer => {
-        return val instanceof LambdaAuthorizer && !val.xAmazonApigatewayAuthorizer.authorizerCredentials;
-      })
-      .map(val => [val.fn.functionArn, val]),
-    ).values()];
+    const uniqueLambdaAuthorizers = [
+      ...new Map(
+        Object.values(authorizers)
+          .filter((val): val is LambdaAuthorizer => {
+            return (
+              val instanceof LambdaAuthorizer &&
+              !val.xAmazonApigatewayAuthorizer.authorizerCredentials
+            );
+          })
+          .map((val) => [val.fn.functionArn, val]),
+      ).values(),
+    ];
 
-    uniqueLambdaAuthorizers.forEach(authorizer => {
+    uniqueLambdaAuthorizers.forEach((authorizer) => {
       authorizer.grantFunctionInvoke(this);
     });
   }
 
   /** Determine if the integration internal type is `LAMBDA`. */
-  private isLambdaIntegration(integration: Integration): integration is LambdaIntegration {
+  private isLambdaIntegration(
+    integration: Integration,
+  ): integration is LambdaIntegration {
     return integration.type === InternalIntegrationType.LAMBDA;
   }
 }

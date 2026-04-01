@@ -1,21 +1,20 @@
-import * as cdk from 'aws-cdk-lib';
-import { Duration } from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { IdentitySource } from 'aws-cdk-lib/aws-apigateway';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { get, set } from 'lodash';
-import * as openapix from '../src';
-import { LambdaAuthorizer, MockIntegration } from '../src';
-import { expectNoErrorAnnotations } from './utils';
+import * as cdk from "aws-cdk-lib";
+import { Duration } from "aws-cdk-lib";
+import { Match, Template } from "aws-cdk-lib/assertions";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { IdentitySource } from "aws-cdk-lib/aws-apigateway";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { get, set } from "lodash";
+import * as openapix from "../src";
+import { LambdaAuthorizer, MockIntegration } from "../src";
+import { expectNoErrorAnnotations } from "./utils";
 
-test('Validators', () => {
-
+test("Validators", () => {
   const app = new cdk.App();
-  const stack = new cdk.Stack(app, 'TestStack');
-  const fn = new lambda.Function(stack, 'TestFunction', {
+  const stack = new cdk.Stack(app, "TestStack");
+  const fn = new lambda.Function(stack, "TestFunction", {
     runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     code: lambda.Code.fromInline(`module.exports = {
       handler: async (event) => {
         console.log(event);
@@ -29,31 +28,31 @@ test('Validators', () => {
     }`),
   });
 
-  const path = '/message';
+  const path = "/message";
 
   const value = {
-    openapi: '3.0.1',
+    openapi: "3.0.1",
     info: {
-      title: 'TestApi',
-      version: '0.0.0',
+      title: "TestApi",
+      version: "0.0.0",
     },
     paths: {
       [path]: {
         get: {
-          operationId: 'get-message',
+          operationId: "get-message",
           responses: {
             200: {
               content: {
-                'application/json': {
+                "application/json": {
                   example: [
                     {
-                      some: 'foo',
-                      thing: 'bar',
+                      some: "foo",
+                      thing: "bar",
                     },
                   ],
                 },
               },
-              description: 'foo',
+              description: "foo",
             },
           },
         },
@@ -61,16 +60,16 @@ test('Validators', () => {
     },
   };
 
-  const { document } = new openapix.Api(stack, 'Testing', {
+  const { document } = new openapix.Api(stack, "Testing", {
     upload: false,
     source: new openapix.Schema(value),
     validators: {
-      'all': {
+      all: {
         validateRequestBody: true,
         validateRequestParameters: true,
         default: true, // set this as the "API level" default validator (there can be only one)
       },
-      'params-only': {
+      "params-only": {
         validateRequestBody: false,
         validateRequestParameters: true,
       },
@@ -78,7 +77,7 @@ test('Validators', () => {
     paths: {
       [path]: {
         get: new openapix.LambdaIntegration(stack, fn, {
-          validator: 'params-only',
+          validator: "params-only",
         }),
       },
     },
@@ -92,34 +91,31 @@ test('Validators', () => {
       set(
         expectationBase,
         `paths.${path}.get.x-amazon-apigateway-request-validator`,
-        'params-only',
+        "params-only",
       ),
-      'x-amazon-apigateway-request-validators',
+      "x-amazon-apigateway-request-validators",
       {
-        'all': {
+        all: {
           validateRequestBody: true,
           validateRequestParameters: true,
         },
-        'params-only': {
+        "params-only": {
           validateRequestBody: false,
           validateRequestParameters: true,
         },
       },
     ),
   );
-
-
 });
 
-test('Synth', () => {
-
+test("Synth", () => {
   const app = new cdk.App();
 
-  const stack = new cdk.Stack(app, 'TestStack');
+  const stack = new cdk.Stack(app, "TestStack");
 
-  const fn = new lambda.Function(stack, 'TestFunction', {
+  const fn = new lambda.Function(stack, "TestFunction", {
     runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     code: lambda.Code.fromInline(`module.exports = {
       handler: async (event) => {
         console.log(event);
@@ -133,14 +129,14 @@ test('Synth', () => {
     }`),
   });
 
-  const path = '/message';
-  const authorizerName = 'TestAuthorizer';
+  const path = "/message";
+  const authorizerName = "TestAuthorizer";
 
   const value = {
-    openapi: '3.0.1',
+    openapi: "3.0.1",
     info: {
-      title: 'TestApi',
-      version: '0.0.0',
+      title: "TestApi",
+      version: "0.0.0",
     },
     security: [
       {
@@ -150,41 +146,41 @@ test('Synth', () => {
     components: {
       securitySchemes: {
         [authorizerName]: {
-          type: 'apiKey',
-          in: 'header',
-          name: 'Authorization',
+          type: "apiKey",
+          in: "header",
+          name: "Authorization",
         },
       },
     },
     paths: {
       [path]: {
-        'summary': 'Some desc',
-        'description': 'Some longer desc',
-        'servers': [
+        summary: "Some desc",
+        description: "Some longer desc",
+        servers: [
           {
-            url: 'https://example.com/api/v1',
+            url: "https://example.com/api/v1",
           },
         ],
-        'x-param': {
+        "x-param": {
           foo: {
             bar: 1,
           },
         },
-        'get': {
-          operationId: 'get-message',
+        get: {
+          operationId: "get-message",
           responses: {
             200: {
               content: {
-                'application/json': {
+                "application/json": {
                   example: [
                     {
-                      some: 'foo',
-                      thing: 'bar',
+                      some: "foo",
+                      thing: "bar",
                     },
                   ],
                 },
               },
-              description: 'foo',
+              description: "foo",
             },
           },
         },
@@ -192,16 +188,18 @@ test('Synth', () => {
     },
   };
 
-  const { document } = new openapix.Api(stack, 'Testing', {
+  const { document } = new openapix.Api(stack, "Testing", {
     upload: false,
     source: new openapix.Schema(value),
-    authorizers: [new LambdaAuthorizer(stack, authorizerName, {
-      fn,
-      identitySource: IdentitySource.header('Authorization'),
-      resultsCacheTtl: cdk.Duration.seconds(300),
-      type: 'request',
-      authType: 'custom',
-    })],
+    authorizers: [
+      new LambdaAuthorizer(stack, authorizerName, {
+        fn,
+        identitySource: IdentitySource.header("Authorization"),
+        resultsCacheTtl: cdk.Duration.seconds(300),
+        type: "request",
+        authType: "custom",
+      }),
+    ],
     paths: {
       [path]: {
         get: new openapix.LambdaIntegration(stack, fn),
@@ -213,9 +211,11 @@ test('Synth', () => {
 
   expect(document).toMatchObject(
     set(expectationBase, `paths.${path}.get.x-amazon-apigateway-integration`, {
-      type: 'AWS_PROXY',
-      httpMethod: 'POST',
-      uri: expect.stringMatching(/^arn:.*:apigateway:.*:lambda.path\/2015-03-31\/functions\/.*\/invocations/),
+      type: "AWS_PROXY",
+      httpMethod: "POST",
+      uri: expect.stringMatching(
+        /^arn:.*:apigateway:.*:lambda.path\/2015-03-31\/functions\/.*\/invocations/,
+      ),
     }),
   );
 
@@ -223,98 +223,100 @@ test('Synth', () => {
 
   expectNoErrorAnnotations(stack);
 
-  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    EndpointConfiguration: {
-      Types: [
-        'REGIONAL',
-      ],
-    },
-    Name: 'Testing',
-    Body: set(expectationBase, `paths.${path}.get.x-amazon-apigateway-integration`, {
-      type: 'AWS_PROXY',
-      httpMethod: 'POST',
-      uri: {
-        'Fn::Join': [
-          '',
-          [
-            'arn:',
-            {
-              Ref: 'AWS::Partition',
-            },
-            ':apigateway:',
-            {
-              Ref: 'AWS::Region',
-            },
-            ':lambda:path/2015-03-31/functions/',
-            {
-              'Fn::GetAtt': [
-                Match.stringLikeRegexp('TestFunction*'),
-                'Arn',
-              ],
-            },
-            '/invocations',
-          ],
-        ],
+  template.hasResourceProperties(
+    "AWS::ApiGateway::RestApi",
+    Match.objectLike({
+      EndpointConfiguration: {
+        Types: ["REGIONAL"],
       },
+      Name: "Testing",
+      Body: set(
+        expectationBase,
+        `paths.${path}.get.x-amazon-apigateway-integration`,
+        {
+          type: "AWS_PROXY",
+          httpMethod: "POST",
+          uri: {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  Ref: "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  Ref: "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    Match.stringLikeRegexp("TestFunction*"),
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+      ),
     }),
-  }));
-
-
+  );
 });
 
-
-test('Basic usage', () => {
+test("Basic usage", () => {
   const stack = new cdk.Stack();
-  const { document } = new openapix.Api(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, "MyApi", {
     upload: false,
     source: new openapix.Schema({
-      openapi: '3.0.1',
+      openapi: "3.0.1",
       info: {
-        title: 'TestApi',
-        version: '0.0.0',
+        title: "TestApi",
+        version: "0.0.0",
       },
       paths: {},
     }),
   });
   expectNoErrorAnnotations(stack);
   expect(document).toEqual({
-    openapi: '3.0.1',
+    openapi: "3.0.1",
     info: {
-      title: 'TestApi',
-      version: '0.0.0',
+      title: "TestApi",
+      version: "0.0.0",
     },
     paths: {},
   });
 });
 
-test('Inject paths', () => {
+test("Inject paths", () => {
   const stack = new cdk.Stack();
-  const { document } = new openapix.Api(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, "MyApi", {
     upload: false,
     source: new openapix.Schema({
-      openapi: '3.0.1',
+      openapi: "3.0.1",
       info: {
-        title: 'TestApi',
-        version: '0.0.0',
+        title: "TestApi",
+        version: "0.0.0",
       },
       paths: {
-        '/foo': {
-          summary: 'Some desc',
+        "/foo": {
+          summary: "Some desc",
           get: {
-            operationId: 'get-foo',
+            operationId: "get-foo",
             responses: {
               200: {
                 content: {
-                  'application/json': {
+                  "application/json": {
                     example: [
                       {
-                        some: 'foo',
-                        thing: 'bar',
+                        some: "foo",
+                        thing: "bar",
                       },
                     ],
                   },
                 },
-                description: 'foo',
+                description: "foo",
               },
             },
           },
@@ -326,39 +328,39 @@ test('Inject paths', () => {
     },
   });
 
-  expect(get(document, 'baz')).toBe(1);
+  expect(get(document, "baz")).toBe(1);
 });
 
-test('Reject deep paths', () => {
+test("Reject deep paths", () => {
   const stack = new cdk.Stack();
 
-  const { document } = new openapix.Api(stack, 'MyApi', {
+  const { document } = new openapix.Api(stack, "MyApi", {
     upload: false,
     source: new openapix.Schema({
-      openapi: '3.0.1',
+      openapi: "3.0.1",
       info: {
-        title: 'TestApi',
-        version: '0.0.0',
+        title: "TestApi",
+        version: "0.0.0",
       },
       paths: {
-        '/foo': {
-          summary: 'Some desc',
+        "/foo": {
+          summary: "Some desc",
           get: {
-            summary: 'Some desc',
-            operationId: 'get-foo',
+            summary: "Some desc",
+            operationId: "get-foo",
             responses: {
               200: {
                 content: {
-                  'application/json': {
+                  "application/json": {
                     example: [
                       {
-                        some: 'foo',
-                        thing: 'bar',
+                        some: "foo",
+                        thing: "bar",
                       },
                     ],
                   },
                 },
-                description: 'foo',
+                description: "foo",
               },
             },
           },
@@ -366,18 +368,23 @@ test('Reject deep paths', () => {
       },
     }),
     defaultIntegration: new MockIntegration(),
-    rejectionsDeep: ['example'],
+    rejectionsDeep: ["example"],
   });
 
   expectNoErrorAnnotations(stack);
-  expect(get(document, 'paths./foo.get.responses."200".content."application/json".example')).toBeUndefined();
+  expect(
+    get(
+      document,
+      'paths./foo.get.responses."200".content."application/json".example',
+    ),
+  ).toBeUndefined();
 });
 
-test('Handles custom authorizer', () => {
+test("Handles custom authorizer", () => {
   const stack = new cdk.Stack();
-  const testLambda = new lambda.Function(stack, 'TestFunction', {
+  const testLambda = new lambda.Function(stack, "TestFunction", {
     runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     code: lambda.Code.fromInline(`module.exports = {
               handler: async (event) => {
                 console.log(event);
@@ -391,11 +398,11 @@ test('Handles custom authorizer', () => {
             }`),
   });
 
-  const authorizerName = 'MyLambdaAuthorizer';
+  const authorizerName = "MyLambdaAuthorizer";
 
-  const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
+  const authorizerLambda = new lambda.Function(stack, "AuthorizerFunction", {
     runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     code: lambda.Code.fromInline(`module.exports = {
               handler: async (event) => {
                 console.log(event);
@@ -409,13 +416,13 @@ test('Handles custom authorizer', () => {
             }`),
   });
 
-  const api = new openapix.Api(stack, 'MyApi', {
+  const api = new openapix.Api(stack, "MyApi", {
     upload: false,
     source: new openapix.Schema({
-      openapi: '3.0.1',
+      openapi: "3.0.1",
       info: {
-        title: 'TestApi',
-        version: '0.0.0',
+        title: "TestApi",
+        version: "0.0.0",
       },
       security: [
         {
@@ -425,21 +432,21 @@ test('Handles custom authorizer', () => {
       components: {
         securitySchemes: {
           [authorizerName]: {
-            type: 'apiKey',
-            name: 'code',
-            in: 'query',
+            type: "apiKey",
+            name: "code",
+            in: "query",
           },
           otherAuthorizer: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
           },
         },
       },
       paths: {
-        '/foo': {
+        "/foo": {
           get: {
-            operationId: 'get-foo',
+            operationId: "get-foo",
             security: [
               {
                 [authorizerName]: [],
@@ -448,36 +455,36 @@ test('Handles custom authorizer', () => {
             responses: {
               200: {
                 content: {
-                  'application/json': {
+                  "application/json": {
                     example: [
                       {
-                        some: 'foo',
-                        thing: 'bar',
+                        some: "foo",
+                        thing: "bar",
                       },
                     ],
                   },
                 },
-                description: 'foo',
+                description: "foo",
               },
             },
           },
         },
-        '/bar': {
+        "/bar": {
           get: {
-            operationId: 'get-bar',
+            operationId: "get-bar",
             responses: {
               200: {
                 content: {
-                  'application/json': {
+                  "application/json": {
                     example: [
                       {
-                        some: 'bar',
-                        thing: 'baz',
+                        some: "bar",
+                        thing: "baz",
                       },
                     ],
                   },
                 },
-                description: 'bar',
+                description: "bar",
               },
             },
           },
@@ -488,25 +495,25 @@ test('Handles custom authorizer', () => {
     authorizers: [
       new openapix.LambdaAuthorizer(stack, authorizerName, {
         fn: authorizerLambda,
-        identitySource: apigateway.IdentitySource.queryString('code'),
-        type: 'request',
-        authType: 'custom',
+        identitySource: apigateway.IdentitySource.queryString("code"),
+        type: "request",
+        authType: "custom",
         resultsCacheTtl: Duration.minutes(5),
       }),
-      new openapix.LambdaAuthorizer(stack, 'otherAuthorizer', {
+      new openapix.LambdaAuthorizer(stack, "otherAuthorizer", {
         fn: authorizerLambda,
-        identitySource: apigateway.IdentitySource.queryString('code'),
-        type: 'request',
-        authType: 'custom',
+        identitySource: apigateway.IdentitySource.queryString("code"),
+        type: "request",
+        authType: "custom",
         resultsCacheTtl: Duration.minutes(5),
       }),
     ],
 
     paths: {
-      '/foo': {
+      "/foo": {
         get: new openapix.LambdaIntegration(stack, testLambda),
       },
-      '/bar': {
+      "/bar": {
         get: new openapix.LambdaIntegration(stack, testLambda),
       },
     },
@@ -515,25 +522,34 @@ test('Handles custom authorizer', () => {
   const template = Template.fromStack(stack);
 
   expectNoErrorAnnotations(stack);
-  expect(get(api.document, 'components.securitySchemes.MyLambdaAuthorizer')).toBeDefined();
-  expect(get(api.document, 'paths./foo.get.security[0].MyLambdaAuthorizer')).toEqual([]);
-  expect(get(api.document, 'paths./foo.get.security[1].otherAuthorizer')).toEqual([]);
-  template.hasResourceProperties( 'AWS::Lambda::Permission', Match.objectLike({
-    Action: 'lambda:InvokeFunction',
-    FunctionName: {
-      Ref: Match.stringLikeRegexp('AuthorizerFunction*'),
-    },
-    Principal: 'apigateway.amazonaws.com',
-  }));
+  expect(
+    get(api.document, "components.securitySchemes.MyLambdaAuthorizer"),
+  ).toBeDefined();
+  expect(
+    get(api.document, "paths./foo.get.security[0].MyLambdaAuthorizer"),
+  ).toEqual([]);
+  expect(
+    get(api.document, "paths./foo.get.security[1].otherAuthorizer"),
+  ).toEqual([]);
+  template.hasResourceProperties(
+    "AWS::Lambda::Permission",
+    Match.objectLike({
+      Action: "lambda:InvokeFunction",
+      FunctionName: {
+        Ref: Match.stringLikeRegexp("AuthorizerFunction*"),
+      },
+      Principal: "apigateway.amazonaws.com",
+    }),
+  );
 });
 
-test('Handles cross-stack imports inside cdk-app', () => {
+test("Handles cross-stack imports inside cdk-app", () => {
   const app = new cdk.App();
-  const stack = new cdk.Stack(app, 'MainStack');
-  const lambdaStack = new cdk.Stack(app, 'OtherStack');
-  const testLambda = new lambda.Function(lambdaStack, 'TestFunction', {
+  const stack = new cdk.Stack(app, "MainStack");
+  const lambdaStack = new cdk.Stack(app, "OtherStack");
+  const testLambda = new lambda.Function(lambdaStack, "TestFunction", {
     runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     code: lambda.Code.fromInline(`module.exports = {
                 handler: async (event) => {
                   console.log(event);
@@ -547,11 +563,11 @@ test('Handles cross-stack imports inside cdk-app', () => {
               }`),
   });
 
-  const authorizerName = 'MyLambdaAuthorizer';
+  const authorizerName = "MyLambdaAuthorizer";
 
-  const authorizerLambda = new lambda.Function(stack, 'AuthorizerFunction', {
+  const authorizerLambda = new lambda.Function(stack, "AuthorizerFunction", {
     runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     code: lambda.Code.fromInline(`module.exports = {
                 handler: async (event) => {
                   console.log(event);
@@ -565,13 +581,13 @@ test('Handles cross-stack imports inside cdk-app', () => {
               }`),
   });
 
-  new openapix.Api(stack, 'MyApi', {
+  new openapix.Api(stack, "MyApi", {
     upload: false,
     source: new openapix.Schema({
-      openapi: '3.0.1',
+      openapi: "3.0.1",
       info: {
-        title: 'TestApi',
-        version: '0.0.0',
+        title: "TestApi",
+        version: "0.0.0",
       },
       security: [
         {
@@ -581,16 +597,16 @@ test('Handles cross-stack imports inside cdk-app', () => {
       components: {
         securitySchemes: {
           [authorizerName]: {
-            type: 'apiKey',
-            name: 'code',
-            in: 'query',
+            type: "apiKey",
+            name: "code",
+            in: "query",
           },
         },
       },
       paths: {
-        '/foo': {
+        "/foo": {
           get: {
-            operationId: 'get-foo',
+            operationId: "get-foo",
             security: [
               {
                 [authorizerName]: [],
@@ -599,36 +615,36 @@ test('Handles cross-stack imports inside cdk-app', () => {
             responses: {
               200: {
                 content: {
-                  'application/json': {
+                  "application/json": {
                     example: [
                       {
-                        some: 'foo',
-                        thing: 'bar',
+                        some: "foo",
+                        thing: "bar",
                       },
                     ],
                   },
                 },
-                description: 'foo',
+                description: "foo",
               },
             },
           },
         },
-        '/bar': {
+        "/bar": {
           get: {
-            operationId: 'get-bar',
+            operationId: "get-bar",
             responses: {
               200: {
                 content: {
-                  'application/json': {
+                  "application/json": {
                     example: [
                       {
-                        some: 'bar',
-                        thing: 'baz',
+                        some: "bar",
+                        thing: "baz",
                       },
                     ],
                   },
                 },
-                description: 'bar',
+                description: "bar",
               },
             },
           },
@@ -639,18 +655,18 @@ test('Handles cross-stack imports inside cdk-app', () => {
     authorizers: [
       new openapix.LambdaAuthorizer(stack, authorizerName, {
         fn: authorizerLambda,
-        identitySource: apigateway.IdentitySource.queryString('code'),
-        type: 'request',
-        authType: 'custom',
+        identitySource: apigateway.IdentitySource.queryString("code"),
+        type: "request",
+        authType: "custom",
         resultsCacheTtl: Duration.minutes(5),
       }),
     ],
 
     paths: {
-      '/foo': {
+      "/foo": {
         get: new openapix.LambdaIntegration(stack, testLambda),
       },
-      '/bar': {
+      "/bar": {
         get: new openapix.LambdaIntegration(stack, testLambda),
       },
     },

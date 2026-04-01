@@ -32,14 +32,15 @@
         "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
-        "RELEASE_TAG_PREFIX": ""
+        "RELEASE_TAG_PREFIX": "",
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
       },
       "steps": [
         {
           "builtin": "release/bump-version"
         }
       ],
-      "condition": "! git log --oneline -1 | grep -q \"chore(release):\""
+      "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
     },
     "clobber": {
       "name": "clobber",
@@ -96,7 +97,7 @@
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "node .projenrc.js"
+          "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
         }
       ]
     },
@@ -124,9 +125,40 @@
     "eslint": {
       "name": "eslint",
       "description": "Runs eslint against the codebase",
+      "env": {
+        "ESLINT_USE_FLAT_CONFIG": "false",
+        "NODE_NO_WARNINGS": "1"
+      },
       "steps": [
         {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
+          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern $@ src test build-tools projenrc .projenrc.ts",
+          "receiveArgs": true
+        }
+      ]
+    },
+    "format": {
+      "name": "format",
+      "steps": [
+        {
+          "exec": "prettier --write ."
+        }
+      ]
+    },
+    "install": {
+      "name": "install",
+      "description": "Install project dependencies and update lockfile (non-frozen)",
+      "steps": [
+        {
+          "exec": "pnpm i --no-frozen-lockfile"
+        }
+      ]
+    },
+    "install:ci": {
+      "name": "install:ci",
+      "description": "Install project dependencies using frozen lockfile",
+      "steps": [
+        {
+          "exec": "pnpm i --frozen-lockfile"
         }
       ]
     },
@@ -135,7 +167,12 @@
       "description": "Creates the distribution package",
       "steps": [
         {
-          "exec": "if [ ! -z ${CI} ]; then rsync -a . .repo --exclude .git --exclude node_modules && rm -rf dist && mv .repo dist; else npx projen package-all; fi"
+          "spawn": "package:js",
+          "condition": "node -e \"if (!process.env.CI) process.exit(1)\""
+        },
+        {
+          "spawn": "package-all",
+          "condition": "node -e \"if (process.env.CI) process.exit(1)\""
         }
       ]
     },
@@ -145,18 +182,6 @@
       "steps": [
         {
           "spawn": "package:js"
-        },
-        {
-          "spawn": "package:go"
-        }
-      ]
-    },
-    "package:go": {
-      "name": "package:go",
-      "description": "Create go language bindings",
-      "steps": [
-        {
-          "exec": "jsii-pacmak -v --target go"
         }
       ]
     },
@@ -165,7 +190,7 @@
       "description": "Create js language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --target js"
+          "exec": "jsii-pacmak -v --pack-command \"pnpm pack\" --target js"
         }
       ]
     },
@@ -191,33 +216,7 @@
       "description": "Prepare a release from \"main\" branch",
       "env": {
         "RELEASE": "true",
-        "MAJOR": "0"
-      },
-      "steps": [
-        {
-          "exec": "rm -fr dist"
-        },
-        {
-          "spawn": "bump"
-        },
-        {
-          "spawn": "build"
-        },
-        {
-          "spawn": "unbump"
-        },
-        {
-          "exec": "git diff --ignore-space-at-eol --exit-code"
-        }
-      ]
-    },
-    "release:beta": {
-      "name": "release:beta",
-      "description": "Prepare a release from \"beta\" branch",
-      "env": {
-        "RELEASE": "true",
-        "MAJOR": "1",
-        "PRERELEASE": "beta"
+        "MAJOR": "1"
       },
       "steps": [
         {
@@ -242,10 +241,21 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests --all --coverageProvider=v8 --updateSnapshot"
+          "exec": "jest --passWithNoTests --ci",
+          "receiveArgs": true
         },
         {
           "spawn": "eslint"
+        }
+      ]
+    },
+    "test:update": {
+      "name": "test:update",
+      "description": "Update jest snapshots",
+      "steps": [
+        {
+          "exec": "jest --updateSnapshot --passWithNoTests --ci",
+          "receiveArgs": true
         }
       ]
     },
@@ -266,7 +276,8 @@
         "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
-        "RELEASE_TAG_PREFIX": ""
+        "RELEASE_TAG_PREFIX": "",
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
       },
       "steps": [
         {
@@ -282,31 +293,16 @@
       },
       "steps": [
         {
-          "exec": "npm update npm-check-updates"
+          "exec": "pnpm dlx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@alma-cdk/construct-library,@types/js-yaml,@types/lodash,@types/omit-deep-lodash,@types/semver,aws-cdk-lib,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,prettier,projen,ts-node,change-case,js-yaml,lodash,omit-deep-lodash,semver"
         },
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
+          "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
+          "exec": "pnpm update @alma-cdk/construct-library @types/jest @types/js-yaml @types/lodash @types/node @types/omit-deep-lodash @types/prettier @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen ts-jest ts-node typescript change-case js-yaml lodash omit-deep-lodash semver constructs"
         },
         {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
-        },
-        {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
-        },
-        {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@types/prettier,aws-cdk-lib,constructs'"
-        },
-        {
-          "exec": "npm install"
-        },
-        {
-          "exec": "npm update"
-        },
-        {
-          "exec": "npx projen"
+          "exec": "pnpm exec projen"
         },
         {
           "spawn": "post-upgrade"
@@ -324,7 +320,7 @@
     }
   },
   "env": {
-    "PATH": "$(npx -c \"node -e \\\"console.log(process.env.PATH)\\\"\")"
+    "PATH": "$(pnpm -c exec \"node --print process.env.PATH\")"
   },
-  "//": "~~ Generated by projen. To modify, edit .projenrc.js and run \"npx projen\"."
+  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"pnpm exec projen\"."
 }

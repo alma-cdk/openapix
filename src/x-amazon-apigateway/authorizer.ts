@@ -6,19 +6,18 @@
  * @see https://awslabs.github.io/smithy/1.0/spec/aws/amazon-apigateway.html
  */
 export interface XAmazonApigatewayAuthorizer {
-
   /**
-    * The type of the authorizer. This is a required property.
-    *
-    * For REST APIs, specify `token` for an authorizer with the caller identity embedded in an authorization token.
-    * Specify `request` for an authorizer with the caller identity contained in request parameters.
-    *
-    * @example
-    * 'token'
-    * 'request'
-    * 'cognito_user_pools'
-    */
-  readonly type: 'token'|'request'|'cognito_user_pools';
+   * The type of the authorizer. This is a required property.
+   *
+   * For REST APIs, specify `token` for an authorizer with the caller identity embedded in an authorization token.
+   * Specify `request` for an authorizer with the caller identity contained in request parameters.
+   *
+   * @example
+   * 'token'
+   * 'request'
+   * 'cognito_user_pools'
+   */
+  readonly type: "token" | "request" | "cognito_user_pools";
 
   /**
    * The Uniform Resource Identifier (URI) of the authorizer Lambda function.
@@ -35,7 +34,6 @@ export interface XAmazonApigatewayAuthorizer {
    * 'arn:aws:iam::123456789012:role/MyRole'
    */
   readonly authorizerCredentials?: string;
-
 
   /**
    * The number of seconds during which authorizer result is cached.
@@ -72,5 +70,4 @@ export interface XAmazonApigatewayAuthorizer {
    * ['arn:aws:cognito-idp:{region}:{account_id}:userpool/{user_pool_id}]
    */
   readonly providerARNs?: string[];
-
 }

@@ -10,12 +10,13 @@
  * }
  */
 export interface XAmazonApigatewayIntegrationResponseTemplates {
-
   /**
    * @example
    * {
    *   'application/json': '#set ($root=$input.path('$')) { \"stage\": \"$root.name\", \"user-id\": \"$root.key\" }',
    * }
+   *
+   * @jsii ignore
    */
   [mimeType: string]: string;
 }

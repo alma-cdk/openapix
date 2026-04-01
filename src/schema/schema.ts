@@ -1,27 +1,25 @@
-import * as fs from 'fs';
-import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { Construct } from 'constructs';
-import * as yaml from 'js-yaml';
-import { get, has, set, unset } from 'lodash';
-import { SchemaAsset } from './asset';
-import { IDocument } from './idocument';
-import { SchemaProps } from './props';
-import { getValidVersion } from './version';
+import * as fs from "fs";
+import { Asset } from "aws-cdk-lib/aws-s3-assets";
+import { Construct } from "constructs";
+import * as yaml from "js-yaml";
+import { get, has, set, unset } from "lodash";
+import { SchemaAsset } from "./asset";
+import { IDocument } from "./idocument";
+import { SchemaProps } from "./props";
+import { getValidVersion } from "./version";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const omitDeep = require('omit-deep-lodash');
-
+const omitDeep = require("omit-deep-lodash");
 
 /**
  * Represents an OpenApi v3 Schema which can be deserialized from YAML-file, modified
  * and then serialized back to YAML.
  */
 export class Schema {
-
   /**
    * A string representing supported SemVer range.
    * @see https://github.com/npm/node-semver
    */
-  public static openApiSupportedVersions: string = '3.0.x';
+  public static openApiSupportedVersions: string = "3.0.x";
 
   /** Parse OpenApi v3 schema from inline YAML content. */
   public static fromInline(content: string): Schema {
@@ -31,7 +29,7 @@ export class Schema {
 
   /** Parse OpenApi v3 schema by loading a YAML file from given path. */
   public static fromAsset(path: string): Schema {
-    const schema = fs.readFileSync(path, 'utf-8');
+    const schema = fs.readFileSync(path, "utf-8");
     return Schema.fromInline(schema);
   }
 
@@ -41,7 +39,7 @@ export class Schema {
    *
    * @todo info object?
    * @todo validate openapi string?
-  */
+   */
   private document: IDocument;
 
   /**
@@ -61,7 +59,6 @@ export class Schema {
       this.document.openapi,
     );
   }
-
 
   /** Serialize to YAML string. */
   public toYaml(): string {
@@ -100,12 +97,14 @@ export class Schema {
 
   /** Inject multiple values to given paths. */
   public inject(records: Record<string, any> = {}): void {
-    Object.keys(records).forEach(path => set(this.document, path, records[path]));
+    Object.keys(records).forEach((path) =>
+      set(this.document, path, records[path]),
+    );
   }
 
   /** Reject – i.e. remove values – from given object paths. */
   public reject(paths: string[] = []): void {
-    paths.forEach(path => unset(this.document, path));
+    paths.forEach((path) => unset(this.document, path));
   }
 
   /** Reject deep within object – i.e. remove all nested object paths. */
