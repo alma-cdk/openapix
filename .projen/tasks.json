@@ -293,13 +293,13 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@alma-cdk/construct-library,@types/js-yaml,@types/lodash,@types/omit-deep-lodash,@types/semver,aws-cdk-lib,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,prettier,projen,ts-node,change-case,js-yaml,lodash,omit-deep-lodash,semver"
+          "exec": "pnpm dlx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@alma-cdk/construct-library,@types/js-yaml,@types/lodash,@types/semver,aws-cdk-lib,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,lodash,prettier,projen,ts-node,change-case,es-toolkit,js-yaml,semver"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @alma-cdk/construct-library @types/jest @types/js-yaml @types/lodash @types/node @types/omit-deep-lodash @types/prettier @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen ts-jest ts-node typescript change-case js-yaml lodash omit-deep-lodash semver constructs"
+          "exec": "pnpm update @alma-cdk/construct-library @types/jest @types/js-yaml @types/lodash @types/node @types/prettier @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii lodash prettier projen ts-jest ts-node typescript change-case es-toolkit js-yaml semver constructs"
         },
         {
           "exec": "pnpm exec projen"

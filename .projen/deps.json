@@ -23,10 +23,6 @@
       "type": "build"
     },
     {
-      "name": "@types/omit-deep-lodash",
-      "type": "build"
-    },
-    {
       "name": "@types/prettier",
       "version": "2.6.0",
       "type": "build"
@@ -109,6 +105,10 @@
       "type": "build"
     },
     {
+      "name": "lodash",
+      "type": "build"
+    },
+    {
       "name": "prettier",
       "type": "build"
     },
@@ -135,15 +135,11 @@
       "type": "bundled"
     },
     {
+      "name": "es-toolkit",
+      "type": "bundled"
+    },
+    {
       "name": "js-yaml",
-      "type": "bundled"
-    },
-    {
-      "name": "lodash",
-      "type": "bundled"
-    },
-    {
-      "name": "omit-deep-lodash",
       "type": "bundled"
     },
     {

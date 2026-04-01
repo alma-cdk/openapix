@@ -40,9 +40,8 @@
     "@alma-cdk/construct-library": "0.0.16",
     "@types/jest": "^30",
     "@types/js-yaml": "^4.0.9",
-    "@types/lodash": "^4.14.188",
+    "@types/lodash": "^4.17.24",
     "@types/node": "^20",
-    "@types/omit-deep-lodash": "^1.1.1",
     "@types/prettier": "2.6.0",
     "@types/semver": "^7.3.13",
     "@typescript-eslint/eslint-plugin": "^8",
@@ -62,6 +61,7 @@
     "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.70.0",
     "jsii-rosetta": "~5.9.0",
+    "lodash": "^4.17.21",
     "prettier": "^3.8.1",
     "projen": "0.99.26",
     "ts-jest": "^29",
@@ -74,16 +74,14 @@
   },
   "dependencies": {
     "change-case": "^4.1.2",
+    "es-toolkit": "^1.45.1",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "omit-deep-lodash": "^1.1.7",
     "semver": "^7.3.8"
   },
   "bundledDependencies": [
     "change-case",
+    "es-toolkit",
     "js-yaml",
-    "lodash",
-    "omit-deep-lodash",
     "semver"
   ],
   "pnpm": {},

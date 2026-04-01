@@ -8,11 +8,10 @@ import {
 import { addError } from "../errors/add";
 import { Integration } from "../integration";
 import { CorsIntegration } from "../integration/cors";
+import { omitDeep } from "../omit-deep";
 import { IDocument, Schema } from "../schema";
 import { getMethodsFromSchemaPath, getSchemaPaths } from "./utils";
 import { XAmazonApigatewayRequestValidator } from "../x-amazon-apigateway/request-validator";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const omitDeep = require("omit-deep-lodash");
 
 /** Represents an OpenAPI v3 definition asset. */
 export class ApiDefinition extends apigateway.ApiDefinition {

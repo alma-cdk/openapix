@@ -1,14 +1,13 @@
 import * as fs from "fs";
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import { Construct } from "constructs";
+import { get, has, set, unset } from "es-toolkit/compat";
 import * as yaml from "js-yaml";
-import { get, has, set, unset } from "lodash";
+import { omitDeep } from "../omit-deep";
 import { SchemaAsset } from "./asset";
 import { IDocument } from "./idocument";
 import { SchemaProps } from "./props";
 import { getValidVersion } from "./version";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const omitDeep = require("omit-deep-lodash");
 
 /**
  * Represents an OpenApi v3 Schema which can be deserialized from YAML-file, modified
