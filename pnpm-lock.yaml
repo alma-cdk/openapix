@@ -25,8 +25,8 @@ importers:
         version: 7.7.4
     devDependencies:
       '@alma-cdk/construct-library':
-        specifier: 0.0.15
-        version: 0.0.15(constructs@10.3.0)(projen@0.99.26(constructs@10.3.0))
+        specifier: 0.0.16
+        version: 0.0.16(constructs@10.3.0)(projen@0.99.26(constructs@10.3.0))
       '@types/jest':
         specifier: ^30
         version: 30.0.0
@@ -117,8 +117,8 @@ importers:
 
 packages:
 
-  '@alma-cdk/construct-library@0.0.15':
-    resolution: {integrity: sha512-BRdP7UJ6bw4qVK0wQ1sb9x0MKdfamI2wuWFtPgtKsVozimG52OKeyNFTQtd6gjPKKKhE9PrbsQBcyN+6Tmeaag==}
+  '@alma-cdk/construct-library@0.0.16':
+    resolution: {integrity: sha512-Y75KfiuuF5PC+DXmaNrgIgp+O9EBChaBIpVgKApqYrdywubqhDlzu+piBxIhqjTYbLCUHkojpVfsaqq/u6Yuzw==}
     engines: {node: '>= 20 <= 24'}
     peerDependencies:
       constructs: ^10.0.0
@@ -3145,7 +3145,7 @@ packages:
 
 snapshots:
 
-  '@alma-cdk/construct-library@0.0.15(constructs@10.3.0)(projen@0.99.26(constructs@10.3.0))':
+  '@alma-cdk/construct-library@0.0.16(constructs@10.3.0)(projen@0.99.26(constructs@10.3.0))':
     dependencies:
       constructs: 10.3.0
       projen: 0.99.26(constructs@10.3.0)
