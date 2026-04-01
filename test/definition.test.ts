@@ -124,6 +124,43 @@ test("Should add errors when wrong path config", () => {
   );
 });
 
+test("Should add errors when multiple default validators are configured", () => {
+  const stack = new cdk.Stack();
+
+  const definition = new ApiDefinition(stack, {
+    source: new openapix.Schema({
+      openapi: "3.0.1",
+      info: {
+        title: "TestApi",
+        version: "0.0.0",
+      },
+      paths: {},
+    }),
+    validators: {
+      all: {
+        validateRequestBody: true,
+        validateRequestParameters: true,
+        default: true,
+      },
+      paramsOnly: {
+        validateRequestBody: false,
+        validateRequestParameters: true,
+        default: true,
+      },
+    },
+  });
+
+  const config = definition.bind(stack);
+
+  expect(config.inlineDefinition).not.toHaveProperty(
+    "x-amazon-apigateway-request-validators",
+  );
+  Annotations.fromStack(stack).hasError(
+    "*",
+    "You may only configure one default validator",
+  );
+});
+
 test("Should add mock integrations", () => {
   const stack = new cdk.Stack();
 
