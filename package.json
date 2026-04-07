@@ -61,7 +61,7 @@
     "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.70.0",
     "jsii-rosetta": "~5.9.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.18.1",
     "prettier": "^3.8.1",
     "projen": "0.99.26",
     "ts-jest": "^29",
