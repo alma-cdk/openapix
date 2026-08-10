@@ -1,6 +1,9 @@
 import { AlmaCdkConstructLibrary } from "@alma-cdk/construct-library";
 import { cdk } from "projen";
 
+const MAJOR_VERSION = 1;
+const NEXT_MAJOR_VERSION = MAJOR_VERSION + 1;
+
 const project = new AlmaCdkConstructLibrary({
   name: "@alma-cdk/openapix",
   author: "Alma Media",
@@ -8,8 +11,15 @@ const project = new AlmaCdkConstructLibrary({
   description: "Combine the power of AWS CDK & OpenAPI YAML Schema Definitions",
   repositoryUrl: "https://github.com/alma-cdk/openapix.git",
   stability: cdk.Stability.EXPERIMENTAL,
-  majorVersion: 1,
+  majorVersion: MAJOR_VERSION,
   releaseEnvironment: "production",
+  releaseBranches: {
+    [`${NEXT_MAJOR_VERSION}.x`]: {
+      majorVersion: NEXT_MAJOR_VERSION,
+      prerelease: "beta",
+      npmDistTag: "beta",
+    },
+  },
   keywords: [
     "cdk",
     "aws-cdk",
