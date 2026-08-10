@@ -18,22 +18,29 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        id: checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        id: setup_pnpm
+        uses: pnpm/action-setup@v5
         with:
-          version: "10"
+          version: 11.19.0
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        id: setup_node_js
+        uses: actions/setup-node@v6
         with:
           node-version: "24"
+          package-manager-cache: false
       - name: Install dependencies
+        id: install_dependencies
         run: pnpm i --frozen-lockfile
       - name: Run tests
+        id: run_tests
         run: pnpm run test
       - name: SonarCloud Scan
+        id: sonarcloud_scan
         uses: SonarSource/sonarqube-scan-action@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -45,6 +45,8 @@ new Api(scope: Construct, id: string, props: ApiProps)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@alma-cdk/openapix.Api.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@alma-cdk/openapix.Api.with">with</a></code> | Applies one or more mixins to this construct. |
+| <code><a href="#@alma-cdk/openapix.Api.applyCrossStackReferenceStrength">applyCrossStackReferenceStrength</a></code> | Override the cross-stack reference strength for this resource. |
 | <code><a href="#@alma-cdk/openapix.Api.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
 | <code><a href="#@alma-cdk/openapix.Api.addApiKey">addApiKey</a></code> | Add an ApiKey to the deploymentStage. |
 | <code><a href="#@alma-cdk/openapix.Api.addDomainName">addDomainName</a></code> | Defines an API Gateway domain name and maps it to this API. |
@@ -72,6 +74,47 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="@alma-cdk/openapix.Api.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="@alma-cdk/openapix.Api.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+---
+
+##### `applyCrossStackReferenceStrength` <a name="applyCrossStackReferenceStrength" id="@alma-cdk/openapix.Api.applyCrossStackReferenceStrength"></a>
+
+```typescript
+public applyCrossStackReferenceStrength(strength: ReferenceStrength): void
+```
+
+Override the cross-stack reference strength for this resource.
+
+When set, any cross-stack reference to this resource will use the specified
+mechanism instead of the global default determined by the
+`@aws-cdk/core:defaultCrossStackReferences` context key. This is useful for
+selectively weakening specific references to avoid the "deadly embrace" problem
+without changing the app-wide default.
+
+###### `strength`<sup>Required</sup> <a name="strength" id="@alma-cdk/openapix.Api.applyCrossStackReferenceStrength.parameter.strength"></a>
+
+- *Type:* aws-cdk-lib.ReferenceStrength
+
+The reference strength to use for this resource.
+
+---
 
 ##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="@alma-cdk/openapix.Api.applyRemovalPolicy"></a>
 
@@ -472,11 +515,11 @@ Check whether the given construct is a Resource.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@alma-cdk/openapix.Api.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@alma-cdk/openapix.Api.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#@alma-cdk/openapix.Api.property.env">env</a></code> | <code>aws-cdk-lib.interfaces.ResourceEnvironment</code> | The environment this resource belongs to. |
 | <code><a href="#@alma-cdk/openapix.Api.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
 | <code><a href="#@alma-cdk/openapix.Api.property.restApiId">restApiId</a></code> | <code>string</code> | The ID of this API Gateway RestApi. |
 | <code><a href="#@alma-cdk/openapix.Api.property.restApiName">restApiName</a></code> | <code>string</code> | A human friendly name for this Rest API. |
-| <code><a href="#@alma-cdk/openapix.Api.property.restApiRef">restApiRef</a></code> | <code>aws-cdk-lib.aws_apigateway.RestApiReference</code> | A reference to a RestApi resource. |
+| <code><a href="#@alma-cdk/openapix.Api.property.restApiRef">restApiRef</a></code> | <code>aws-cdk-lib.interfaces.aws_apigateway.RestApiReference</code> | A reference to a RestApi resource. |
 | <code><a href="#@alma-cdk/openapix.Api.property.restApiRootResourceId">restApiRootResourceId</a></code> | <code>string</code> | The resource ID of the root resource. |
 | <code><a href="#@alma-cdk/openapix.Api.property.root">root</a></code> | <code>aws-cdk-lib.aws_apigateway.IResource</code> | Represents the root resource of this API endpoint ('/'). |
 | <code><a href="#@alma-cdk/openapix.Api.property.url">url</a></code> | <code>string</code> | The deployed root URL of this REST API. |
@@ -505,16 +548,17 @@ The tree node.
 public readonly env: ResourceEnvironment;
 ```
 
-- *Type:* aws-cdk-lib.ResourceEnvironment
+- *Type:* aws-cdk-lib.interfaces.ResourceEnvironment
 
 The environment this resource belongs to.
 
-For resources that are created and managed by the CDK
-(generally, those created by creating new class instances like Role, Bucket, etc.),
-this is always the same as the environment of the stack they belong to;
-however, for imported resources
-(those obtained from static methods like fromRoleArn, fromBucketName, etc.),
-that might be different than the stack they were imported into.
+For resources that are created and managed in a Stack (those created by
+creating new class instances like `new Role()`, `new Bucket()`, etc.), this
+is always the same as the environment of the stack they belong to.
+
+For referenced resources (those obtained from referencing methods like
+`Role.fromRoleArn()`, `Bucket.fromBucketName()`, etc.), they might be
+different than the stack they were imported into.
 
 ---
 
@@ -562,7 +606,7 @@ Note that this is different from `restApiId`.
 public readonly restApiRef: RestApiReference;
 ```
 
-- *Type:* aws-cdk-lib.aws_apigateway.RestApiReference
+- *Type:* aws-cdk-lib.interfaces.aws_apigateway.RestApiReference
 
 A reference to a RestApi resource.
 
@@ -721,6 +765,7 @@ new CognitoUserPoolsAuthorizer(scope: Construct, id: string, props: CognitoUserP
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@alma-cdk/openapix.CognitoUserPoolsAuthorizer.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@alma-cdk/openapix.CognitoUserPoolsAuthorizer.with">with</a></code> | Applies one or more mixins to this construct. |
 
 ---
 
@@ -731,6 +776,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="@alma-cdk/openapix.CognitoUserPoolsAuthorizer.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="@alma-cdk/openapix.CognitoUserPoolsAuthorizer.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+The mixins to apply.
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -867,6 +933,7 @@ new LambdaAuthorizer(scope: Construct, id: string, props: LambdaAuthorizerProps)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@alma-cdk/openapix.LambdaAuthorizer.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@alma-cdk/openapix.LambdaAuthorizer.with">with</a></code> | Applies one or more mixins to this construct. |
 | <code><a href="#@alma-cdk/openapix.LambdaAuthorizer.grantFunctionInvoke">grantFunctionInvoke</a></code> | Allow Lambda invoke action to be performed by given identity. |
 
 ---
@@ -878,6 +945,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="@alma-cdk/openapix.LambdaAuthorizer.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="@alma-cdk/openapix.LambdaAuthorizer.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+The mixins to apply.
+
+---
 
 ##### `grantFunctionInvoke` <a name="grantFunctionInvoke" id="@alma-cdk/openapix.LambdaAuthorizer.grantFunctionInvoke"></a>
 
@@ -2794,10 +2882,12 @@ const lambdaIntegrationOptions: LambdaIntegrationOptions = { ... }
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.passthroughBehavior">passthroughBehavior</a></code> | <code>aws-cdk-lib.aws_apigateway.PassthroughBehavior</code> | Specifies the pass-through behavior for incoming requests based on the Content-Type header in the request, and the available mapping templates specified as the requestTemplates property on the Integration resource. |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.requestParameters">requestParameters</a></code> | <code>{[ key: string ]: string}</code> | The request parameters that API Gateway sends with the backend request. |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.requestTemplates">requestTemplates</a></code> | <code>{[ key: string ]: string}</code> | A map of Apache Velocity templates that are applied on the request payload. |
+| <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.responseTransferMode">responseTransferMode</a></code> | <code>aws-cdk-lib.aws_apigateway.ResponseTransferMode</code> | The response transfer mode for the integration. |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.timeout">timeout</a></code> | <code>aws-cdk-lib.Duration</code> | The maximum amount of time an integration will run before it returns without a response. |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.vpcLink">vpcLink</a></code> | <code>aws-cdk-lib.aws_apigateway.IVpcLink</code> | The VpcLink used for the integration. |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.allowTestInvoke">allowTestInvoke</a></code> | <code>boolean</code> | Allow invoking method from AWS Console UI (for testing purposes). |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.proxy">proxy</a></code> | <code>boolean</code> | Use proxy integration or normal (request/response mapping) integration. |
+| <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.scopePermissionToMethod">scopePermissionToMethod</a></code> | <code>boolean</code> | Scope the permission for invoking the AWS Lambda down to the specific method associated with this integration. |
 | <code><a href="#@alma-cdk/openapix.LambdaIntegrationOptions.property.validator">validator</a></code> | <code>string</code> | Validator identifier for method integration. This will override the default validator if one configured. |
 
 ---
@@ -2957,7 +3047,22 @@ the following snippet:
   { "application/json": "{ \"statusCode\": 200 }" }
 ```
 
-> [http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html)
+> [https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html)
+
+---
+
+##### `responseTransferMode`<sup>Optional</sup> <a name="responseTransferMode" id="@alma-cdk/openapix.LambdaIntegrationOptions.property.responseTransferMode"></a>
+
+```typescript
+public readonly responseTransferMode: ResponseTransferMode;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.ResponseTransferMode
+- *Default:* ResponseTransferMode.BUFFERED
+
+The response transfer mode for the integration.
+
+To enable response streaming, set this value to `ResponseTransferMode.STREAM`.
 
 ---
 
@@ -2974,7 +3079,7 @@ The maximum amount of time an integration will run before it returns without a r
 
 By default, the value must be between 50 milliseconds and 29 seconds.
 The upper bound can be increased for regional and private Rest APIs only,
-via a quota increase request for your acccount.
+via a quota increase request for your account.
 This increase might require a reduction in your account-level throttle quota limit.
 
 See {@link https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html Amazon API Gateway quotas} for more details.
@@ -3011,6 +3116,8 @@ will allow the `test-invoke-stage` stage to invoke this handler. If this
 is set to `false`, the function will only be usable from the deployment
 endpoint.
 
+Note that this property is ignored when `scopePermissionToMethod` is `false`.
+
 ---
 
 ##### `proxy`<sup>Optional</sup> <a name="proxy" id="@alma-cdk/openapix.LambdaIntegrationOptions.property.proxy"></a>
@@ -3025,6 +3132,25 @@ public readonly proxy: boolean;
 Use proxy integration or normal (request/response mapping) integration.
 
 > [https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format)
+
+---
+
+##### `scopePermissionToMethod`<sup>Optional</sup> <a name="scopePermissionToMethod" id="@alma-cdk/openapix.LambdaIntegrationOptions.property.scopePermissionToMethod"></a>
+
+```typescript
+public readonly scopePermissionToMethod: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Scope the permission for invoking the AWS Lambda down to the specific method associated with this integration.
+
+If this is set to `false`, the permission will allow invoking the AWS Lambda
+from any method. This is useful for reducing the AWS Lambda policy size
+for cases where the same AWS Lambda function is reused for many integrations.
+
+Note that this will always allow test invocations.
 
 ---
 
@@ -3299,6 +3425,7 @@ const mockIntegrationProps: MockIntegrationProps = { ... }
 | <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.passthroughBehavior">passthroughBehavior</a></code> | <code>aws-cdk-lib.aws_apigateway.PassthroughBehavior</code> | Specifies the pass-through behavior for incoming requests based on the Content-Type header in the request, and the available mapping templates specified as the requestTemplates property on the Integration resource. |
 | <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.requestParameters">requestParameters</a></code> | <code>{[ key: string ]: string}</code> | The request parameters that API Gateway sends with the backend request. |
 | <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.requestTemplates">requestTemplates</a></code> | <code>{[ key: string ]: string}</code> | A map of Apache Velocity templates that are applied on the request payload. |
+| <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.responseTransferMode">responseTransferMode</a></code> | <code>aws-cdk-lib.aws_apigateway.ResponseTransferMode</code> | The response transfer mode for the integration. |
 | <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.timeout">timeout</a></code> | <code>aws-cdk-lib.Duration</code> | The maximum amount of time an integration will run before it returns without a response. |
 | <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.vpcLink">vpcLink</a></code> | <code>aws-cdk-lib.aws_apigateway.IVpcLink</code> | The VpcLink used for the integration. |
 | <code><a href="#@alma-cdk/openapix.MockIntegrationProps.property.validator">validator</a></code> | <code>string</code> | Validator identifier for method integration. This will override the default validator if one configured. |
@@ -3460,7 +3587,22 @@ the following snippet:
   { "application/json": "{ \"statusCode\": 200 }" }
 ```
 
-> [http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html)
+> [https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html)
+
+---
+
+##### `responseTransferMode`<sup>Optional</sup> <a name="responseTransferMode" id="@alma-cdk/openapix.MockIntegrationProps.property.responseTransferMode"></a>
+
+```typescript
+public readonly responseTransferMode: ResponseTransferMode;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.ResponseTransferMode
+- *Default:* ResponseTransferMode.BUFFERED
+
+The response transfer mode for the integration.
+
+To enable response streaming, set this value to `ResponseTransferMode.STREAM`.
 
 ---
 
@@ -3477,7 +3619,7 @@ The maximum amount of time an integration will run before it returns without a r
 
 By default, the value must be between 50 milliseconds and 29 seconds.
 The upper bound can be increased for regional and private Rest APIs only,
-via a quota increase request for your acccount.
+via a quota increase request for your account.
 This increase might require a reduction in your account-level throttle quota limit.
 
 See {@link https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html Amazon API Gateway quotas} for more details.

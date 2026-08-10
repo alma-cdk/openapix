@@ -1,4 +1,8 @@
 {
+  "manifestVersion": 3,
+  "env": {
+    "PATH": "$(pnpm -c exec \"node --print process.env.PATH\")"
+  },
   "tasks": {
     "build": {
       "name": "build",
@@ -37,10 +41,32 @@
       },
       "steps": [
         {
-          "builtin": "release/bump-version"
+          "builtin": "release/resolve-latest-tag",
+          "outputEnv": "LATEST_TAG"
+        },
+        {
+          "spawn": "bump:releasable-commits",
+          "outputEnv": "RELEASABLE_COMMITS",
+          "condition": "git rev-parse --verify --quiet \"refs/tags/$LATEST_TAG\""
+        },
+        {
+          "builtin": "release/suggest-version-bump",
+          "outputEnv": "SUGGESTED_BUMP"
+        },
+        {
+          "builtin": "release/apply-version-bump"
         }
       ],
-      "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
+      "condition": "git log --oneline -1 | grep -v \"chore(release):\" > /dev/null"
+    },
+    "bump:releasable-commits": {
+      "name": "bump:releasable-commits",
+      "description": "Print the releasable commits since the latest release",
+      "steps": [
+        {
+          "exec": "git log --oneline $LATEST_TAG..HEAD"
+        }
+      ]
     },
     "clobber": {
       "name": "clobber",
@@ -97,7 +123,12 @@
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
+          "execArgs": [
+            "ts-node",
+            "--project",
+            "projenrc/tsconfig.json",
+            ".projenrc.ts"
+          ]
         }
       ]
     },
@@ -106,7 +137,11 @@
       "description": "Generate API.md from .jsii manifest",
       "steps": [
         {
-          "exec": "jsii-docgen -o API.md"
+          "execArgs": [
+            "jsii-docgen",
+            "-o",
+            "API.md"
+          ]
         }
       ]
     },
@@ -190,7 +225,14 @@
       "description": "Create js language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --pack-command \"pnpm pack\" --target js"
+          "execArgs": [
+            "jsii-pacmak",
+            "-v",
+            "--pack-command",
+            "pnpm pack",
+            "--target",
+            "js"
+          ]
         }
       ]
     },
@@ -216,7 +258,7 @@
       "description": "Prepare a release from \"main\" branch",
       "env": {
         "RELEASE": "true",
-        "MAJOR": "1"
+        "MAJOR": "2"
       },
       "steps": [
         {
@@ -236,12 +278,12 @@
         }
       ]
     },
-    "release:2.x": {
-      "name": "release:2.x",
-      "description": "Prepare a release from \"2.x\" branch",
+    "release:3.x": {
+      "name": "release:3.x",
+      "description": "Prepare a release from \"3.x\" branch",
       "env": {
         "RELEASE": "true",
-        "MAJOR": "2",
+        "MAJOR": "3",
         "PRERELEASE": "beta"
       },
       "steps": [
@@ -319,13 +361,60 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@alma-cdk/construct-library,@types/js-yaml,@types/lodash,@types/semver,aws-cdk-lib,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,lodash,prettier,projen,ts-node,change-case,es-toolkit,js-yaml,semver"
+          "execArgs": [
+            "pnpm",
+            "dlx",
+            "npm-check-updates@20",
+            "--upgrade",
+            "--target=minor",
+            "--peer",
+            "--no-deprecated",
+            "--dep=dev,prod,peer,optional",
+            "--filter=@alma-cdk/construct-library,@types/js-yaml,@types/lodash,@types/semver,aws-cdk-lib,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,lodash,prettier,projen,ts-node,change-case,es-toolkit,js-yaml,semver"
+          ]
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @alma-cdk/construct-library @types/jest @types/js-yaml @types/lodash @types/node @types/prettier @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii lodash prettier projen ts-jest ts-node typescript change-case es-toolkit js-yaml semver constructs"
+          "execArgs": [
+            "pnpm",
+            "update",
+            "@alma-cdk/construct-library",
+            "@types/jest",
+            "@types/js-yaml",
+            "@types/lodash",
+            "@types/node",
+            "@types/prettier",
+            "@types/semver",
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "aws-cdk-lib",
+            "commit-and-tag-version",
+            "eslint-config-prettier",
+            "eslint-import-resolver-typescript",
+            "eslint-plugin-import",
+            "eslint-plugin-prettier",
+            "eslint",
+            "jest-junit",
+            "jest",
+            "jsii-diff",
+            "jsii-docgen",
+            "jsii-pacmak",
+            "jsii-rosetta",
+            "jsii",
+            "lodash",
+            "prettier",
+            "projen",
+            "ts-jest",
+            "ts-node",
+            "typescript",
+            "change-case",
+            "es-toolkit",
+            "js-yaml",
+            "semver",
+            "constructs"
+          ]
         },
         {
           "exec": "pnpm exec projen"
@@ -344,9 +433,6 @@
         }
       ]
     }
-  },
-  "env": {
-    "PATH": "$(pnpm -c exec \"node --print process.env.PATH\")"
   },
   "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"pnpm exec projen\"."
 }
