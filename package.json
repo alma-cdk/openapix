@@ -39,7 +39,7 @@
     "organization": true
   },
   "devDependencies": {
-    "@alma-cdk/construct-library": "2.2.1",
+    "@alma-cdk/construct-library": "2.3.0",
     "@types/jest": "^30",
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.24",
